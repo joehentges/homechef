@@ -36,7 +36,6 @@ import {
 export async function loginUseCase(email: string, password: string) {
   const user = await getUserByEmail(email)
 
-  console.log(user)
   if (!user) {
     throw new LoginError()
   }

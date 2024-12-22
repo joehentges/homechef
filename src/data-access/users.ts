@@ -48,7 +48,6 @@ export async function verifyPassword(
     return false
   }
 
-  console.log(hashedPassword, plainTextPassword)
   return verifyPasswordHash(hashedPassword, plainTextPassword)
 }
 
