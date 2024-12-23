@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
-import { Advent_Pro, Inter } from "next/font/google"
+import { Inter, Nova_Slim } from "next/font/google"
+import { NuqsAdapter } from "nuqs/adapters/next/app"
 
 import "@/styles/globals.css"
 
@@ -14,7 +15,7 @@ const fontBase = Inter({
   variable: "--font-base",
 })
 
-const fontHeader = Advent_Pro({
+const fontHeader = Nova_Slim({
   subsets: ["latin"],
   weight: "400",
   variable: "--font-header",
@@ -42,7 +43,7 @@ export default async function RootLayout({
         )}
       >
         <Providers>
-          {children}
+          <NuqsAdapter>{children}</NuqsAdapter>
           <TailwindIndicator />
           <Toaster />
         </Providers>

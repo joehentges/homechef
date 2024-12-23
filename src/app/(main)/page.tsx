@@ -1,6 +1,7 @@
 import { HeartIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { FeaturedRecipeSearch } from "@/containers/featured-recipe-search"
 
 export default function HomePage() {
   return (
@@ -28,14 +29,15 @@ export default function HomePage() {
 
         <div
           className={cn(
-            "container flex h-[100%] flex-col items-center justify-center font-header text-6xl font-bold md:items-start md:text-8xl lg:text-9xl"
+            "container flex h-[100%] flex-col items-center justify-center font-header text-6xl font-bold md:items-start md:text-7xl lg:text-8xl xl:text-9xl"
           )}
         >
           <p>Chef</p>
-          <p className="md:ml-32">Secret</p>
+          <p className="md:ml-32">Featured</p>
           <p>Recipes</p>
         </div>
       </div>
+      <FeaturedRecipeSearch />
     </div>
   )
 }
