@@ -6,6 +6,7 @@ interface UserSeed {
   emailVerified?: number
   password: string
   displayName: string
+  image?: string
 }
 
 export const usersSeed: UserSeed[] = [

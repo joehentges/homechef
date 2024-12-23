@@ -1,11 +1,14 @@
 import * as React from "react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 import { navigation } from "@/config/navigation"
 import { cn } from "@/lib/utils"
 import { Logo } from "@/components/logo"
 
 export function SiteHeaderMobileNav() {
+  const pathname = usePathname()
+
   return (
     <div
       className={cn(
@@ -25,6 +28,7 @@ export function SiteHeaderMobileNav() {
               href={item.disabled ? "#" : item.href}
               className={cn(
                 "flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline",
+                pathname === item.href && "font-bold",
                 item.disabled && "cursor-not-allowed opacity-60"
               )}
             >

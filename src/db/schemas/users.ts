@@ -8,6 +8,7 @@ export const users = pgTable("users", {
   emailVerified: timestamp("email_verified", { mode: "date" }),
   password: text("password"),
   displayName: text("display_name").notNull(),
+  image: text("image"),
 })
 
 export type User = typeof users.$inferSelect

@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { MenuIcon, XIcon } from "lucide-react"
@@ -15,7 +15,7 @@ import { SiteHeaderMobileNav } from "./site-header-mobile-nav"
 export function SiteHeaderNav() {
   const pathname = usePathname()
   const { blockScroll, allowScroll } = useScrollBlock()
-  const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false)
+  const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false)
 
   function handleMobileMenuClick() {
     setShowMobileMenu(!showMobileMenu)

@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 interface UserAvatarProps extends AvatarProps {
   displayName: string
-  image?: string
+  image: string | null
   className?: string
 }
 

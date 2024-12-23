@@ -1,8 +1,6 @@
-import { adventPro } from "@/styles/fonts"
-
 export function Logo() {
   return (
-    <span className={adventPro.className}>
+    <span className="font-header">
       Home<span className="text-primary">chef</span>
     </span>
   )

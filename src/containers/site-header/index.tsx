@@ -16,7 +16,7 @@ export function SiteHeader(props: SiteHeaderProps) {
 
   return (
     <header className="container z-40">
-      <div className="mx-[-32px] flex h-20 items-center justify-between bg-white px-[32px] py-6 md:bg-transparent">
+      <div className="mx-[-32px] flex h-20 items-center justify-between bg-background px-[32px] py-6 md:bg-transparent">
         <SiteHeaderNav />
         <nav className="flex gap-4 lg:gap-8">
           <Link
@@ -29,7 +29,7 @@ export function SiteHeader(props: SiteHeaderProps) {
           {user ? (
             <SiteHeaderUserAccountNav
               displayName={user.displayName}
-              image={undefined} // user.image
+              image={user.image}
               email={user.email}
             />
           ) : (

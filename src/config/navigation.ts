@@ -27,11 +27,6 @@ export const navigation: Navigation = {
       disabled: true,
     },
     {
-      label: "Essentials",
-      href: "/essentials",
-      disabled: true,
-    },
-    {
       label: "My Cookbook",
       href: "/my-cookbook",
       disabled: true,

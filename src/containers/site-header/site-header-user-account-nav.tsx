@@ -18,7 +18,7 @@ import { signOutAction } from "./actions"
 interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
   displayName: string
   email: string
-  image?: string
+  image: string | null
 }
 
 export function SiteHeaderUserAccountNav(props: UserAccountNavProps) {
