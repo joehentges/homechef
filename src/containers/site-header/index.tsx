@@ -17,7 +17,7 @@ export function SiteHeader(props: SiteHeaderProps) {
   return (
     <header className="container z-40">
       <div className="mx-[-32px] flex h-20 items-center justify-between bg-background px-[32px] py-6 md:bg-transparent">
-        <SiteHeaderNav />
+        <SiteHeaderNav authenticated={!!user} />
         <nav className="flex gap-4 lg:gap-8">
           <Link
             href="/search"

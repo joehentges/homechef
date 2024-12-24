@@ -7,10 +7,11 @@ import { CatalogPagination } from "./catalog-pagination"
 
 export interface CatalogProps {
   items: CatalogFeaturedItemProps[]
+  pageCount: number
 }
 
 export function Catalog(props: CatalogProps) {
-  const { items } = props
+  const { items, pageCount } = props
 
   const catalogFeaturedItem = items[0]
 
@@ -56,10 +57,11 @@ export function Catalog(props: CatalogProps) {
           />
         ))}
       </div>
-
-      <div className="py-4">
-        <CatalogPagination pageCount={4} />
-      </div>
+      {pageCount > 1 && (
+        <div className="py-4">
+          <CatalogPagination pageCount={4} />
+        </div>
+      )}
     </div>
   )
 }

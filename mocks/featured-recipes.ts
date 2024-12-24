@@ -1,6 +1,6 @@
-import { Tag } from "./tag-select"
+import { Tag } from "@/containers/featured-recipe-search/tag-select"
 
-export const tags: Tag[] = [
+export const featuredRecipeTags: Tag[] = [
   {
     label: "Desert",
     icon: "desert",
@@ -23,7 +23,7 @@ export const tags: Tag[] = [
   },
 ]
 
-export const catalog = [
+export const featuredRecipes = [
   {
     href: "/recipes/avacado-salad-2",
     image: "/images/salad.jpg",

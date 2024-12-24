@@ -2,13 +2,16 @@ import { HeartIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { FeaturedRecipeSearch } from "@/containers/featured-recipe-search"
+import { FeaturedVideos } from "@/containers/featured-videos"
+
+import { videos } from "../../../mocks/featured-videos"
 
 export default function HomePage() {
   return (
     <div>
       <div
         className={cn(
-          "relative -mt-20 h-[450px] overflow-hidden rounded-b-[2rem] bg-primary/30 md:h-[600px] md:rounded-b-[4rem]"
+          "relative -mt-20 h-[450px] overflow-hidden rounded-b-[2rem] bg-primary/20 md:h-[600px] md:rounded-b-[4rem]"
         )}
       >
         <div className="absolute left-[15%] top-[80%] flex max-w-[250px] gap-x-3 md:left-[35%] md:top-[28%]">
@@ -37,7 +40,10 @@ export default function HomePage() {
           <p>Recipes</p>
         </div>
       </div>
+
       <FeaturedRecipeSearch />
+
+      <FeaturedVideos videos={videos} />
     </div>
   )
 }

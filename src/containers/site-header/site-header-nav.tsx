@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { MenuIcon, XIcon } from "lucide-react"
@@ -12,7 +12,13 @@ import { useScrollBlock } from "@/hooks/useScrollBlock"
 
 import { SiteHeaderMobileNav } from "./site-header-mobile-nav"
 
-export function SiteHeaderNav() {
+interface SiteHeaderNavProps {
+  authenticated: boolean
+}
+
+export function SiteHeaderNav(props: SiteHeaderNavProps) {
+  const { authenticated } = props
+
   const pathname = usePathname()
   const { blockScroll, allowScroll } = useScrollBlock()
   const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false)
@@ -33,19 +39,22 @@ export function SiteHeaderNav() {
         </p>
       </Link>
       <nav className="hidden w-full justify-center gap-4 md:flex lg:gap-12">
-        {navigation.siteNav?.map((item, index) => (
-          <Link
-            key={index}
-            href={item.disabled ? "#" : item.href}
-            className={cn(
-              "flex items-center text-lg font-medium transition-colors hover:text-foreground/70 sm:text-base",
-              pathname === item.href && "font-bold",
-              item.disabled && "cursor-not-allowed opacity-80"
-            )}
-          >
-            {item.label}
-          </Link>
-        ))}
+        {navigation.siteNav?.map(
+          (item, index) =>
+            (!item.authenticated || (item.authenticated && authenticated)) && (
+              <Link
+                key={index}
+                href={item.disabled ? "#" : item.href}
+                className={cn(
+                  "flex items-center text-lg font-medium transition-colors hover:text-foreground/70 sm:text-base",
+                  pathname === item.href && "font-bold",
+                  item.disabled && "cursor-not-allowed opacity-80"
+                )}
+              >
+                {item.label}
+              </Link>
+            )
+        )}
       </nav>
       <button
         className="flex items-center space-x-2 md:hidden"

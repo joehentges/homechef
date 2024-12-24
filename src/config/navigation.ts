@@ -30,6 +30,7 @@ export const navigation: Navigation = {
       label: "My Cookbook",
       href: "/my-cookbook",
       disabled: true,
+      authenticated: true,
     },
   ],
   userNav: [

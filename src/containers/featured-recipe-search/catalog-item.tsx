@@ -26,7 +26,7 @@ export function CatalogItem(props: CatalogItemProps) {
           backgroundImage: `url('${image}')`,
         }}
       >
-        <div className="h-full w-full rounded-full bg-primary/10 opacity-0 transition-opacity group-hover:opacity-100" />
+        <div className="h-full w-full rounded-full bg-primary/5 opacity-0 transition-opacity group-hover:opacity-100" />
       </div>
       <div
         className={cn(
