@@ -47,7 +47,7 @@ function VideoItem(props: VideoItemProps) {
           <PlayIcon className="fill-white text-black" />
         </div>
 
-        <div className="h-full w-full rounded-l-3xl bg-primary/5 opacity-0 transition-opacity group-hover:opacity-100" />
+        <div className="h-full w-full rounded-l-3xl bg-primary/10 opacity-0 transition-opacity group-hover:opacity-100" />
       </div>
 
       <div className="w-full space-y-2 p-2 text-sm group-hover:text-foreground/90">

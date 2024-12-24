@@ -24,7 +24,7 @@ export function CatalogFeaturedItem(props: CatalogFeaturedItemProps) {
           backgroundImage: `url('${image}')`,
         }}
       >
-        <div className="h-full w-full rounded-l-3xl bg-primary/5 opacity-0 transition-opacity group-hover:opacity-100" />
+        <div className="h-full w-full rounded-l-3xl bg-primary/10 opacity-0 transition-opacity group-hover:opacity-100" />
       </div>
       <div className="flex w-full flex-col gap-y-6 p-6">
         <p className="text-xl font-bold transition-colors group-hover:text-foreground/80 md:text-3xl">
