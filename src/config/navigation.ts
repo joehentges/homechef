@@ -46,7 +46,7 @@ export const navigation: Navigation = {
   siteFooter: [
     {
       label: "GitHub",
-      href: "https://github.com/joeyhentges/homechef",
+      href: "https://github.com/joeyhentges/home-chef",
     },
   ],
 }
