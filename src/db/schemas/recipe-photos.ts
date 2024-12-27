@@ -1,4 +1,4 @@
-import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core"
+import { boolean, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core"
 
 import { recipes } from "./recipes"
 
@@ -14,6 +14,7 @@ export const recipePhotos = pgTable("recipe_photos", {
     .notNull()
     .references(() => recipes.id, { onDelete: "cascade" }),
   photoUrl: text("photo").notNull(),
+  defaultPhoto: boolean().default(false).notNull(),
 })
 
-export type RecipePhotos = typeof recipePhotos.$inferSelect
+export type RecipePhoto = typeof recipePhotos.$inferSelect

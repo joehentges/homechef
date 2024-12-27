@@ -29,7 +29,7 @@ interface VideoItemProps {
 
 function VideoItem(props: VideoItemProps) {
   const { video, setSelectedVideo } = props
-  const { imageHref, href, length, date, title, creator } = video
+  const { imageHref, length, date, title, creator } = video
 
   return (
     <div

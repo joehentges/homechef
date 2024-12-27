@@ -1,7 +1,6 @@
 type RecipeSeed = {
   id: number
   userId: number
-  image: string | null
   title: string
   description: string | null
   prepTime: number | null
@@ -37,6 +36,7 @@ type RecipePhotosSeed = {
   id: number
   recipeId: number
   photoUrl: string
+  defaultPhoto: boolean
 }
 
 type RecipeUserRatingSeed = {

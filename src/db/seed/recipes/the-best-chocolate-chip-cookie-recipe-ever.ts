@@ -14,8 +14,6 @@ export const theBestChocolateChipCookieRecipeEver: CompleteRecipeSeed = {
     difficulty: "easy",
     servings: 36,
     servingsUnit: "cookies",
-    image:
-      "https://joyfoodsunshine.com/wp-content/uploads/2018/02/best-chocolate-chip-cookies-recipe-1.jpg",
   },
   recipeIngredients: [
     {
@@ -183,42 +181,49 @@ export const theBestChocolateChipCookieRecipeEver: CompleteRecipeSeed = {
       recipeId,
       photoUrl:
         "https://joyfoodsunshine.com/wp-content/uploads/2018/02/best-chocolate-chip-cookies-recipe-5.jpg",
+      defaultPhoto: true,
     },
     {
       id: 2,
       recipeId,
       photoUrl:
         "https://joyfoodsunshine.com/wp-content/uploads/2018/02/best-chocolate-chip-cookies-recipe-3.jpg",
+      defaultPhoto: false,
     },
     {
       id: 3,
       recipeId,
       photoUrl:
         "https://joyfoodsunshine.com/wp-content/uploads/2018/02/best-chocolate-chip-cookie-recipe-cooling.jpg",
+      defaultPhoto: false,
     },
     {
       id: 4,
       recipeId,
       photoUrl:
         "https://joyfoodsunshine.com/wp-content/uploads/2018/02/how-to-make-chocolate-chip-cookies-7.jpg",
+      defaultPhoto: false,
     },
     {
       id: 5,
       recipeId,
       photoUrl:
         "https://joyfoodsunshine.com/wp-content/uploads/2018/02/how-to-freeze-chocolate-chip-cookie-dough.jpg",
+      defaultPhoto: false,
     },
     {
       id: 6,
       recipeId,
       photoUrl:
         "https://joyfoodsunshine.com/wp-content/uploads/2018/02/how-to-make-chocolate-chip-cookies-6-1.jpg",
+      defaultPhoto: false,
     },
     {
       id: 7,
       recipeId,
       photoUrl:
         "https://joyfoodsunshine.com/wp-content/uploads/2018/02/best-chocolate-chip-cookies-recipe-6.jpg",
+      defaultPhoto: false,
     },
   ],
   recipeUserRatings: [
