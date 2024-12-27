@@ -4,14 +4,17 @@ import { recipes } from "./recipes"
 
 export const recipeSteps = pgTable("recipe_steps", {
   id: serial("id").primaryKey(),
-  dateCreated: timestamp("date_created", { mode: "date" }).defaultNow(),
-  dateUpdated: timestamp("date_updated", { mode: "date" }).defaultNow(),
+  dateCreated: timestamp("date_created", { mode: "date" })
+    .defaultNow()
+    .notNull(),
+  dateUpdated: timestamp("date_updated", { mode: "date" })
+    .defaultNow()
+    .notNull(),
   recipeId: serial("recipe_id")
     .notNull()
-    .references(() => recipes.id, { onDelete: "cascade" })
-    .unique(),
+    .references(() => recipes.id, { onDelete: "cascade" }),
   stepNumber: integer("step_number").notNull(),
-  description: text("description"),
+  description: text("description").notNull(),
 })
 
 export type RecipeStep = typeof recipeSteps.$inferSelect

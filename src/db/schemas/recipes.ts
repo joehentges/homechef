@@ -4,9 +4,13 @@ import { users } from "./users"
 
 export const recipes = pgTable("recipes", {
   id: serial("id").primaryKey(),
-  dateCreated: timestamp("date_created", { mode: "date" }).defaultNow(),
-  dateUpdated: timestamp("date_updated", { mode: "date" }).defaultNow(),
-  created_by: serial("created_by")
+  dateCreated: timestamp("date_created", { mode: "date" })
+    .defaultNow()
+    .notNull(),
+  dateUpdated: timestamp("date_updated", { mode: "date" })
+    .defaultNow()
+    .notNull(),
+  userId: serial("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" })
     .unique(),

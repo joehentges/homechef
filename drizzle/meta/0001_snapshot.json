@@ -1,6 +1,6 @@
 {
-  "id": "5a18146e-1740-4606-8348-efe9c68095e4",
-  "prevId": "3b67d7f1-7c16-40e7-97f2-d3eeeac09973",
+  "id": "6c9f91e2-58a4-4ce4-b63a-beadb8229e58",
+  "prevId": "898576ad-7092-4e5a-b2ea-cbe121ede640",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -167,14 +167,14 @@
           "name": "date_created",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "date_updated": {
           "name": "date_updated",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "email": {
@@ -289,14 +289,14 @@
           "name": "date_created",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "date_updated": {
           "name": "date_updated",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "name": {
@@ -336,14 +336,14 @@
           "name": "date_created",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "date_updated": {
           "name": "date_updated",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "recipe_id": {
@@ -366,7 +366,7 @@
         },
         "quantity": {
           "name": "quantity",
-          "type": "integer",
+          "type": "numeric",
           "primaryKey": false,
           "notNull": true
         },
@@ -441,14 +441,14 @@
           "name": "date_created",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "date_updated": {
           "name": "date_updated",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "recipe_id": {
@@ -459,15 +459,9 @@
         },
         "photo": {
           "name": "photo",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "credit": {
-          "name": "credit",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         }
       },
       "indexes": {},
@@ -514,14 +508,14 @@
           "name": "date_created",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "date_updated": {
           "name": "date_updated",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "recipe_id": {
@@ -540,7 +534,7 @@
           "name": "description",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         }
       },
       "indexes": {},
@@ -587,14 +581,14 @@
           "name": "date_created",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "date_updated": {
           "name": "date_updated",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "recipe_id": {
@@ -674,18 +668,18 @@
           "name": "date_created",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "date_updated": {
           "name": "date_updated",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
-        "created_by": {
-          "name": "created_by",
+        "user_id": {
+          "name": "user_id",
           "type": "serial",
           "primaryKey": false,
           "notNull": true
@@ -743,12 +737,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "recipes_created_by_users_id_fk": {
-          "name": "recipes_created_by_users_id_fk",
+        "recipes_user_id_users_id_fk": {
+          "name": "recipes_user_id_users_id_fk",
           "tableFrom": "recipes",
           "tableTo": "users",
           "columnsFrom": [
-            "created_by"
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -759,11 +753,11 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "recipes_created_by_unique": {
-          "name": "recipes_created_by_unique",
+        "recipes_user_id_unique": {
+          "name": "recipes_user_id_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "created_by"
+            "user_id"
           ]
         }
       },
@@ -785,14 +779,14 @@
           "name": "date_created",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "date_updated": {
           "name": "date_updated",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "name": {
@@ -810,8 +804,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.user_ratings": {
-      "name": "user_ratings",
+    "public.recipe_user_ratings": {
+      "name": "recipe_user_ratings",
       "schema": "",
       "columns": {
         "id": {
@@ -824,14 +818,14 @@
           "name": "date_created",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "date_updated": {
           "name": "date_updated",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "user_id": {
@@ -861,9 +855,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "user_ratings_user_id_users_id_fk": {
-          "name": "user_ratings_user_id_users_id_fk",
-          "tableFrom": "user_ratings",
+        "recipe_user_ratings_user_id_users_id_fk": {
+          "name": "recipe_user_ratings_user_id_users_id_fk",
+          "tableFrom": "recipe_user_ratings",
           "tableTo": "users",
           "columnsFrom": [
             "user_id"
@@ -874,9 +868,9 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "user_ratings_recipe_id_recipes_id_fk": {
-          "name": "user_ratings_recipe_id_recipes_id_fk",
-          "tableFrom": "user_ratings",
+        "recipe_user_ratings_recipe_id_recipes_id_fk": {
+          "name": "recipe_user_ratings_recipe_id_recipes_id_fk",
+          "tableFrom": "recipe_user_ratings",
           "tableTo": "recipes",
           "columnsFrom": [
             "recipe_id"
@@ -890,15 +884,15 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "user_ratings_user_id_unique": {
-          "name": "user_ratings_user_id_unique",
+        "recipe_user_ratings_user_id_unique": {
+          "name": "recipe_user_ratings_user_id_unique",
           "nullsNotDistinct": false,
           "columns": [
             "user_id"
           ]
         },
-        "user_ratings_recipe_id_unique": {
-          "name": "user_ratings_recipe_id_unique",
+        "recipe_user_ratings_recipe_id_unique": {
+          "name": "recipe_user_ratings_recipe_id_unique",
           "nullsNotDistinct": false,
           "columns": [
             "recipe_id"

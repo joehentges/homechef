@@ -1,6 +1,6 @@
 {
-  "id": "898576ad-7092-4e5a-b2ea-cbe121ede640",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "b7bfcbf4-18fb-42d0-8015-c8a61bfb26ef",
+  "prevId": "6c9f91e2-58a4-4ce4-b63a-beadb8229e58",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -366,7 +366,7 @@
         },
         "quantity": {
           "name": "quantity",
-          "type": "integer",
+          "type": "numeric",
           "primaryKey": false,
           "notNull": true
         },
@@ -407,22 +407,7 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "recipe_ingredients_recipe_id_unique": {
-          "name": "recipe_ingredients_recipe_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "recipe_id"
-          ]
-        },
-        "recipe_ingredients_ingredient_id_unique": {
-          "name": "recipe_ingredients_ingredient_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "ingredient_id"
-          ]
-        }
-      },
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -481,15 +466,7 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "recipe_photos_recipe_id_unique": {
-          "name": "recipe_photos_recipe_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "recipe_id"
-          ]
-        }
-      },
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -554,15 +531,7 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "recipe_steps_recipe_id_unique": {
-          "name": "recipe_steps_recipe_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "recipe_id"
-          ]
-        }
-      },
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -634,22 +603,7 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "recipe_tags_recipe_id_unique": {
-          "name": "recipe_tags_recipe_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "recipe_id"
-          ]
-        },
-        "recipe_tags_tag_id_unique": {
-          "name": "recipe_tags_tag_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "tag_id"
-          ]
-        }
-      },
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -883,22 +837,7 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "recipe_user_ratings_user_id_unique": {
-          "name": "recipe_user_ratings_user_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "user_id"
-          ]
-        },
-        "recipe_user_ratings_recipe_id_unique": {
-          "name": "recipe_user_ratings_recipe_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "recipe_id"
-          ]
-        }
-      },
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
