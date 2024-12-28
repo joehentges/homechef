@@ -17,7 +17,3 @@ export const recipeTagsSeed = [
 export const recipePhotosSeed = [
   ...theBestChocolateChipCookieRecipeEver.recipePhotos,
 ]
-
-export const recipeUserRatingsSeed = [
-  ...theBestChocolateChipCookieRecipeEver.recipeUserRatings,
-]

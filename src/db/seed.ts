@@ -9,7 +9,6 @@ import {
   recipes,
   recipeSteps,
   recipeTags,
-  recipeUserRatings,
   tags,
   users,
 } from "./schemas"
@@ -20,7 +19,6 @@ import {
   recipesSeed,
   recipeStepsSeed,
   recipeTagsSeed,
-  recipeUserRatingsSeed,
 } from "./seed/recipes"
 import { tagsSeed } from "./seed/tags"
 import { usersSeed } from "./seed/users"
@@ -71,12 +69,6 @@ async function main() {
   const seededRecipeTags = await database
     .insert(recipeTags)
     .values(recipeTagsSeed as any)
-    .onConflictDoNothing()
-    .returning()
-
-  const seededRecipeUserRatings = await database
-    .insert(recipeUserRatings)
-    .values(recipeUserRatingsSeed as any)
     .onConflictDoNothing()
     .returning()
 

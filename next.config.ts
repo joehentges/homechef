@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   images: {
     dangerouslyAllowSVG: true,
     remotePatterns: [
+      /*
       {
         protocol: "https",
         hostname: "api.dicebear.com",
@@ -13,6 +14,11 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "placehold.co",
         port: "",
+      },
+      */
+      {
+        protocol: "https",
+        hostname: "*",
       },
     ],
   },

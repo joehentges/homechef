@@ -226,13 +226,4 @@ export const theBestChocolateChipCookieRecipeEver: CompleteRecipeSeed = {
       defaultPhoto: false,
     },
   ],
-  recipeUserRatings: [
-    {
-      id: 1,
-      userId: 1,
-      recipeId,
-      rating: 5,
-      review: "Amazing cookies. I make them all the time. Great recipe.",
-    },
-  ],
 }
