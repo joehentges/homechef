@@ -4,6 +4,7 @@ import "dotenv/config"
 import { database, pg } from "./index"
 import {
   recipeDirections,
+  recipeImportDetails,
   recipeIngredients,
   recipePhotos,
   recipes,
@@ -13,6 +14,7 @@ import {
 } from "./schemas"
 import {
   recipeDirectionsSeed,
+  recipeImportDetailsSeed,
   recipeIngredientsSeed,
   recipePhotosSeed,
   recipesSeed,
@@ -37,6 +39,12 @@ async function main() {
   const seededRecipes = await database
     .insert(recipes)
     .values(recipesSeed as any)
+    .onConflictDoNothing()
+    .returning()
+
+  const seededRecipeImportDetails = await database
+    .insert(recipeImportDetails)
+    .values(recipeImportDetailsSeed as any)
     .onConflictDoNothing()
     .returning()
 

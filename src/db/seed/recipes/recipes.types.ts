@@ -35,8 +35,16 @@ type RecipePhotosSeed = {
   defaultPhoto: boolean
 }
 
+type RecipeImportDetails = {
+  id: number
+  name: string
+  recipeId: number
+  url: string
+}
+
 export interface CompleteRecipeSeed {
   recipe: RecipeSeed
+  recipeImportDetails: RecipeImportDetails | null
   recipeIngredients: RecipeIngredientsSeed[]
   recipeDirections: RecipeDirectionsSeed[]
   recipeTags: RecipeTagsSeed[]

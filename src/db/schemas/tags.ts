@@ -8,7 +8,7 @@ export const tags = pgTable("tags", {
   dateUpdated: timestamp("date_updated", { mode: "date" })
     .defaultNow()
     .notNull(),
-  name: text("name").notNull(),
+  name: text("name").notNull().unique(),
 })
 
 export type Tag = typeof tags.$inferSelect

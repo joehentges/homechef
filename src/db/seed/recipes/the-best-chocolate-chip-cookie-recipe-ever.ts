@@ -14,6 +14,12 @@ export const theBestChocolateChipCookieRecipeEver: CompleteRecipeSeed = {
     difficulty: "easy",
     servings: "36 cookies",
   },
+  recipeImportDetails: {
+    id: 1,
+    recipeId,
+    name: "joyfoodsunshine.com",
+    url: "https://joyfoodsunshine.com/the-most-amazing-chocolate-chip-cookies/",
+  },
   recipeIngredients: [
     {
       id: 1,

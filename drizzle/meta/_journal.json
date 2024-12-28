@@ -15,6 +15,13 @@
       "when": 1735418129823,
       "tag": "0001_skinny_talisman",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1735429075962,
+      "tag": "0002_puzzling_lizard",
+      "breakpoints": true
     }
   ]
 }

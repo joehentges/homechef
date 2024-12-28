@@ -2,6 +2,10 @@ import { theBestChocolateChipCookieRecipeEver } from "./the-best-chocolate-chip-
 
 export const recipesSeed = [theBestChocolateChipCookieRecipeEver.recipe]
 
+export const recipeImportDetailsSeed = [
+  theBestChocolateChipCookieRecipeEver.recipeImportDetails,
+]
+
 export const recipeIngredientsSeed = [
   ...theBestChocolateChipCookieRecipeEver.recipeIngredients,
 ]
