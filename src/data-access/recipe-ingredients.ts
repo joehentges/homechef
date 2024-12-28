@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm"
 
 import { PrimaryKey } from "@/types"
 import { database } from "@/db"
-import { ingredients, RecipeIngredient, recipeIngredients } from "@/db/schemas"
+import { RecipeIngredient, recipeIngredients } from "@/db/schemas"
 
 export async function getRecipeIngredient(
   recipeIngredientId: PrimaryKey
@@ -16,31 +16,12 @@ export async function getRecipeIngredient(
 
 export async function getRecipeIngredientsByRecipeId(
   recipeId: PrimaryKey
-): Promise<
-  | {
-      id: number
-      dateCreated: Date
-      dateUpdated: Date
-      description: string | null
-      name: string
-      quantity: string
-      unit: string | null
-    }[]
-  | undefined
-> {
-  const recipeIngredientsList = await database
-    .select({
-      id: recipeIngredients.id,
-      dateCreated: recipeIngredients.dateCreated,
-      dateUpdated: recipeIngredients.dateUpdated,
-      description: recipeIngredients.description,
-      name: ingredients.name,
-      quantity: recipeIngredients.quantity,
-      unit: recipeIngredients.unit,
-    })
-    .from(recipeIngredients)
-    .where(eq(recipeIngredients.recipeId, recipeId))
-    .innerJoin(ingredients, eq(recipeIngredients.ingredientId, ingredients.id))
+): Promise<RecipeIngredient[] | undefined> {
+  const recipeIngredientsList = await database.query.recipeIngredients.findMany(
+    {
+      where: eq(recipeIngredients.recipeId, recipeId),
+    }
+  )
 
   return recipeIngredientsList
 }

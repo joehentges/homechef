@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1735331998649,
-      "tag": "0000_classy_lady_bullseye",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1735332098411,
-      "tag": "0001_lowly_peter_quill",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1735332904297,
-      "tag": "0002_lame_shape",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1735337738849,
-      "tag": "0003_warm_jubilee",
+      "when": 1735417183083,
+      "tag": "0000_chubby_vertigo",
       "breakpoints": true
     }
   ]

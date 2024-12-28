@@ -2,7 +2,7 @@ import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core"
 
 import { recipes } from "./recipes"
 
-export const recipeSteps = pgTable("recipe_steps", {
+export const recipeDirections = pgTable("recipe_directions", {
   id: serial("id").primaryKey(),
   dateCreated: timestamp("date_created", { mode: "date" })
     .defaultNow()
@@ -17,4 +17,4 @@ export const recipeSteps = pgTable("recipe_steps", {
   description: text("description").notNull(),
 })
 
-export type RecipeStep = typeof recipeSteps.$inferSelect
+export type RecipeDirection = typeof recipeDirections.$inferSelect

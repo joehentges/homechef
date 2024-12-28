@@ -3,21 +3,19 @@ import "dotenv/config"
 
 import { database, pg } from "./index"
 import {
-  ingredients,
+  recipeDirections,
   recipeIngredients,
   recipePhotos,
   recipes,
-  recipeSteps,
   recipeTags,
   tags,
   users,
 } from "./schemas"
-import { ingredientsSeed } from "./seed/ingredients"
 import {
+  recipeDirectionsSeed,
   recipeIngredientsSeed,
   recipePhotosSeed,
   recipesSeed,
-  recipeStepsSeed,
   recipeTagsSeed,
 } from "./seed/recipes"
 import { tagsSeed } from "./seed/tags"
@@ -27,12 +25,6 @@ async function main() {
   const seededUsers = await database
     .insert(users)
     .values(usersSeed as any)
-    .onConflictDoNothing()
-    .returning()
-
-  const seededIngredients = await database
-    .insert(ingredients)
-    .values(ingredientsSeed as any)
     .onConflictDoNothing()
     .returning()
 
@@ -60,9 +52,9 @@ async function main() {
     .onConflictDoNothing()
     .returning()
 
-  const seededRecipeSteps = await database
-    .insert(recipeSteps)
-    .values(recipeStepsSeed as any)
+  const seededRecipeDirections = await database
+    .insert(recipeDirections)
+    .values(recipeDirectionsSeed as any)
     .onConflictDoNothing()
     .returning()
 

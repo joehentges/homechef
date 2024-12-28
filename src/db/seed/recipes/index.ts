@@ -6,8 +6,8 @@ export const recipeIngredientsSeed = [
   ...theBestChocolateChipCookieRecipeEver.recipeIngredients,
 ]
 
-export const recipeStepsSeed = [
-  ...theBestChocolateChipCookieRecipeEver.recipeSteps,
+export const recipeDirectionsSeed = [
+  ...theBestChocolateChipCookieRecipeEver.recipeDirections,
 ]
 
 export const recipeTagsSeed = [

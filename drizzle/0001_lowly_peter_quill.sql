@@ -1,1 +1,0 @@
-ALTER TABLE "recipe_ingredients" ALTER COLUMN "quantity" SET DATA TYPE numeric;

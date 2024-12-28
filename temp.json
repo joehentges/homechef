@@ -1,0 +1,217 @@
+{
+  "headline": "How To Cook Ribs in the Oven",
+  "@context": "https://schema.org",
+  "url": "https://www.thekitchn.com/how-to-make-great-ribs-in-the-oven-cooking-lessons-from-the-kitchn-96973",
+  "@type": "Recipe",
+  "publisher": {
+    "@type": "NewsMediaOrganization",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "New York",
+      "addressRegion": "NY",
+      "postalCode": "10012",
+      "streetAddress": "270 Lafayette Street, Ste 1300",
+      "addressCountry": "US"
+    },
+    "brand": {
+      "@type": "Brand",
+      "name": "The Kitchn"
+    },
+    "description": "The Kitchn provides inspiration for the food our readers want to eat, and resources for them to become the cooks they want to be.",
+    "email": "info@thekitchn.com",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.thekitchn.com/static/logos/publisher-logo.png",
+      "width": 180,
+      "height": 46
+    },
+    "masthead": "https://www.thekitchn.com/team",
+    "name": "The Kitchn",
+    "parentOrganization": {
+      "@type": "Organization",
+      "name": "Apartment Therapy Media LLC",
+      "alternateName": "AT Media LLC",
+      "url": "https://www.apartmenttherapymedia.com"
+    },
+    "sameAs": [
+      "https://www.facebook.com/thekitchn/",
+      "https://www.instagram.com/thekitchn",
+      "https://www.tiktok.com/@thekitchn",
+      "https://www.youtube.com/channel/UCuNKgYLb0wOoMvclzSlBvbQ",
+      "https://www.pinterest.com/thekitchn/",
+      "https://www.apartmenttherapymedia.com/our-brands/thekitchn"
+    ],
+    "url": "https://www.thekitchn.com",
+    "telephone": "212-966-7174"
+  },
+  "description": "We&#x27;ve cracked the code to making perfectly tender and mouth-watering barbecued ribs in the oven.",
+  "brand": {
+    "@type": "Thing",
+    "name": "The Kitchn"
+  },
+  "nutrition": {
+    "@type": "NutritionInformation",
+    "calories": "771 cal",
+    "carbohydrateContent": "14.7 g",
+    "cholesterolContent": "0 mg",
+    "fiberContent": "0.6 g",
+    "proteinContent": "40.1 g",
+    "saturatedFatContent": "19.2 g",
+    "sodiumContent": "651.5 mg",
+    "sugarContent": "11.7 g",
+    "fatContent": "60.2 g",
+    "servingSize": "Serves 8",
+    "unsaturatedFatContent": "0.0 g"
+  },
+  "suitableforDiet": "https://schema.org/GlutenFreeDiet,https://schema.org/LowLactoseDiet",
+  "recipeCategory": [
+    "Main dish",
+    "Meat dish",
+    "Dinner"
+  ],
+  "recipeCuisine": [],
+  "recipeIngredient": [
+    "4 to 5 pounds pork spareribs or baby back ribs",
+    "1/4 cup Dijon mustard",
+    "1 to 2 teaspoons liquid smoke (optional)",
+    "1 cup spice rub",
+    "1 cup barbecue sauce, plus more for serving"
+  ],
+  "recipeInstructions": [
+    {
+      "@type": "HowToStep",
+      "name": "Step 1",
+      "text": "Prepare the baking sheet. Line a rimmed baking sheet with aluminum foil. Fit a wire cooling rack on top. Lay the ribs on top of the rack in a single layer. This arrangement allows for heat circulation on all sides of the ribs.",
+      "image": "https://cdn.apartmenttherapy.info/image/upload/v1558631596/k/archive/cd1ba9842a0a56158d5c333fb5ac821db6163da9.jpg"
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Step 2",
+      "text": "Season the ribs. Stir the mustard and the liquid smoke together, if using, and brush the ribs on both sides. Sprinkle the ribs with the dry rub and pat gently to make sure the rub adheres to the rib meat. (Note: This step can be done the day ahead for a deeper flavor. Wrap the seasoned ribs in plastic wrap and refrigerate.)",
+      "image": "https://cdn.apartmenttherapy.info/image/upload/v1558631603/k/archive/72e65957e62307533be294f10032403bcff952cf.jpg"
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Step 3",
+      "text": "Broil the ribs. Arrange an oven rack a few inches below the heating element and heat the broiler. Make sure the meaty side of the ribs is facing up. Broil until the sugar in the dry rub is bubbling and the ribs are evenly browned, about 5 minutes.",
+      "image": "https://cdn.apartmenttherapy.info/image/upload/v1558631595/k/archive/3bb5b9459fdb0b376247ad4f4db3c7579e9a7daf.jpg"
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Step 4",
+      "text": "Bake the ribs. Set the oven to 300°F. Move the ribs to an oven rack in the middle of the oven. Bake 2 1/2 to 3 hours for spareribs or 1 1/2 to 2 hours for baby back ribs. Halfway through cooking, cover the ribs with aluminum foil to protect them from drying out.",
+      "image": "https://cdn.apartmenttherapy.info/image/upload/v1558631596/k/archive/9ef1bc6c8a12a58ff62c083216a5cefbeef9c0b3.jpg"
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Step 5",
+      "text": "Brush with barbecue sauce. About 30 minutes before the end of cooking, brush the ribs with barbecue sauce, re-cover with foil, and continue cooking.",
+      "image": "https://cdn.apartmenttherapy.info/image/upload/v1558631596/k/archive/31080f2f284d600748efb09d2fd313a492856d25.jpg"
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Step 6",
+      "text": "Rest the ribs and serve. The ribs are done when a knife slides easily into the thickest part of the rib meat. Let them rest, covered, for about 10 minutes, and then cut between the bones to separate the individual ribs. Serve immediately with extra barbecue sauce for dipping.",
+      "image": "https://cdn.apartmenttherapy.info/image/upload/v1558631596/k/archive/db459dd173f9570408828b49c8c105a3572b659c.jpg"
+    }
+  ],
+  "HowtoTip": {
+    "text": "Make ahead: The ribs can be seasoned, wrapped in plastic wrap, and refrigerated overnight before baking.Storage: Leftovers can be stored in an airtight container in the refrigerator for up to 4 days."
+  },
+  "recipeYield": 8,
+  "prepTime": "PT1200S",
+  "cookTime": "PT10800S",
+  "totalTime": "PT12000S",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "@id": "https://www.thekitchn.com/how-to-make-great-ribs-in-the-oven-cooking-lessons-from-the-kitchn-96973/#aggregate-rating"
+  },
+  "review": [],
+  "video": {
+    "@type": "VideoObject",
+    "name": "Perfect Ribs in the Oven",
+    "description": "Every July I make a giant batch of ribs to celebrate the 4th with my family, but this summer I'm resolving to cook more ribs. Not only because they are equally as fun to serve to a hungry crowd as they are to eat, but also because I've recently discovered I can cook ribs in my Instant Pot or my oven and finish either on the grill. From my annual rib endeavors I've learned which key steps for making barbecued ribs can be translated from the smoker to almost every other cooking technique. Here are five key steps for better ribs.",
+    "thumbnailUrl": [
+      "https://cdn.jwplayer.com/v2/media/O2JQ6zIB/poster.jpg?width=720"
+    ],
+    "contentUrl": "https://cdn.jwplayer.com/previews/O2JQ6zIB",
+    "uploadDate": "2024-12-19T20:29:54"
+  },
+  "@id": "https://www.thekitchn.com/how-to-make-great-ribs-in-the-oven-cooking-lessons-from-the-kitchn-96973/#post-recipe-8585",
+  "name": "How To Cook Ribs in the Oven",
+  "articleSection": "Recipes",
+  "thumbnailUrl": "https://cdn.apartmenttherapy.info/image/upload/f_auto,q_auto:eco,c_fill,g_auto,w_1500,ar_3:2/k%2Farchive%2F3697b0042a03ea162e8b952403514c5803aebea3",
+  "image": [
+    {
+      "@type": "ImageObject",
+      "url": "https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_16:9/k%2Farchive%2F3697b0042a03ea162e8b952403514c5803aebea3"
+    },
+    {
+      "@type": "ImageObject",
+      "url": "https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_4:3/k%2Farchive%2F3697b0042a03ea162e8b952403514c5803aebea3"
+    },
+    {
+      "@type": "ImageObject",
+      "url": "https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_1:1/k%2Farchive%2F3697b0042a03ea162e8b952403514c5803aebea3"
+    }
+  ],
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Emma Christensen",
+      "URL": "https://www.thekitchn.com/authors/emma-christensen",
+      "description": "Emma is a former editor for The Kitchn and a graduate of the Cambridge School for Culinary Arts. She is the author of True Brews and Brew Better Beer. Check out  her website for more cooking stories",
+      "jobTitle": ""
+    }
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Emma Christensen"
+  },
+  "keywords": [
+    "4th of july",
+    "anheuser busch game",
+    "autumn",
+    "blitz",
+    "Cooking Lessons from The Kitchn",
+    "Dairy-Free",
+    "dinner",
+    "Gluten-Free",
+    "How To",
+    "Ingredient",
+    "Keeps Well",
+    "Main Dish",
+    "Make Ahead",
+    "Meat",
+    "Meat Tutorials",
+    "Nut-Free",
+    "paleo",
+    "Party Food",
+    "pork",
+    "Pork &amp; Ham",
+    "Recipe",
+    "Roasting",
+    "spices",
+    "summer",
+    "video",
+    "low-carb",
+    "team:recipes",
+    "purpose:search",
+    "platform:search",
+    "course:main dish",
+    "diet:paleo",
+    "diet:low-carb",
+    "diet:dairy-free",
+    "diet:gluten-free",
+    "mainingredients:pork",
+    "mainingredients:meat",
+    "dishtype:meat dish",
+    "meal:dinner",
+    "updated:2024-05-30"
+  ],
+  "mainEntityOfPage": "https://www.thekitchn.com/how-to-make-great-ribs-in-the-oven-cooking-lessons-from-the-kitchn-96973",
+  "dateCreated": "2015-03-31T17:30:00-04:00",
+  "datePublished": "2015-03-31T17:30:00-04:00",
+  "dateModified": "2024-05-30T10:44:27-04:00",
+  "abstract": "Tips For Making The Best Oven-Baked Ribs Season the ribs a day ahead for a deeper flavor. Add liquid smoke into the mustard for a mild smoke flavor. Lift the ribs above the baking sheet on a rack for the heat to circulate on all sides. Broil the ribs until evenly browned. Make sure the meaty side of the ribs is facing up. Brush with barbecue sauce in the last half hour of cooking. Let the ribs rest for 10 minutes. When done, your knife will easily slide into the meat."
+}

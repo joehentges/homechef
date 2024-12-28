@@ -13,13 +13,10 @@ type RecipeSeed = {
 type RecipeIngredientsSeed = {
   id: number
   recipeId: number
-  ingredientId: number
-  description: string | null
-  quantity: number
-  unit: string | null
+  description: string
 }
 
-type RecipeStepsSeed = {
+type RecipeDirectionsSeed = {
   id: number
   recipeId: number
   stepNumber: number
@@ -42,7 +39,7 @@ type RecipePhotosSeed = {
 export interface CompleteRecipeSeed {
   recipe: RecipeSeed
   recipeIngredients: RecipeIngredientsSeed[]
-  recipeSteps: RecipeStepsSeed[]
+  recipeDirections: RecipeDirectionsSeed[]
   recipeTags: RecipeTagsSeed[]
   recipePhotos: RecipePhotosSeed[]
 }

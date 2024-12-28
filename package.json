@@ -14,7 +14,8 @@
     "db:studio": "drizzle-kit studio",
     "db:clear": "tsx ./src/db/clear.ts",
     "db:seed": "tsx ./src/db/seed.ts",
-    "db:reset": "npm run db:clear && npm run db:migrate && npm run db:seed"
+    "db:reset": "npm run db:clear && npm run db:migrate && npm run db:seed",
+    "temp": "tsx temp2.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -30,6 +31,7 @@
     "@react-email/components": "^0.0.31",
     "@t3-oss/env-nextjs": "^0.11.1",
     "argon2": "^0.41.1",
+    "cheerio": "^1.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.38.2",

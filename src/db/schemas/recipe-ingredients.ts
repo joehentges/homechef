@@ -1,6 +1,5 @@
-import { decimal, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core"
+import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core"
 
-import { ingredients } from "./ingredients"
 import { recipes } from "./recipes"
 
 export const recipeIngredients = pgTable("recipe_ingredients", {
@@ -14,12 +13,7 @@ export const recipeIngredients = pgTable("recipe_ingredients", {
   recipeId: serial("recipe_id")
     .notNull()
     .references(() => recipes.id, { onDelete: "cascade" }),
-  ingredientId: serial("ingredient_id")
-    .notNull()
-    .references(() => ingredients.id, { onDelete: "cascade" }),
   description: text("description"),
-  quantity: decimal("quantity").notNull(),
-  unit: text("unit"),
 })
 
 export type RecipeIngredient = typeof recipeIngredients.$inferSelect
