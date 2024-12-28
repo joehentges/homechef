@@ -12,8 +12,7 @@ export const theBestChocolateChipCookieRecipeEver: CompleteRecipeSeed = {
     prepTime: 10,
     cookTime: 8,
     difficulty: "easy",
-    servings: 36,
-    servingsUnit: "cookies",
+    servings: "36 cookies",
   },
   recipeIngredients: [
     {

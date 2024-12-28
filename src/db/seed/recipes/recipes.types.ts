@@ -6,8 +6,7 @@ type RecipeSeed = {
   prepTime: number | null
   cookTime: number
   difficulty: "easy" | "medium" | "hard" | null
-  servings: number
-  servingsUnit: string | null
+  servings: string
 }
 
 type RecipeIngredientsSeed = {

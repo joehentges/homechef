@@ -19,8 +19,7 @@ export const recipes = pgTable("recipes", {
   prepTime: integer("prep_time").default(0),
   cookTime: integer("cook_time").notNull(),
   difficulty: text("difficulty", { enum: ["easy", "medium", "hard"] }),
-  servings: integer("servings").notNull(),
-  servingsUnit: text("servings_unit").default("servings"),
+  servings: text("servings").notNull(),
 })
 
 export type Recipe = typeof recipes.$inferSelect
