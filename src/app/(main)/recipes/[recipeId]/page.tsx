@@ -7,7 +7,7 @@ import {
 } from "lucide-react"
 
 import { RecipePhoto } from "@/db/schemas"
-import { formatTime } from "@/lib/formatTime"
+import { formatTime } from "@/lib/format-time"
 import { getRecipeById } from "@/use-cases/recipes"
 
 interface RecipePageProps {
