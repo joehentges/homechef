@@ -8,6 +8,13 @@
       "when": 1735417183083,
       "tag": "0000_chubby_vertigo",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1735418129823,
+      "tag": "0001_skinny_talisman",
+      "breakpoints": true
     }
   ]
 }
