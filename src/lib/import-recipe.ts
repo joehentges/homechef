@@ -72,7 +72,6 @@ export async function importRecipe(url: string) {
         return formatData(jsonDetais, url)
       }
     }
-    return tryHtmlSelectors($)
   } catch (error) {
     return null
   }
@@ -139,7 +138,7 @@ function formatServings(servings: any) {
     return `${servings} servings`
   }
   if (typeof servings === "string") {
-    if (typeof parseInt(servings) === "number") {
+    if (!Number.isNaN(Number(servings))) {
       return servings
     }
     return servings
@@ -148,7 +147,7 @@ function formatServings(servings: any) {
     let intValue
     let strValue
     servings.forEach((item) => {
-      if (typeof parseInt(item) === "number") {
+      if (!Number.isNaN(Number(item))) {
         intValue = item
       } else {
         strValue = item
@@ -183,6 +182,19 @@ function formatPhotos(photos: any) {
   }
 }
 
+function fixMarkupCharacters(word: string) {
+  return word
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#039;/g, "'")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&mdash;/g, "—")
+    .replace(/&ndash;/g, "-")
+    .replace(/&#x27;/g, "'")
+}
+
 function formatKeywords(keywords: any) {
   function removeWordBeforeColon(val: string): string {
     const colonIndex = val.indexOf(":")
@@ -195,10 +207,6 @@ function formatKeywords(keywords: any) {
   function isValidDate(dateString: string): boolean {
     const date = new Date(dateString)
     return date instanceof Date && !isNaN(date.getTime())
-  }
-
-  function fixMarkupCharacters(word: string) {
-    return word.replace(/&amp;/g, "&")
   }
 
   if (Array.isArray(keywords)) {
@@ -267,8 +275,10 @@ function formatData(recipeData: any, url: string) {
       name: getDomain(url),
       url,
     },
-    title: recipeData.name,
-    description: recipeData.description,
+    title: fixMarkupCharacters(recipeData.name),
+    description: recipeData.description
+      ? fixMarkupCharacters(recipeData.description)
+      : undefined,
     servings: formatServings(recipeData.recipeYield) ?? `1 serving`,
     prepTime,
     cookTime,
