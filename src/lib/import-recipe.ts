@@ -5,7 +5,7 @@ import * as cheerio from "cheerio"
 async function fetchPageHtml(url: string) {
   const response = await fetch(url)
   if (!response.ok) {
-    throw new Error(`Failed to fetch URL: ${response.statusText}`)
+    throw new Error("Recipe not found")
   }
   return response.text()
 }
@@ -78,22 +78,14 @@ export async function importRecipe(url: string) {
 }
 
 function getDomain(url: string): string {
-  if (!url) {
-    throw Error("Invalid url")
-  }
+  const urlObj = new URL(url)
+  let hostname = urlObj.hostname
 
-  try {
-    const urlObj = new URL(url)
-    let hostname = urlObj.hostname
-
-    // Remove "www." if present
-    if (hostname.startsWith("www.")) {
-      hostname = hostname.substring(4)
-    }
-    return hostname
-  } catch (error) {
-    throw Error("Invalid url")
+  // Remove "www." if present
+  if (hostname.startsWith("www.")) {
+    hostname = hostname.substring(4)
   }
+  return hostname
 }
 
 function formatDuration(duration: string | null) {
