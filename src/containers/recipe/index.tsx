@@ -4,15 +4,14 @@ import { useState } from "react"
 import Link from "next/link"
 import {
   BookIcon,
-  ClockIcon,
   EllipsisVerticalIcon,
   PrinterIcon,
   Share2Icon,
 } from "lucide-react"
 
-import { formatTime } from "@/lib/format-time"
-
+import { RecipeCookTime } from "./cook-time"
 import { RecipeDetails, RecipeDetailsPhoto } from "./recipe.types"
+import { RecipeTags } from "./tags"
 
 interface RecipeProps {
   recipe: RecipeDetails
@@ -35,20 +34,25 @@ export function RecipeContainer(props: RecipeProps) {
   }
 
   return (
-    <div className="container max-w-[1000px] space-y-8 rounded-3xl bg-primary/20 p-8">
-      <div className="flex flex-row gap-x-6">
+    <div className="container max-w-[850px] space-y-6 rounded-3xl bg-primary/20 p-4 md:p-8">
+      <div className="flex flex-col items-center gap-x-6 gap-y-4 md:flex-row md:items-start">
         <div
-          className="h-[125px] w-[175px] rounded-2xl bg-cover bg-center bg-no-repeat md:rounded-l-3xl"
+          className="center h-[250px] w-[350px] max-w-full rounded-2xl bg-cover bg-center bg-no-repeat md:h-[125px] md:w-[175px] md:rounded-l-3xl"
           style={{
             backgroundImage: `url('${selectPrimaryPhoto(currentRecipe.photos)?.photoUrl}')`,
           }}
         />
 
-        <div className="flex w-full flex-col justify-between space-y-3">
-          <div className="flex flex-row justify-between">
-            <div className="flex w-[75%] flex-col gap-y-2">
-              <p className="text-4xl font-bold">{currentRecipe.title}</p>
-              <Link href={currentRecipe.author.url}>
+        <div className="flex w-full flex-col justify-between space-y-2 md:space-y-4">
+          <div className="flex flex-col-reverse items-center justify-between gap-y-4 md:flex-row md:items-start">
+            <div className="flex flex-col items-center gap-y-2 md:w-[75%] md:items-start">
+              <p className="text-center text-3xl font-bold md:text-start md:text-4xl">
+                {currentRecipe.title}
+              </p>
+              <Link
+                href={currentRecipe.author.url}
+                className="text-muted-foreground transition-colors hover:text-foreground"
+              >
                 <p>From: {currentRecipe.author.name}</p>
               </Link>
             </div>
@@ -60,27 +64,23 @@ export function RecipeContainer(props: RecipeProps) {
             </div>
           </div>
 
-          <div className="flex flex-row gap-x-6 text-lg">
-            <p>{currentRecipe.servings}</p>
-            <div className="flex flex-row items-center gap-x-1">
-              <ClockIcon className="h-5 w-5" />
-              <p>
-                {formatTime(
-                  (currentRecipe.prepTime ?? 0) + currentRecipe.cookTime
-                )}
-              </p>
-            </div>
+          <div className="flex flex-col items-center gap-x-6 gap-y-2 md:flex-row">
+            <p className="py-1 md:py-2 md:pr-4">{currentRecipe.servings}</p>
+            <RecipeCookTime
+              prepTime={currentRecipe.prepTime}
+              cookTime={currentRecipe.cookTime}
+            />
+            <RecipeTags tags={currentRecipe.tags} />
           </div>
         </div>
       </div>
 
-      <p className="w-[75%] text-muted-foreground">
-        {currentRecipe.description}
-      </p>
-
-      <div className="flex flex-row gap-x-16">
-        <div className="w-1/2">
-          <p className="text-3xl font-bold">Ingredients</p>
+      {currentRecipe.description && (
+        <p className="pb-2">{currentRecipe.description}</p>
+      )}
+      <div className="flex flex-col gap-16 md:flex-row md:items-start">
+        <div className="md:w-1/2">
+          <p className="text-2xl font-bold">Ingredients</p>
           <ul className="space-y-2 pt-4">
             {currentRecipe.ingredients?.map(
               (ingredient: string, index: number) => {
@@ -98,7 +98,7 @@ export function RecipeContainer(props: RecipeProps) {
         </div>
 
         <div className="w-full">
-          <p className="text-3xl font-bold">Directions</p>
+          <p className="text-2xl font-bold">Directions</p>
           <ul>
             <ul className="space-y-4 pt-4">
               {currentRecipe.directions.map(

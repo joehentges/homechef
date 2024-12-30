@@ -25,7 +25,7 @@ export default async function ImportRecipePage(props: ImportRecipePageProps) {
   }
 
   return (
-    <div className="py-8">
+    <div className="py-4 md:py-8">
       <RecipeContainer recipe={recipeData} />
     </div>
   )

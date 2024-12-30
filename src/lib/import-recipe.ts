@@ -254,7 +254,10 @@ function formatData(recipeData: any, url: string) {
     servings: formatServings(recipeData.recipeYield) ?? `1 serving`,
     prepTime,
     cookTime,
-    ingredients: recipeData.recipeIngredient || [],
+    ingredients:
+      recipeData.recipeIngredient.map((ing: string) =>
+        ing.replace("((", "(").replace("))", ")")
+      ) || [],
     directions: formatDirections(recipeData.recipeInstructions) || [],
     photos: formatPhotos(recipeData.image)?.map((photo) => ({
       defaultPhoto: false,
