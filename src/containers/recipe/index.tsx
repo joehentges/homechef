@@ -40,7 +40,7 @@ export function RecipeContainer(props: RecipeProps) {
         <div
           className="h-[125px] w-[175px] rounded-2xl bg-cover bg-center bg-no-repeat md:rounded-l-3xl"
           style={{
-            backgroundImage: `url('${selectPrimaryPhoto(currentRecipe.photos)}')`,
+            backgroundImage: `url('${selectPrimaryPhoto(currentRecipe.photos)?.photoUrl}')`,
           }}
         />
 

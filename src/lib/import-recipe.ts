@@ -41,26 +41,6 @@ function tryMetadata(jsonString: string) {
   return undefined
 }
 
-function tryHtmlSelectors($: cheerio.CheerioAPI) {
-  const title = $("h1").text().trim() || $("title").text().trim()
-  const servings = $(".servings").text().trim()
-  const cookTime = $(".cook-time").text().trim()
-  const ingredients = $(".ingredients li")
-    .map((_, el) => $(el).text().trim())
-    .get()
-  const directions = $(".instructions p, .directions p")
-    .map((_, el) => $(el).text().trim())
-    .get()
-
-  return {
-    title,
-    servings,
-    cookTime,
-    ingredients,
-    directions,
-  }
-}
-
 export async function importRecipe(url: string) {
   try {
     const html = await fetchPageHtml(url)
@@ -276,7 +256,10 @@ function formatData(recipeData: any, url: string) {
     cookTime,
     ingredients: recipeData.recipeIngredient || [],
     directions: formatDirections(recipeData.recipeInstructions) || [],
-    photos: formatPhotos(recipeData.image),
+    photos: formatPhotos(recipeData.image)?.map((photo) => ({
+      defaultPhoto: false,
+      photoUrl: photo,
+    })),
     datePublished: recipeData.datePublished,
     dateModified: recipeData.dateModified,
     tags: formatKeywords(recipeData.keywords)?.filter(
