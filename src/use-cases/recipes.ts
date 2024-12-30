@@ -1,7 +1,7 @@
 import { PrimaryKey } from "@/types"
+import { getRecipeDirectionsByRecipeId } from "@/data-access/recipe-directions"
 import { getRecipeIngredientsByRecipeId } from "@/data-access/recipe-ingredients"
 import { getRecipePhotosByRecipeId } from "@/data-access/recipe-photos"
-import { getRecipeStepsByRecipeId } from "@/data-access/recipe-steps"
 import { getRecipeTagsByRecipeId } from "@/data-access/recipe-tags"
 import { getRecipe } from "@/data-access/recipes"
 import { getUser } from "@/data-access/users"
@@ -23,7 +23,7 @@ export async function getRecipeById(recipeId: PrimaryKey) {
 
   const recipePhotos = await getRecipePhotosByRecipeId(recipeId)
 
-  const recipeSteps = await getRecipeStepsByRecipeId(recipeId)
+  const recipeDirections = await getRecipeDirectionsByRecipeId(recipeId)
 
   const recipeTags = await getRecipeTagsByRecipeId(recipeId)
 
@@ -36,7 +36,7 @@ export async function getRecipeById(recipeId: PrimaryKey) {
     },
     ingredients: recipeIngredients,
     photos: recipePhotos,
-    steps: recipeSteps,
+    directions: recipeDirections,
     tags: recipeTags,
   }
 }
