@@ -1,5 +1,5 @@
 import { importRecipe } from "@/lib/import-recipe"
-import { Recipe } from "@/containers/recipe"
+import { RecipeContainer } from "@/containers/recipe"
 
 interface ImportRecipePageProps {
   searchParams: Promise<{
@@ -15,6 +15,9 @@ export default async function ImportRecipePage(props: ImportRecipePageProps) {
     throw new Error("Url not found")
   }
 
+  // check Database to see if recipe has already been imported
+  // skip next part if it has
+
   const recipeData = await importRecipe(url)
 
   if (!recipeData) {
@@ -23,7 +26,7 @@ export default async function ImportRecipePage(props: ImportRecipePageProps) {
 
   return (
     <div className="py-8">
-      <Recipe recipe={recipeData} />
+      <RecipeContainer recipe={recipeData} />
     </div>
   )
 }
