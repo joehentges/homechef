@@ -39,7 +39,7 @@ export default async function ImportRecipePage(props: ImportRecipePageProps) {
   }
 
   return (
-    <div className="container mt-8 max-w-[1000px] space-y-8 rounded-3xl bg-primary/20 p-8">
+    <div className="container my-8 max-w-[1000px] space-y-8 rounded-3xl bg-primary/20 p-8">
       <div className="flex flex-row gap-x-6">
         <div
           className="h-[150px] w-[175px] rounded-2xl bg-cover bg-center bg-no-repeat md:rounded-l-3xl"
