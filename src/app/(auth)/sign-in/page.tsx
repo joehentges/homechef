@@ -22,6 +22,7 @@ export default async function SignInPage(props: SignInPageProps) {
 
   const { from } = await props.searchParams
   const fromIsNotUrl = !pathIsUrl(from || "")
+  console.log(from, fromIsNotUrl, fromIsNotUrl ? `?from=${from}` : "")
 
   return (
     <div className="flex h-full flex-col justify-between space-y-8 px-4 py-8">
@@ -63,7 +64,10 @@ export default async function SignInPage(props: SignInPageProps) {
       <div>
         <p className="text-center">
           Don&apos;t have an account?{" "}
-          <Link href="/sign-up" className="text-primary hover:underline">
+          <Link
+            href={`/sign-up${fromIsNotUrl ? `?from=${from}` : ""}`}
+            className="text-primary hover:underline"
+          >
             Sign Up
           </Link>
         </p>

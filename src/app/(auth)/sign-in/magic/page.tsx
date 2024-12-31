@@ -59,7 +59,10 @@ export default async function MagicLinkPage(props: MagicLinkPageProps) {
       <div>
         <p className="text-center">
           Prefer to use a password?{" "}
-          <Link href="/sign-in" className="text-primary hover:underline">
+          <Link
+            href={`/sign-in${fromIsNotUrl ? `?from=${from}` : ""}`}
+            className="text-primary hover:underline"
+          >
             Sign In
           </Link>
         </p>

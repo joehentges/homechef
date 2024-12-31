@@ -1,16 +1,12 @@
 import { HeartIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import { getRecipeById } from "@/use-cases/recipes"
 import { FeaturedRecipeSearch } from "@/containers/featured-recipe-search"
 import { FeaturedVideos } from "@/containers/featured-videos"
 
 import { videos } from "../../../mocks/featured-videos"
 
 export default async function HomePage() {
-  const recipe = await getRecipeById(1)
-  console.log(recipe)
-
   return (
     <div>
       <div

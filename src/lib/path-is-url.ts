@@ -8,5 +8,6 @@ export function pathIsUrl(path: string) {
       "(\\#[-a-z\\d_]*)?$", // fragment locator
     "i"
   )
+  console.log(path, pattern.test(path))
   return pattern.test(path)
 }

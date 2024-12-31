@@ -15,6 +15,7 @@ export const signUpAction = unauthenticatedAction
     z.object({
       email: z.string().email(),
       password: z.string().min(8),
+      from: z.string().min(2).optional(),
     })
   )
   .handler(async ({ input }) => {
@@ -25,5 +26,5 @@ export const signUpAction = unauthenticatedAction
     })
     const user = await signUpUseCase(input.email, input.password)
     await setSession(user.id)
-    redirect(afterSignInUrl)
+    redirect(input.from ? input.from : afterSignInUrl)
   })

@@ -2,16 +2,24 @@ import Link from "next/link"
 import { redirect } from "next/navigation"
 
 import { afterSignInUrl } from "@/config"
+import { pathIsUrl } from "@/lib/path-is-url"
 import { getCurrentUser } from "@/lib/session"
 import { SignUpForm } from "@/containers/sign-up-form"
 import { Logo } from "@/components/logo"
 
-export default async function SignUpPage() {
+interface SignUpPageProps {
+  searchParams: Promise<{ from?: string }>
+}
+
+export default async function SignUpPage(props: SignUpPageProps) {
   const user = await getCurrentUser()
 
   if (user) {
     redirect(afterSignInUrl)
   }
+
+  const { from } = await props.searchParams
+  const fromIsNotUrl = !pathIsUrl(from || "")
 
   return (
     <div className="flex h-full flex-col justify-between space-y-8 px-4 py-8">
@@ -33,12 +41,15 @@ export default async function SignUpPage() {
             - Let&apos;s create your account
           </p>
         </div>
-        <SignUpForm />
+        <SignUpForm from={fromIsNotUrl ? from : undefined} />
       </div>
       <div>
         <p className="text-center">
           Already have an account?{" "}
-          <Link href="/sign-in" className="text-primary hover:underline">
+          <Link
+            href={`/sign-in${fromIsNotUrl ? `?from=${from}` : ""}`}
+            className="text-primary hover:underline"
+          >
             Sign In
           </Link>
         </p>

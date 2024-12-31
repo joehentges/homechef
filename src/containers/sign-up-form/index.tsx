@@ -23,18 +23,23 @@ import { useToast } from "@/hooks/use-toast"
 
 import { signUpAction } from "./actions"
 
+interface SignUpFromProps {
+  from?: string
+}
+
 const signUpFormSchema = z
   .object({
     email: z.string().email(),
     password: z.string().min(8),
     confirmPassword: z.string().min(8),
+    from: z.string().min(2).optional(),
   })
   .refine(({ password, confirmPassword }) => password === confirmPassword, {
     message: "Passwords don't match",
     path: ["confirmPassword"],
   })
 
-export function SignUpForm() {
+export function SignUpForm(props: SignUpFromProps) {
   const { toast } = useToast()
 
   const form = useForm<z.infer<typeof signUpFormSchema>>({
@@ -43,6 +48,7 @@ export function SignUpForm() {
       email: "",
       password: "",
       confirmPassword: "",
+      from: props.from,
     },
   })
 
@@ -158,7 +164,7 @@ export function SignUpForm() {
         </div>
       </div>
       <div className="flex flex-col space-y-4">
-        <Link href="/sign-in/magic">
+        <Link href={`/sign-in/magic${props.from ? `?from=${props.from}` : ""}`}>
           <Button variant="outline" className="w-full" type="submit" size="sm">
             <WandSparkles className="mr-2 h-4 w-4" /> Magic Link
           </Button>

@@ -1,24 +1,27 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useSearchParams } from "next/navigation"
 
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 
 export function SiteHeaderAuthNav() {
   const pathname = usePathname()
+  const params = useSearchParams()
+
+  const fromPath = `${pathname}${params ? `?${params.toString()}` : ""}`
 
   return (
     <>
       <Link
-        href={`/sign-in?from=${pathname}`}
+        href={`/sign-in?from=${fromPath}`}
         className="flex items-center text-lg font-medium transition-colors hover:text-foreground/70 sm:text-base"
       >
         Sign In
       </Link>
       <Link
-        href={`/sign-up?from=${pathname}`}
+        href={`/sign-up?from=${fromPath}`}
         className={cn(
           buttonVariants({ variant: "outline" }),
           "hidden whitespace-nowrap rounded-3xl px-4 text-base sm:inline-flex"
