@@ -6,6 +6,7 @@ import { PrinterIcon, Share2Icon } from "lucide-react"
 import { useReactToPrint } from "react-to-print"
 
 import { RecipeDetails } from "@/types/Recipe"
+import { User } from "@/db/schemas"
 
 import { RecipeCookTime } from "./cook-time"
 import { RecipeEditView } from "./edit"
@@ -16,12 +17,13 @@ import { SaveRecipe } from "./save-recipe"
 import { RecipeTags } from "./tags"
 
 interface RecipeProps {
-  isAuthenticated?: boolean
+  user?: User
   recipe: RecipeDetails
 }
 
 export function RecipeContainer(props: RecipeProps) {
-  const { isAuthenticated, recipe } = props
+  const { user, recipe } = props
+  const isAuthenticated = !!user
 
   const recipePrintVersionRef = useRef(null)
   const reactToPrintFn = useReactToPrint({

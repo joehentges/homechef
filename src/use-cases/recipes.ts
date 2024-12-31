@@ -136,8 +136,9 @@ export async function addRecipeUseCase(
     recipePhotos = await addRecipePhotos(recipe.id, photos)
   }
 
+  let tagsList
   if (tags) {
-    const tagsList = await getTagsByName(tags)
+    tagsList = await getTagsByName(tags)
     if (tagsList.length > 1) {
       await addRecipeTags(recipe.id, tagsList)
     }
@@ -171,6 +172,6 @@ export async function addRecipeUseCase(
         stepNumber: direction.stepNumber,
         description: direction.description,
       })) ?? [],
-    tags,
+    tags: tagsList?.map((tag) => tag.name),
   }
 }
