@@ -269,6 +269,7 @@ function formatData(recipeData: any, url: string): RecipeDetails {
     servings: formatServings(recipeData.recipeYield) ?? `1 serving`,
     prepTime,
     cookTime,
+    private: false,
     ingredients:
       recipeData.recipeIngredient.map((ing: string) =>
         ing.replace("((", "(").replace("))", ")")

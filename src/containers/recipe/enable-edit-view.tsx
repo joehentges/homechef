@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { BookmarkIcon } from "lucide-react"
+import { PencilIcon } from "lucide-react"
 
 import {
   Tooltip,
@@ -11,12 +11,13 @@ import {
 } from "@/components/ui/tooltip"
 import { useFromPath } from "@/hooks/use-from-path"
 
-interface SaveRecipeProps {
+interface EnableEditViewProps {
   isAuthenticated?: boolean
+  setEnableEditView: () => void
 }
 
-export function SaveRecipe(props: SaveRecipeProps) {
-  const { isAuthenticated } = props
+export function EnableEditView(props: EnableEditViewProps) {
+  const { isAuthenticated, setEnableEditView } = props
 
   const fromPath = useFromPath()
 
@@ -24,11 +25,14 @@ export function SaveRecipe(props: SaveRecipeProps) {
     return (
       <TooltipProvider>
         <Tooltip delayDuration={0}>
-          <TooltipTrigger className="transition-colors hover:text-foreground">
-            <BookmarkIcon className="h-5 w-5" />
+          <TooltipTrigger
+            onClick={setEnableEditView}
+            className="transition-colors hover:text-foreground"
+          >
+            <PencilIcon className="h-5 w-5" />
           </TooltipTrigger>
           <TooltipContent>
-            <p>Save to your cookbook</p>
+            <p>Edit the recipe</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -43,11 +47,11 @@ export function SaveRecipe(props: SaveRecipeProps) {
             href={`/sign-in?from=${fromPath}`}
             className="transition-colors hover:text-foreground"
           >
-            <BookmarkIcon className="h-5 w-5" />
+            <PencilIcon className="h-5 w-5" />
           </Link>
         </TooltipTrigger>
         <TooltipContent>
-          <p>Sign in to save to your cookbook</p>
+          <p>Sign in to edit the recipe</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

@@ -69,6 +69,7 @@ export async function getRecipeByIdUseCase(
     prepTime: recipe.prepTime,
     cookTime: recipe.cookTime,
     difficulty: recipe.difficulty,
+    private: recipe.private,
     ingredients:
       recipeIngredients?.map((ingredient) => ingredient.description) ?? [],
     photos: recipePhotos,
@@ -135,11 +136,10 @@ export async function addRecipeUseCase(
     recipePhotos = await addRecipePhotos(recipe.id, photos)
   }
 
-  let recipeTagsList
   if (tags) {
     const tagsList = await getTagsByName(tags)
     if (tagsList.length > 1) {
-      recipeTagsList = await addRecipeTags(recipe.id, tagsList)
+      await addRecipeTags(recipe.id, tagsList)
     }
   }
 
@@ -162,6 +162,7 @@ export async function addRecipeUseCase(
     prepTime: recipe.prepTime,
     cookTime: recipe.cookTime,
     difficulty: recipe.difficulty,
+    private: recipe.private,
     ingredients:
       recipeIngredients?.map((ingredient) => ingredient.description) ?? [],
     photos: recipePhotos,

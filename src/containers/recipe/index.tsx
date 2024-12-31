@@ -2,12 +2,14 @@
 
 import { useRef, useState } from "react"
 import Link from "next/link"
-import { PencilIcon, PrinterIcon, Share2Icon } from "lucide-react"
+import { PrinterIcon, Share2Icon } from "lucide-react"
 import { useReactToPrint } from "react-to-print"
 
 import { RecipeDetails } from "@/types/Recipe"
 
 import { RecipeCookTime } from "./cook-time"
+import { RecipeEditView } from "./edit"
+import { EnableEditView } from "./enable-edit-view"
 import { RecipeImage } from "./image"
 import { RecipePrintVersion } from "./print-version"
 import { SaveRecipe } from "./save-recipe"
@@ -30,7 +32,18 @@ export function RecipeContainer(props: RecipeProps) {
     }
     `,
   })
-  const [currentRecipe, setCurrentRecipe] = useState(recipe)
+
+  const [enableEditView, setEnableEditView] = useState<boolean>(false)
+  const [currentRecipe, setCurrentRecipe] = useState<RecipeDetails>(recipe)
+
+  if (enableEditView) {
+    return (
+      <RecipeEditView
+        currentRecipe={currentRecipe}
+        setCurrentRecipe={setCurrentRecipe}
+      />
+    )
+  }
 
   return (
     <>
@@ -78,7 +91,10 @@ export function RecipeContainer(props: RecipeProps) {
                 >
                   <Share2Icon className="h-5 w-5" />
                 </button>
-                <PencilIcon className="h-5 w-5" />
+                <EnableEditView
+                  isAuthenticated={isAuthenticated}
+                  setEnableEditView={() => setEnableEditView(true)}
+                />
               </div>
             </div>
 

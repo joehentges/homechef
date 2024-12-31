@@ -22,6 +22,7 @@ export interface RecipeDetails {
   prepTime: number | null
   cookTime: number
   difficulty?: RecipeDifficulty
+  private: boolean
   ingredients: string[]
   directions: { stepNumber: number; description: string }[]
   photos?: RecipeDetailsPhoto[]

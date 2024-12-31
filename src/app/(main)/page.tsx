@@ -26,6 +26,7 @@ export default async function HomePage() {
         <div className="xl:[15em] absolute bottom-0 right-0 hidden md:mr-[5em] md:flex lg:mr-[12em] xl:mr-[15em] 2xl:mr-[25em]">
           <img
             src="/images/halloween-pumpkins.png"
+            alt="hero"
             className="max-h-[450px] max-w-[400px] lg:max-w-[500px] xl:max-w-[550px]"
           />
         </div>

@@ -22,7 +22,7 @@ export function RecipeImage(props: RecipeImageProps) {
       photos[Math.floor(Math.random() * photos.length)]
     )
   }
-  const primaryPhoto = useMemo(() => selectPrimaryPhoto(photos), [])
+  const primaryPhoto = useMemo(() => selectPrimaryPhoto(photos), [photos])
 
   if (primaryPhoto) {
     return (

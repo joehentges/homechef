@@ -2,12 +2,12 @@
 
 import Link from "next/link"
 
-import { getFromPath } from "@/lib/get-from-path"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
+import { useFromPath } from "@/hooks/use-from-path"
 
 export function SiteHeaderAuthNav() {
-  const fromPath = getFromPath()
+  const fromPath = useFromPath()
 
   return (
     <>

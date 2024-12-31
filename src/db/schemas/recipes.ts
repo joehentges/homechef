@@ -1,6 +1,12 @@
-import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core"
+import {
+  boolean,
+  integer,
+  pgTable,
+  serial,
+  text,
+  timestamp,
+} from "drizzle-orm/pg-core"
 
-import { recipeImportDetails } from "./recipe-import-details"
 import { users } from "./users"
 
 export const recipes = pgTable("recipes", {
@@ -22,6 +28,7 @@ export const recipes = pgTable("recipes", {
     enum: ["beginner", "intermediate", "advanced"],
   }),
   servings: text("servings").notNull(),
+  private: boolean("private").default(false).notNull(),
 })
 
 export type Recipe = typeof recipes.$inferSelect
