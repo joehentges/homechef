@@ -238,7 +238,7 @@ function handleTimeDescrepency(
   }
 }
 
-function formatData(recipeData: any, url: string) {
+function formatData(recipeData: any, url: string): RecipeDetails {
   const { prepTime, cookTime } = handleTimeDescrepency(
     formatDuration(recipeData.prepTime) || 0,
     formatDuration(recipeData.cookTime) || 0,
@@ -246,7 +246,7 @@ function formatData(recipeData: any, url: string) {
   )
 
   return {
-    author: {
+    importDetails: {
       name: getDomain(url),
       url,
     },

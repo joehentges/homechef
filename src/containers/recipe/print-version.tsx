@@ -1,7 +1,8 @@
 "use client"
 
+import { RecipeDetails } from "@/types/Recipe"
+
 import { RecipeCookTime } from "./cook-time"
-import { RecipeDetails } from "./recipe.types"
 
 interface RecipePrintVersionProps {
   ref: React.Ref<HTMLDivElement>
@@ -19,7 +20,11 @@ export function RecipePrintVersion(props: RecipePrintVersionProps) {
             <p className="text-center text-3xl font-bold md:text-start md:text-4xl">
               {recipe.title}
             </p>
-            <p className="text-muted-foreground">From: {recipe.author.name}</p>
+            {recipe.importDetails && (
+              <p className="text-muted-foreground">
+                From: {recipe.importDetails.name}
+              </p>
+            )}
           </div>
 
           <div className="flex flex-row items-center gap-x-6">

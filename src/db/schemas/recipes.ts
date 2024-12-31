@@ -1,5 +1,6 @@
 import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core"
 
+import { recipeImportDetails } from "./recipe-import-details"
 import { users } from "./users"
 
 export const recipes = pgTable("recipes", {
@@ -11,14 +12,18 @@ export const recipes = pgTable("recipes", {
     .defaultNow()
     .notNull(),
   userId: serial("user_id")
-    .notNull()
     .references(() => users.id, { onDelete: "cascade" })
+    .unique(),
+  importDetailsId: serial("import_details_id")
+    .references(() => recipeImportDetails.id, { onDelete: "cascade" })
     .unique(),
   title: text("title").notNull(),
   description: text("description"),
   prepTime: integer("prep_time").default(0),
   cookTime: integer("cook_time").notNull(),
-  difficulty: text("difficulty", { enum: ["easy", "medium", "hard"] }),
+  difficulty: text("difficulty", {
+    enum: ["easy", "medium", "hard"],
+  }),
   servings: text("servings").notNull(),
 })
 

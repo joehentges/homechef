@@ -1,10 +1,16 @@
+import { PrimaryKey } from "."
+
 export type RecipeDetailsPhoto = {
   defaultPhoto: boolean
   photoUrl: string
 }
 
 export interface RecipeDetails {
-  author: {
+  author?: {
+    userId: PrimaryKey
+    displayName: string
+  }
+  importDetails?: {
     name: string
     url: string
   }

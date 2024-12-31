@@ -42,6 +42,6 @@ export async function getRecipeById(recipeId: PrimaryKey) {
   }
 }
 
-export async function addImportedRecipe(recipeDetails: RecipeDetails) {
+export async function addRecipe(recipeDetails: RecipeDetails) {
   //
 }

@@ -6,7 +6,6 @@ import { PencilIcon, PrinterIcon, Share2Icon } from "lucide-react"
 import { useReactToPrint } from "react-to-print"
 
 import { RecipeDetails, RecipeDetailsPhoto } from "@/types/Recipe"
-import { getFromPath } from "@/lib/get-from-path"
 
 import { RecipeCookTime } from "./cook-time"
 import { RecipePrintVersion } from "./print-version"
@@ -20,8 +19,6 @@ interface RecipeProps {
 
 export function RecipeContainer(props: RecipeProps) {
   const { isAuthenticated, recipe } = props
-
-  const fromPath = getFromPath()
 
   const recipePrintVersionRef = useRef(null)
   const reactToPrintFn = useReactToPrint({
@@ -63,12 +60,14 @@ export function RecipeContainer(props: RecipeProps) {
                 <p className="text-center text-3xl font-bold md:text-start md:text-4xl">
                   {currentRecipe.title}
                 </p>
-                <Link
-                  href={currentRecipe.author.url}
-                  className="text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  <p>From: {currentRecipe.author.name}</p>
-                </Link>
+                {currentRecipe.importDetails && (
+                  <Link
+                    href={currentRecipe.importDetails.url}
+                    className="text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    <p>From: {currentRecipe.importDetails.name}</p>
+                  </Link>
+                )}
               </div>
               <div className="flex flex-row gap-x-4 pt-2 text-muted-foreground">
                 <SaveRecipe isAuthenticated={isAuthenticated} />
