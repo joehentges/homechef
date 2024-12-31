@@ -1,16 +1,11 @@
 "use client"
 
-import { useMemo, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import Link from "next/link"
-import {
-  CookingPotIcon,
-  PencilIcon,
-  PrinterIcon,
-  Share2Icon,
-} from "lucide-react"
+import { PencilIcon, PrinterIcon, Share2Icon } from "lucide-react"
 import { useReactToPrint } from "react-to-print"
 
-import { RecipeDetails, RecipeDetailsPhoto } from "@/types/Recipe"
+import { RecipeDetails } from "@/types/Recipe"
 
 import { RecipeCookTime } from "./cook-time"
 import { RecipeImage } from "./image"
@@ -87,7 +82,7 @@ export function RecipeContainer(props: RecipeProps) {
               </div>
             </div>
 
-            <div className="flex flex-col items-center gap-x-6 gap-y-2 md:flex-row">
+            <div className="flex flex-col items-center gap-x-2 gap-y-2 md:flex-row">
               <p className="py-1 md:py-2 md:pr-4">{currentRecipe.servings}</p>
               <RecipeCookTime
                 prepTime={currentRecipe.prepTime}

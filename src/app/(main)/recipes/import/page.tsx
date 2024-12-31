@@ -28,13 +28,13 @@ export default async function ImportRecipePage(props: ImportRecipePageProps) {
   if (recipeImportCheck) {
     recipeData = await getRecipeByIdUseCase(recipeImportCheck.recipeId)
   } else {
-    recipeData = await importRecipe(url)
+    const importRecipeData = await importRecipe(url)
 
-    if (!recipeData) {
+    if (!importRecipeData) {
       throw new Error("Recipe not found")
     }
 
-    await addRecipeUseCase(recipeData)
+    recipeData = await addRecipeUseCase(importRecipeData)
   }
 
   const user = await getCurrentUser()

@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm"
+import { eq, inArray } from "drizzle-orm"
 
 import { PrimaryKey } from "@/types"
 import { database } from "@/db"
@@ -10,6 +10,14 @@ export async function getTag(tagId: PrimaryKey): Promise<Tag | undefined> {
   })
 
   return tag
+}
+
+export async function getTagsByName(tagNames: string[]): Promise<Tag[]> {
+  const tagsList = await database.query.tags.findMany({
+    where: inArray(tags.name, tagNames),
+  })
+
+  return tagsList
 }
 
 export async function addTags(tagsList: string[]): Promise<Tag[]> {

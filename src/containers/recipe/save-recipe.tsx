@@ -23,7 +23,7 @@ export function SaveRecipe(props: SaveRecipeProps) {
   if (isAuthenticated) {
     return (
       <TooltipProvider>
-        <Tooltip delayDuration={250}>
+        <Tooltip delayDuration={0}>
           <TooltipTrigger className="transition-colors hover:text-foreground">
             <BookmarkIcon className="h-5 w-5" />
           </TooltipTrigger>
@@ -37,7 +37,7 @@ export function SaveRecipe(props: SaveRecipeProps) {
 
   return (
     <TooltipProvider>
-      <Tooltip delayDuration={250}>
+      <Tooltip delayDuration={0}>
         <TooltipTrigger>
           <Link
             href={`/sign-in?from=${fromPath}`}

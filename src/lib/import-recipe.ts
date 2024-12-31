@@ -175,24 +175,44 @@ function formatKeywords(keywords: any) {
     return date instanceof Date && !isNaN(date.getTime())
   }
 
+  function splitJoinAndUnique(arr: string[]): string[] {
+    const splitArrays: string[][] = arr.map((str) => str.split(" "))
+    const flattenedArray: string[] = splitArrays.flat()
+    const uniqueValues: string[] = [...new Set(flattenedArray)]
+    return uniqueValues
+  }
+
   if (Array.isArray(keywords)) {
-    return keywords.map((word) => {
-      if (typeof word === "string") {
-        const fixedVal = fixMarkupCharacters(removeWordBeforeColon(word).trim())
-        if (!isValidDate(fixedVal)) {
-          return fixedVal.toLowerCase()
-        }
-      }
-    })
+    return splitJoinAndUnique(
+      keywords
+        .map((word) => {
+          if (typeof word === "string") {
+            const fixedVal = fixMarkupCharacters(
+              removeWordBeforeColon(word).trim()
+            )
+            if (!isValidDate(fixedVal)) {
+              return fixedVal.toLowerCase()
+            }
+          }
+        })
+        .filter((word) => word !== null && word !== undefined)
+    )
   }
 
   if (typeof keywords === "string") {
-    return keywords.split(",").map((word) => {
-      const fixedVal = fixMarkupCharacters(removeWordBeforeColon(word).trim())
-      if (!isValidDate(fixedVal)) {
-        return fixedVal.toLowerCase()
-      }
-    })
+    return splitJoinAndUnique(
+      keywords
+        .split(",")
+        .map((word) => {
+          const fixedVal = fixMarkupCharacters(
+            removeWordBeforeColon(word).trim()
+          )
+          if (!isValidDate(fixedVal)) {
+            return fixedVal.toLowerCase()
+          }
+        })
+        .filter((word) => word !== null && word !== undefined)
+    )
   }
 }
 
@@ -258,8 +278,6 @@ function formatData(recipeData: any, url: string): RecipeDetails {
       defaultPhoto: false,
       photoUrl: photo,
     })),
-    tags: formatKeywords(recipeData.keywords)?.filter(
-      (word) => word !== null && word !== undefined
-    ),
+    tags: formatKeywords(recipeData.keywords),
   }
 }

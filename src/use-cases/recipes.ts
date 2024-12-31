@@ -22,7 +22,7 @@ import {
   getRecipeImportDetailsByRecipeId,
   getRecipeImportDetailsByUrl,
 } from "@/data-access/recipes-import-details"
-import { addTags } from "@/data-access/tags"
+import { getTagsByName } from "@/data-access/tags"
 import { getUser } from "@/data-access/users"
 import { getDomain } from "@/lib/get-domain"
 
@@ -137,7 +137,7 @@ export async function addRecipeUseCase(
 
   let recipeTagsList
   if (tags) {
-    const tagsList = await addTags(tags)
+    const tagsList = await getTagsByName(tags)
     if (tagsList.length > 1) {
       recipeTagsList = await addRecipeTags(recipe.id, tagsList)
     }

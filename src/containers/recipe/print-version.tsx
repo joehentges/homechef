@@ -27,7 +27,7 @@ export function RecipePrintVersion(props: RecipePrintVersionProps) {
             )}
           </div>
 
-          <div className="flex flex-row items-center gap-x-6">
+          <div className="flex flex-row items-center gap-x-2">
             <p className="py-1 md:py-2 md:pr-4">{recipe.servings}</p>
             <RecipeCookTime
               prepTime={recipe.prepTime}

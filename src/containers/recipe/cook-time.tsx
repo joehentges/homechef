@@ -21,11 +21,11 @@ export function RecipeCookTime(props: RecipeCookTimeProps) {
   return (
     <>
       <TooltipProvider>
-        <Tooltip delayDuration={250}>
+        <Tooltip delayDuration={0}>
           <div className="flex flex-row items-center gap-x-2 px-2 py-1 md:hidden">
             <ClockIcon className="h-4 w-4 print:hidden" />
             <p>Prep: {formatTime(prepTime ?? 0)}</p>
-            <div className="h-[1.5em] border-l border-l-muted-foreground" />
+            <div className="h-[1em] border-l border-l-muted-foreground" />
             <p>Cook: {formatTime(cookTime)}</p>
           </div>
           <TooltipTrigger className="hidden flex-row items-center gap-x-1 rounded-3xl px-4 py-2 transition-colors hover:bg-primary/20 md:flex">

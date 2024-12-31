@@ -5,7 +5,7 @@ export type RecipeDetailsPhoto = {
   photoUrl: string
 }
 
-export type RecipeDifficulty = "easy" | "medium" | "hard" | null
+export type RecipeDifficulty = "beginner" | "intermediate" | "advanced" | null
 
 export interface RecipeDetails {
   author?: {
