@@ -2,14 +2,14 @@
 
 import { useRef, useState } from "react"
 import Link from "next/link"
-import { PenIcon, PrinterIcon, Share2Icon } from "lucide-react"
+import { PencilIcon, PrinterIcon, Share2Icon } from "lucide-react"
 import { useReactToPrint } from "react-to-print"
 
+import { RecipeDetails, RecipeDetailsPhoto } from "@/types/Recipe"
 import { getFromPath } from "@/lib/get-from-path"
 
 import { RecipeCookTime } from "./cook-time"
 import { RecipePrintVersion } from "./print-version"
-import { RecipeDetails, RecipeDetailsPhoto } from "./recipe.types"
 import { SaveRecipe } from "./save-recipe"
 import { RecipeTags } from "./tags"
 
@@ -89,8 +89,7 @@ export function RecipeContainer(props: RecipeProps) {
                 >
                   <Share2Icon className="h-5 w-5" />
                 </button>
-
-                <PenIcon className="h-5 w-5" />
+                <PencilIcon className="h-5 w-5" />
               </div>
             </div>
 

@@ -1,4 +1,5 @@
 import { PrimaryKey } from "@/types"
+import { RecipeDetails } from "@/types/Recipe"
 import { getRecipeDirectionsByRecipeId } from "@/data-access/recipe-directions"
 import { getRecipeIngredientsByRecipeId } from "@/data-access/recipe-ingredients"
 import { getRecipePhotosByRecipeId } from "@/data-access/recipe-photos"
@@ -39,4 +40,8 @@ export async function getRecipeById(recipeId: PrimaryKey) {
     directions: recipeDirections,
     tags: recipeTags,
   }
+}
+
+export async function addImportedRecipe(recipeDetails: RecipeDetails) {
+  //
 }

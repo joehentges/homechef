@@ -2,6 +2,8 @@
 
 import * as cheerio from "cheerio"
 
+import { RecipeDetails } from "@/types/Recipe"
+
 async function fetchPageHtml(url: string) {
   const response = await fetch(url)
   if (!response.ok) {
@@ -41,7 +43,7 @@ function tryMetadata(jsonString: string) {
   return undefined
 }
 
-export async function importRecipe(url: string) {
+export async function importRecipe(url: string): Promise<RecipeDetails | null> {
   try {
     const html = await fetchPageHtml(url)
     const $ = cheerio.load(html)
@@ -52,6 +54,7 @@ export async function importRecipe(url: string) {
         return formatData(jsonDetais, url)
       }
     }
+    return null
   } catch (error) {
     return null
   }

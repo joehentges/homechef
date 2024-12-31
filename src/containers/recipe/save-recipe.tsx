@@ -24,7 +24,7 @@ export function SaveRecipe(props: SaveRecipeProps) {
     return (
       <TooltipProvider>
         <Tooltip delayDuration={250}>
-          <TooltipTrigger>
+          <TooltipTrigger className="transition-colors hover:text-foreground">
             <BookmarkIcon className="h-5 w-5" />
           </TooltipTrigger>
           <TooltipContent>
