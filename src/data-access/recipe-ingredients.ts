@@ -25,3 +25,20 @@ export async function getRecipeIngredientsByRecipeId(
 
   return recipeIngredientsList
 }
+
+export async function addRecipeIngredients(
+  recipeId: PrimaryKey,
+  ingredientsList: string[]
+): Promise<RecipeIngredient[]> {
+  const recipeIngredientsListData = await database
+    .insert(recipeIngredients)
+    .values(
+      ingredientsList.map((ingredient) => ({
+        recipeId,
+        description: ingredient,
+      }))
+    )
+    .returning()
+
+  return recipeIngredientsListData
+}

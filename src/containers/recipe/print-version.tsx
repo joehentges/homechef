@@ -59,13 +59,16 @@ export function RecipePrintVersion(props: RecipePrintVersionProps) {
           <p className="text-2xl font-bold">Directions</p>
           <ul>
             <ul className="space-y-4 pt-4">
-              {recipe.directions.map((direction: string, index: number) => {
+              {recipe.directions.map((direction) => {
                 return (
-                  <li key={direction} className="flex flex-row gap-x-2">
-                    <p className="text-lg font-bold text-muted-foreground">
-                      {index + 1}
+                  <li
+                    key={`${direction.stepNumber}-direction`}
+                    className="flex flex-row gap-x-2"
+                  >
+                    <p className="text-xl font-bold text-muted-foreground">
+                      {direction.stepNumber}
                     </p>
-                    <p>{direction}</p>
+                    <p className="text-lg">{direction.description}</p>
                   </li>
                 )
               })}

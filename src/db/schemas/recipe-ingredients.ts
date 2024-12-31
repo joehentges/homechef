@@ -1,4 +1,4 @@
-import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core"
+import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core"
 
 import { recipes } from "./recipes"
 
@@ -10,10 +10,10 @@ export const recipeIngredients = pgTable("recipe_ingredients", {
   dateUpdated: timestamp("date_updated", { mode: "date" })
     .defaultNow()
     .notNull(),
-  recipeId: serial("recipe_id")
+  recipeId: integer("recipe_id")
     .notNull()
     .references(() => recipes.id, { onDelete: "cascade" }),
-  description: text("description"),
+  description: text("description").notNull(),
 })
 
 export type RecipeIngredient = typeof recipeIngredients.$inferSelect

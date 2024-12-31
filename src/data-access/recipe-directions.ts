@@ -23,3 +23,21 @@ export async function getRecipeDirectionsByRecipeId(
 
   return recipeDirection
 }
+
+export async function addRecipeDirections(
+  recipeId: PrimaryKey,
+  directions: { stepNumber: number; description: string }[]
+): Promise<RecipeDirection[]> {
+  const recipeDirectionsListData = await database
+    .insert(recipeDirections)
+    .values(
+      directions.map((direction) => ({
+        recipeId,
+        stepNumber: direction.stepNumber,
+        description: direction.description,
+      }))
+    )
+    .returning()
+
+  return recipeDirectionsListData
+}

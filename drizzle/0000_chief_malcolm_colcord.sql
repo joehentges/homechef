@@ -8,7 +8,7 @@ CREATE TABLE "magic_links" (
 --> statement-breakpoint
 CREATE TABLE "reset_tokens" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"user_id" serial NOT NULL,
+	"user_id" integer NOT NULL,
 	"token" text,
 	"token_expires_at" timestamp,
 	CONSTRAINT "reset_tokens_user_id_unique" UNIQUE("user_id")
@@ -33,43 +33,52 @@ CREATE TABLE "users" (
 --> statement-breakpoint
 CREATE TABLE "verify_email_tokens" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"user_id" serial NOT NULL,
+	"user_id" integer NOT NULL,
 	"token" text,
 	"token_expires_at" timestamp,
 	CONSTRAINT "verify_email_tokens_user_id_unique" UNIQUE("user_id")
-);
---> statement-breakpoint
-CREATE TABLE "recipe_ingredients" (
-	"id" serial PRIMARY KEY NOT NULL,
-	"date_created" timestamp DEFAULT now() NOT NULL,
-	"date_updated" timestamp DEFAULT now() NOT NULL,
-	"recipe_id" serial NOT NULL,
-	"description" text
-);
---> statement-breakpoint
-CREATE TABLE "recipe_photos" (
-	"id" serial PRIMARY KEY NOT NULL,
-	"date_created" timestamp DEFAULT now() NOT NULL,
-	"date_updated" timestamp DEFAULT now() NOT NULL,
-	"recipe_id" serial NOT NULL,
-	"photo" text NOT NULL,
-	"defaultPhoto" boolean DEFAULT false NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "recipe_directions" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"date_created" timestamp DEFAULT now() NOT NULL,
 	"date_updated" timestamp DEFAULT now() NOT NULL,
-	"recipe_id" serial NOT NULL,
+	"recipe_id" integer NOT NULL,
 	"step_number" integer NOT NULL,
 	"description" text NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "recipe_import_details" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"date_created" timestamp DEFAULT now() NOT NULL,
+	"date_updated" timestamp DEFAULT now() NOT NULL,
+	"recipe_id" integer NOT NULL,
+	"url" text NOT NULL,
+	CONSTRAINT "recipe_import_details_recipe_id_unique" UNIQUE("recipe_id")
+);
+--> statement-breakpoint
+CREATE TABLE "recipe_ingredients" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"date_created" timestamp DEFAULT now() NOT NULL,
+	"date_updated" timestamp DEFAULT now() NOT NULL,
+	"recipe_id" integer NOT NULL,
+	"description" text NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "recipe_photos" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"date_created" timestamp DEFAULT now() NOT NULL,
+	"date_updated" timestamp DEFAULT now() NOT NULL,
+	"recipe_id" integer NOT NULL,
+	"photo" text NOT NULL,
+	"defaultPhoto" boolean DEFAULT false NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "recipe_tags" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"date_created" timestamp DEFAULT now() NOT NULL,
 	"date_updated" timestamp DEFAULT now() NOT NULL,
-	"recipe_id" serial NOT NULL,
+	"recipe_id" integer NOT NULL,
 	"tag_id" serial NOT NULL
 );
 --> statement-breakpoint
@@ -77,30 +86,30 @@ CREATE TABLE "recipes" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"date_created" timestamp DEFAULT now() NOT NULL,
 	"date_updated" timestamp DEFAULT now() NOT NULL,
-	"user_id" serial NOT NULL,
+	"user_id" integer,
 	"title" text NOT NULL,
 	"description" text,
 	"prep_time" integer DEFAULT 0,
 	"cook_time" integer NOT NULL,
 	"difficulty" text,
-	"servings" integer NOT NULL,
-	"servings_unit" text DEFAULT 'servings',
-	CONSTRAINT "recipes_user_id_unique" UNIQUE("user_id")
+	"servings" text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "tags" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"date_created" timestamp DEFAULT now() NOT NULL,
 	"date_updated" timestamp DEFAULT now() NOT NULL,
-	"name" text NOT NULL
+	"name" text NOT NULL,
+	CONSTRAINT "tags_name_unique" UNIQUE("name")
 );
 --> statement-breakpoint
 ALTER TABLE "reset_tokens" ADD CONSTRAINT "reset_tokens_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "sessions" ADD CONSTRAINT "sessions_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "verify_email_tokens" ADD CONSTRAINT "verify_email_tokens_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "recipe_directions" ADD CONSTRAINT "recipe_directions_recipe_id_recipes_id_fk" FOREIGN KEY ("recipe_id") REFERENCES "public"."recipes"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "recipe_import_details" ADD CONSTRAINT "recipe_import_details_recipe_id_recipes_id_fk" FOREIGN KEY ("recipe_id") REFERENCES "public"."recipes"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "recipe_ingredients" ADD CONSTRAINT "recipe_ingredients_recipe_id_recipes_id_fk" FOREIGN KEY ("recipe_id") REFERENCES "public"."recipes"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "recipe_photos" ADD CONSTRAINT "recipe_photos_recipe_id_recipes_id_fk" FOREIGN KEY ("recipe_id") REFERENCES "public"."recipes"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "recipe_directions" ADD CONSTRAINT "recipe_directions_recipe_id_recipes_id_fk" FOREIGN KEY ("recipe_id") REFERENCES "public"."recipes"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "recipe_tags" ADD CONSTRAINT "recipe_tags_recipe_id_recipes_id_fk" FOREIGN KEY ("recipe_id") REFERENCES "public"."recipes"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "recipe_tags" ADD CONSTRAINT "recipe_tags_tag_id_tags_id_fk" FOREIGN KEY ("tag_id") REFERENCES "public"."tags"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "recipes" ADD CONSTRAINT "recipes_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;

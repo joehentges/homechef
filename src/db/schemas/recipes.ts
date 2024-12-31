@@ -11,12 +11,9 @@ export const recipes = pgTable("recipes", {
   dateUpdated: timestamp("date_updated", { mode: "date" })
     .defaultNow()
     .notNull(),
-  userId: serial("user_id")
-    .references(() => users.id, { onDelete: "cascade" })
-    .unique(),
-  importDetailsId: serial("import_details_id")
-    .references(() => recipeImportDetails.id, { onDelete: "cascade" })
-    .unique(),
+  userId: integer("user_id").references(() => users.id, {
+    onDelete: "cascade",
+  }),
   title: text("title").notNull(),
   description: text("description"),
   prepTime: integer("prep_time").default(0),

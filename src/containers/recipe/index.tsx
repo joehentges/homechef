@@ -1,13 +1,19 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useMemo, useRef, useState } from "react"
 import Link from "next/link"
-import { PencilIcon, PrinterIcon, Share2Icon } from "lucide-react"
+import {
+  CookingPotIcon,
+  PencilIcon,
+  PrinterIcon,
+  Share2Icon,
+} from "lucide-react"
 import { useReactToPrint } from "react-to-print"
 
 import { RecipeDetails, RecipeDetailsPhoto } from "@/types/Recipe"
 
 import { RecipeCookTime } from "./cook-time"
+import { RecipeImage } from "./image"
 import { RecipePrintVersion } from "./print-version"
 import { SaveRecipe } from "./save-recipe"
 import { RecipeTags } from "./tags"
@@ -23,19 +29,13 @@ export function RecipeContainer(props: RecipeProps) {
   const recipePrintVersionRef = useRef(null)
   const reactToPrintFn = useReactToPrint({
     contentRef: recipePrintVersionRef,
+    pageStyle: `
+    @page {
+      size: A4;
+    }
+    `,
   })
   const [currentRecipe, setCurrentRecipe] = useState(recipe)
-
-  function selectPrimaryPhoto(photos: RecipeDetailsPhoto[] | undefined) {
-    if (!photos) {
-      return
-    }
-
-    return (
-      photos.find((photo) => photo.defaultPhoto) ??
-      photos[Math.floor(Math.random() * photos.length)]
-    )
-  }
 
   return (
     <>
@@ -47,12 +47,7 @@ export function RecipeContainer(props: RecipeProps) {
       </div>
       <div className="container max-w-[850px] space-y-6 rounded-3xl bg-primary/20 p-4 md:p-8">
         <div className="flex flex-col items-center gap-x-6 gap-y-4 md:flex-row md:items-start">
-          <div
-            className="center h-[250px] w-[350px] max-w-full rounded-2xl bg-cover bg-center bg-no-repeat md:h-[125px] md:w-[175px] md:rounded-l-3xl"
-            style={{
-              backgroundImage: `url('${selectPrimaryPhoto(currentRecipe.photos)?.photoUrl}')`,
-            }}
-          />
+          <RecipeImage photos={currentRecipe.photos} />
 
           <div className="flex w-full flex-col justify-between space-y-2 md:space-y-4">
             <div className="flex flex-col-reverse items-center justify-between gap-y-4 md:flex-row md:items-start">
@@ -129,18 +124,19 @@ export function RecipeContainer(props: RecipeProps) {
             <p className="text-2xl font-bold">Directions</p>
             <ul>
               <ul className="space-y-4 pt-4">
-                {currentRecipe.directions.map(
-                  (direction: string, index: number) => {
-                    return (
-                      <li key={direction} className="flex flex-row gap-x-2">
-                        <p className="text-xl font-bold text-red-500">
-                          {index + 1}
-                        </p>
-                        <p className="text-lg">{direction}</p>
-                      </li>
-                    )
-                  }
-                )}
+                {currentRecipe.directions.map((direction) => {
+                  return (
+                    <li
+                      key={`${direction.stepNumber}-direction`}
+                      className="flex flex-row gap-x-2"
+                    >
+                      <p className="text-xl font-bold text-red-500">
+                        {direction.stepNumber}
+                      </p>
+                      <p className="text-lg">{direction.description}</p>
+                    </li>
+                  )
+                })}
               </ul>
             </ul>
           </div>

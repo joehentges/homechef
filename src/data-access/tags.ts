@@ -11,3 +11,17 @@ export async function getTag(tagId: PrimaryKey): Promise<Tag | undefined> {
 
   return tag
 }
+
+export async function addTags(tagsList: string[]): Promise<Tag[]> {
+  const tagsData = await database
+    .insert(tags)
+    .values(
+      tagsList.map((tag) => ({
+        name: tag,
+      }))
+    )
+    .onConflictDoNothing()
+    .returning()
+
+  return tagsData
+}

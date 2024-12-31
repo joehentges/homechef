@@ -1,5 +1,10 @@
 import { importRecipe } from "@/lib/import-recipe"
 import { getCurrentUser } from "@/lib/session"
+import {
+  addRecipeUseCase,
+  getRecipeByIdUseCase,
+  getRecipeImportDetailsByUrlUseCase,
+} from "@/use-cases/recipes"
 import { RecipeContainer } from "@/containers/recipe"
 
 interface ImportRecipePageProps {
@@ -18,11 +23,18 @@ export default async function ImportRecipePage(props: ImportRecipePageProps) {
 
   // check Database to see if recipe has already been imported
   // skip next part if it has
+  const recipeImportCheck = await getRecipeImportDetailsByUrlUseCase(url)
+  let recipeData
+  if (recipeImportCheck) {
+    recipeData = await getRecipeByIdUseCase(recipeImportCheck.recipeId)
+  } else {
+    recipeData = await importRecipe(url)
 
-  const recipeData = await importRecipe(url)
+    if (!recipeData) {
+      throw new Error("Recipe not found")
+    }
 
-  if (!recipeData) {
-    throw new Error("Recipe not found")
+    await addRecipeUseCase(recipeData)
   }
 
   const user = await getCurrentUser()

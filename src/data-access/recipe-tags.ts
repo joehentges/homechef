@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm"
 
 import { PrimaryKey } from "@/types"
 import { database } from "@/db"
-import { RecipeTag, recipeTags, tags } from "@/db/schemas"
+import { RecipeTag, recipeTags, Tag, tags } from "@/db/schemas"
 
 export async function getRecipeTag(
   recipeTagId: PrimaryKey
@@ -35,4 +35,16 @@ export async function getRecipeTagsByRecipeId(recipeId: PrimaryKey): Promise<
     .innerJoin(tags, eq(recipeTags.tagId, tags.id))
 
   return recipeIngredientsList
+}
+
+export async function addRecipeTags(
+  recipeId: PrimaryKey,
+  tags: Tag[]
+): Promise<RecipeTag[]> {
+  const recipeTagsListData = await database
+    .insert(recipeTags)
+    .values(tags.map((tag) => ({ recipeId, tagId: tag.id })))
+    .returning()
+
+  return recipeTagsListData
 }

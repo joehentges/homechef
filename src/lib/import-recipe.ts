@@ -4,6 +4,8 @@ import * as cheerio from "cheerio"
 
 import { RecipeDetails } from "@/types/Recipe"
 
+import { getDomain } from "./get-domain"
+
 async function fetchPageHtml(url: string) {
   const response = await fetch(url)
   if (!response.ok) {
@@ -58,17 +60,6 @@ export async function importRecipe(url: string): Promise<RecipeDetails | null> {
   } catch (error) {
     return null
   }
-}
-
-function getDomain(url: string): string {
-  const urlObj = new URL(url)
-  let hostname = urlObj.hostname
-
-  // Remove "www." if present
-  if (hostname.startsWith("www.")) {
-    hostname = hostname.substring(4)
-  }
-  return hostname
 }
 
 function formatDuration(duration: string | null) {
@@ -206,9 +197,10 @@ function formatKeywords(keywords: any) {
 }
 
 function formatDirections(directions: any) {
-  return directions?.map((inst: any) =>
-    typeof inst === "string" ? inst : inst.text
-  )
+  return directions?.map((inst: any, index: number) => ({
+    stepNumber: index + 1,
+    description: typeof inst === "string" ? inst : inst.text,
+  }))
 }
 
 // if totalTime does not match prep and cook time
@@ -266,8 +258,6 @@ function formatData(recipeData: any, url: string): RecipeDetails {
       defaultPhoto: false,
       photoUrl: photo,
     })),
-    datePublished: recipeData.datePublished,
-    dateModified: recipeData.dateModified,
     tags: formatKeywords(recipeData.keywords)?.filter(
       (word) => word !== null && word !== undefined
     ),

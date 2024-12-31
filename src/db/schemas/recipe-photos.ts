@@ -1,4 +1,11 @@
-import { boolean, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core"
+import {
+  boolean,
+  integer,
+  pgTable,
+  serial,
+  text,
+  timestamp,
+} from "drizzle-orm/pg-core"
 
 import { recipes } from "./recipes"
 
@@ -10,7 +17,7 @@ export const recipePhotos = pgTable("recipe_photos", {
   dateUpdated: timestamp("date_updated", { mode: "date" })
     .defaultNow()
     .notNull(),
-  recipeId: serial("recipe_id")
+  recipeId: integer("recipe_id")
     .notNull()
     .references(() => recipes.id, { onDelete: "cascade" }),
   photoUrl: text("photo").notNull(),

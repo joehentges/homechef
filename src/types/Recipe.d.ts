@@ -5,6 +5,8 @@ export type RecipeDetailsPhoto = {
   photoUrl: string
 }
 
+export type RecipeDifficulty = "easy" | "medium" | "hard" | null
+
 export interface RecipeDetails {
   author?: {
     userId: PrimaryKey
@@ -15,14 +17,13 @@ export interface RecipeDetails {
     url: string
   }
   title: string
-  description?: string
+  description?: string | null
   servings: string
   prepTime: number | null
   cookTime: number
+  difficulty?: RecipeDifficulty
   ingredients: string[]
-  directions: string[]
+  directions: { stepNumber: number; description: string }[]
   photos?: RecipeDetailsPhoto[]
-  datePublished: Date
-  dateModified: Date
   tags?: string[]
 }

@@ -10,7 +10,7 @@ export const recipeDirections = pgTable("recipe_directions", {
   dateUpdated: timestamp("date_updated", { mode: "date" })
     .defaultNow()
     .notNull(),
-  recipeId: serial("recipe_id")
+  recipeId: integer("recipe_id")
     .notNull()
     .references(() => recipes.id, { onDelete: "cascade" }),
   stepNumber: integer("step_number").notNull(),

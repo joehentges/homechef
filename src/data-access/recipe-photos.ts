@@ -1,6 +1,7 @@
 import { eq } from "drizzle-orm"
 
 import { PrimaryKey } from "@/types"
+import { RecipeDetailsPhoto } from "@/types/Recipe"
 import { database } from "@/db"
 import { RecipePhoto, recipePhotos } from "@/db/schemas"
 
@@ -22,4 +23,22 @@ export async function getRecipePhotosByRecipeId(
   })
 
   return recipePhotosList
+}
+
+export async function addRecipePhotos(
+  recipeId: PrimaryKey,
+  photosList: RecipeDetailsPhoto[]
+): Promise<RecipePhoto[]> {
+  const recipePhotosListData = await database
+    .insert(recipePhotos)
+    .values(
+      photosList.map((photo) => ({
+        recipeId,
+        defaultPhoto: photo.defaultPhoto,
+        photoUrl: photo.photoUrl,
+      }))
+    )
+    .returning()
+
+  return recipePhotosListData
 }
