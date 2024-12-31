@@ -48,7 +48,7 @@ export const featuredRecipes = [
     title: "Avacado Salad",
     description:
       "In the season of fresh strawberries, I suggest making a very tasty and simple pie with this winderful berry.",
-    servings: 2,
+    servings: 10,
     cookTime: "30m",
   },
   {

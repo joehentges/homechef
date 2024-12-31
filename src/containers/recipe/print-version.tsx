@@ -2,7 +2,6 @@
 
 import { RecipeCookTime } from "./cook-time"
 import { RecipeDetails } from "./recipe.types"
-import { RecipeTags } from "./tags"
 
 interface RecipePrintVersionProps {
   ref: React.Ref<HTMLDivElement>
