@@ -2,25 +2,26 @@
 
 import { useRef, useState } from "react"
 import Link from "next/link"
-import {
-  BookIcon,
-  EllipsisVerticalIcon,
-  PrinterIcon,
-  Share2Icon,
-} from "lucide-react"
+import { PenIcon, PrinterIcon, Share2Icon } from "lucide-react"
 import { useReactToPrint } from "react-to-print"
+
+import { getFromPath } from "@/lib/get-from-path"
 
 import { RecipeCookTime } from "./cook-time"
 import { RecipePrintVersion } from "./print-version"
 import { RecipeDetails, RecipeDetailsPhoto } from "./recipe.types"
+import { SaveRecipe } from "./save-recipe"
 import { RecipeTags } from "./tags"
 
 interface RecipeProps {
+  isAuthenticated?: boolean
   recipe: RecipeDetails
 }
 
 export function RecipeContainer(props: RecipeProps) {
-  const { recipe } = props
+  const { isAuthenticated, recipe } = props
+
+  const fromPath = getFromPath()
 
   const recipePrintVersionRef = useRef(null)
   const reactToPrintFn = useReactToPrint({
@@ -70,7 +71,7 @@ export function RecipeContainer(props: RecipeProps) {
                 </Link>
               </div>
               <div className="flex flex-row gap-x-4 pt-2 text-muted-foreground">
-                <BookIcon className="h-5 w-5" />
+                <SaveRecipe isAuthenticated={isAuthenticated} />
                 <button
                   onClick={() => reactToPrintFn()}
                   className="transition-colors hover:text-foreground"
@@ -89,7 +90,7 @@ export function RecipeContainer(props: RecipeProps) {
                   <Share2Icon className="h-5 w-5" />
                 </button>
 
-                <EllipsisVerticalIcon className="h-5 w-5" />
+                <PenIcon className="h-5 w-5" />
               </div>
             </div>
 

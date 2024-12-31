@@ -21,7 +21,7 @@ export function RecipeCookTime(props: RecipeCookTimeProps) {
   return (
     <>
       <TooltipProvider>
-        <Tooltip>
+        <Tooltip delayDuration={250}>
           <div className="flex flex-row items-center gap-x-2 px-2 py-1 md:hidden">
             <ClockIcon className="h-4 w-4" />
             <p>Prep: {formatTime(prepTime ?? 0)}</p>

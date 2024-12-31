@@ -1,16 +1,13 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname, useSearchParams } from "next/navigation"
 
+import { getFromPath } from "@/lib/get-from-path"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 
 export function SiteHeaderAuthNav() {
-  const pathname = usePathname()
-  const params = useSearchParams()
-
-  const fromPath = `${pathname}${params ? `?${params.toString()}` : ""}`
+  const fromPath = getFromPath()
 
   return (
     <>

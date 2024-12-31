@@ -1,4 +1,5 @@
 import { importRecipe } from "@/lib/import-recipe"
+import { getCurrentUser } from "@/lib/session"
 import { RecipeContainer } from "@/containers/recipe"
 
 interface ImportRecipePageProps {
@@ -24,9 +25,11 @@ export default async function ImportRecipePage(props: ImportRecipePageProps) {
     throw new Error("Recipe not found")
   }
 
+  const user = await getCurrentUser()
+
   return (
     <div className="py-4 md:py-8">
-      <RecipeContainer recipe={recipeData} />
+      <RecipeContainer isAuthenticated={!!user} recipe={recipeData} />
     </div>
   )
 }
