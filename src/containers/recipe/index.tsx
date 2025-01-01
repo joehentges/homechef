@@ -136,15 +136,15 @@ export function RecipeContainer(props: RecipeProps) {
             <ul>
               <ul className="space-y-4 pt-4">
                 {recipe.directions
-                  .sort((a, b) => a.stepNumber - b.stepNumber)
+                  .sort((a, b) => a.orderNumber - b.orderNumber)
                   .map((direction) => {
                     return (
                       <li
-                        key={`${direction.stepNumber}-direction`}
+                        key={`${direction.orderNumber}-direction`}
                         className="flex flex-row gap-x-2"
                       >
                         <p className="text-xl font-bold text-red-500">
-                          {direction.stepNumber}
+                          {direction.orderNumber}
                         </p>
                         <p className="text-lg">{direction.description}</p>
                       </li>

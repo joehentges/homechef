@@ -26,7 +26,7 @@ export async function getRecipeDirectionsByRecipeId(
 
 export async function addRecipeDirections(
   recipeId: PrimaryKey,
-  directions: { stepNumber: number; description: string }[],
+  directions: { orderNumber: number; description: string }[],
   trx = database
 ): Promise<RecipeDirection[]> {
   const recipeDirectionsListData = await trx
@@ -34,7 +34,7 @@ export async function addRecipeDirections(
     .values(
       directions.map((direction) => ({
         recipeId,
-        stepNumber: direction.stepNumber,
+        orderNumber: direction.orderNumber,
         description: direction.description,
       }))
     )

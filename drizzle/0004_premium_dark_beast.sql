@@ -1,0 +1,1 @@
+ALTER TABLE "recipe_directions" RENAME COLUMN "step_number" TO "order_number";

@@ -24,7 +24,7 @@ export interface RecipeDetails {
   difficulty?: RecipeDifficulty
   private: boolean
   ingredients: { orderNumber: number; description: string }[]
-  directions: { stepNumber: number; description: string }[]
+  directions: { orderNumber: number; description: string }[]
   photos?: RecipeDetailsPhoto[]
   tags?: string[]
 }

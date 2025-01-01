@@ -17,12 +17,15 @@ import { GripVerticalIcon } from "lucide-react"
 import { AutogrowTextarea } from "@/components/autogrow-textarea"
 
 interface EditIngredientsProps {
-  ingredients: string[]
+  ingredients: {
+    orderNumber: number
+    description: string
+  }[]
 }
 
 export function EditIngredients(props: EditIngredientsProps) {
   const { ingredients: initialIngredients } = props
-  const [ingredients, setIngredients] = useState<string[]>(initialIngredients)
+  const [ingredients, setIngredients] = useState(initialIngredients)
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event

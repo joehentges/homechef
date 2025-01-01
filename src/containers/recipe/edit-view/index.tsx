@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { MoveLeftIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
-import { createSwapy } from "swapy"
 import { z } from "zod"
 
 import { RecipeDetails } from "@/types/Recipe"
@@ -40,10 +39,15 @@ const editRecipeFormSchema = z.object({
     .nullable()
     .optional(),
   private: z.boolean().default(false),
-  ingredients: z.array(z.string()),
+  ingredients: z.array(
+    z.object({
+      orderNumber: z.number(),
+      description: z.string().min(2),
+    })
+  ),
   directions: z.array(
     z.object({
-      stepNumber: z.number(),
+      orderNumber: z.number(),
       description: z.string().min(2),
     })
   ),
@@ -243,11 +247,11 @@ export function RecipeEditView(props: RecipeEditViewProps) {
                   {startRecipe.directions.map((direction) => {
                     return (
                       <li
-                        key={`${direction.stepNumber}-direction`}
+                        key={`${direction.orderNumber}-direction`}
                         className="flex flex-row gap-x-2"
                       >
                         <p className="text-xl font-bold text-red-500">
-                          {direction.stepNumber}
+                          {direction.orderNumber}
                         </p>
                         <p className="text-lg">{direction.description}</p>
                       </li>

@@ -75,7 +75,7 @@ export async function getRecipeByIdUseCase(
     photos: recipePhotos,
     directions:
       recipeDirections?.map((direction) => ({
-        stepNumber: direction.stepNumber,
+        orderNumber: direction.orderNumber,
         description: direction.description,
       })) ?? [],
     tags: recipeTags?.map((tag) => tag.name),
@@ -181,7 +181,7 @@ export async function addRecipeUseCase(
       photos: recipePhotos,
       directions:
         recipeDirections?.map((direction) => ({
-          stepNumber: direction.stepNumber,
+          orderNumber: direction.orderNumber,
           description: direction.description,
         })) ?? [],
       tags: tagsList?.map((tag) => tag.name),
