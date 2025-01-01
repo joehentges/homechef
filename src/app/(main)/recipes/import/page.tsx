@@ -2,6 +2,7 @@ import { importRecipe } from "@/lib/import-recipe"
 import { getCurrentUser } from "@/lib/session"
 import {
   addRecipeUseCase,
+  getAvailableRecipeTagsUseCase,
   getRecipeByIdUseCase,
   getRecipeImportDetailsByUrlUseCase,
 } from "@/use-cases/recipes"
@@ -39,9 +40,15 @@ export default async function ImportRecipePage(props: ImportRecipePageProps) {
 
   const user = await getCurrentUser()
 
+  const availableTags = await getAvailableRecipeTagsUseCase()
+
   return (
     <div className="py-4 md:py-8">
-      <RecipeContainer user={user} recipe={recipeDetails} />
+      <RecipeContainer
+        user={user}
+        recipe={recipeDetails}
+        availableTags={availableTags}
+      />
     </div>
   )
 }

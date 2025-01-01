@@ -20,6 +20,12 @@ export async function getTagsByName(tagNames: string[]): Promise<Tag[]> {
   return tagsList
 }
 
+export async function getAllTags(): Promise<Tag[]> {
+  const tagsList = await database.query.tags.findMany()
+
+  return tagsList
+}
+
 export async function addTags(tagsList: string[]): Promise<Tag[]> {
   const tagsData = await database
     .insert(tags)

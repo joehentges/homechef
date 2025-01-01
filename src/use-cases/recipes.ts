@@ -22,7 +22,7 @@ import {
   getRecipeImportDetailsByRecipeId,
   getRecipeImportDetailsByUrl,
 } from "@/data-access/recipes-import-details"
-import { getTagsByName } from "@/data-access/tags"
+import { getAllTags, getTagsByName } from "@/data-access/tags"
 import { getUser } from "@/data-access/users"
 import { createTransaction } from "@/data-access/utils"
 import { getDomain } from "@/lib/get-domain"
@@ -191,4 +191,8 @@ export async function addRecipeUseCase(
   })
 
   return recipeDetailsFormatted as RecipeDetails
+}
+
+export async function getAvailableRecipeTagsUseCase() {
+  return getAllTags()
 }

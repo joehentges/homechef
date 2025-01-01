@@ -13,11 +13,11 @@ import { useFromPath } from "@/hooks/use-from-path"
 
 interface EnableEditViewProps {
   isAuthenticated?: boolean
-  setEnableEditView: () => void
+  enableEditView: () => void
 }
 
 export function EnableEditView(props: EnableEditViewProps) {
-  const { isAuthenticated, setEnableEditView } = props
+  const { isAuthenticated, enableEditView } = props
 
   const fromPath = useFromPath()
 
@@ -26,7 +26,7 @@ export function EnableEditView(props: EnableEditViewProps) {
       <TooltipProvider>
         <Tooltip delayDuration={0}>
           <TooltipTrigger
-            onClick={setEnableEditView}
+            onClick={enableEditView}
             className="transition-colors hover:text-foreground"
           >
             <PencilIcon className="h-5 w-5" />
