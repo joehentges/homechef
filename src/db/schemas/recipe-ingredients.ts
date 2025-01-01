@@ -13,6 +13,7 @@ export const recipeIngredients = pgTable("recipe_ingredients", {
   recipeId: integer("recipe_id")
     .notNull()
     .references(() => recipes.id, { onDelete: "cascade" }),
+  orderNumber: integer("order_number").notNull(),
   description: text("description").notNull(),
 })
 

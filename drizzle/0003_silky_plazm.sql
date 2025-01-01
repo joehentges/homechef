@@ -1,0 +1,1 @@
+ALTER TABLE "recipe_ingredients" ADD COLUMN "order_number" integer NOT NULL;

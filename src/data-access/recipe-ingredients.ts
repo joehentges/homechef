@@ -28,7 +28,7 @@ export async function getRecipeIngredientsByRecipeId(
 
 export async function addRecipeIngredients(
   recipeId: PrimaryKey,
-  ingredientsList: string[],
+  ingredientsList: { description: string; orderNumber: number }[],
   trx = database
 ): Promise<RecipeIngredient[]> {
   const recipeIngredientsListData = await trx
@@ -36,7 +36,8 @@ export async function addRecipeIngredients(
     .values(
       ingredientsList.map((ingredient) => ({
         recipeId,
-        description: ingredient,
+        description: ingredient.description,
+        orderNumber: ingredient.orderNumber,
       }))
     )
     .returning()

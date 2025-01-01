@@ -111,20 +111,23 @@ export function RecipeContainer(props: RecipeProps) {
         </div>
 
         {recipe.description && <p className="pb-2">{recipe.description}</p>}
+
         <div className="flex flex-col gap-x-16 gap-y-12 md:flex-row md:items-start">
           <div className="md:w-1/2">
             <p className="text-2xl font-bold">Ingredients</p>
             <ul className="space-y-2 pt-4">
-              {recipe.ingredients?.map((ingredient: string, index: number) => {
-                return (
-                  <li key={ingredient}>
-                    <p>{ingredient}</p>
-                    {index < recipe.ingredients.length - 1 && (
-                      <div className="my-3 border-t border-t-muted-foreground" />
-                    )}
-                  </li>
-                )
-              })}
+              {recipe.ingredients
+                .sort((a, b) => a.orderNumber - b.orderNumber)
+                .map((ingredient, index) => {
+                  return (
+                    <li key={ingredient.orderNumber}>
+                      <p>{ingredient.description}</p>
+                      {index < recipe.ingredients.length - 1 && (
+                        <div className="my-3 border-t border-t-muted-foreground" />
+                      )}
+                    </li>
+                  )
+                })}
             </ul>
           </div>
 
@@ -132,19 +135,21 @@ export function RecipeContainer(props: RecipeProps) {
             <p className="text-2xl font-bold">Directions</p>
             <ul>
               <ul className="space-y-4 pt-4">
-                {recipe.directions.map((direction) => {
-                  return (
-                    <li
-                      key={`${direction.stepNumber}-direction`}
-                      className="flex flex-row gap-x-2"
-                    >
-                      <p className="text-xl font-bold text-red-500">
-                        {direction.stepNumber}
-                      </p>
-                      <p className="text-lg">{direction.description}</p>
-                    </li>
-                  )
-                })}
+                {recipe.directions
+                  .sort((a, b) => a.stepNumber - b.stepNumber)
+                  .map((direction) => {
+                    return (
+                      <li
+                        key={`${direction.stepNumber}-direction`}
+                        className="flex flex-row gap-x-2"
+                      >
+                        <p className="text-xl font-bold text-red-500">
+                          {direction.stepNumber}
+                        </p>
+                        <p className="text-lg">{direction.description}</p>
+                      </li>
+                    )
+                  })}
               </ul>
             </ul>
           </div>

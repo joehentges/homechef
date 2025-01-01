@@ -42,16 +42,18 @@ export function RecipePrintVersion(props: RecipePrintVersionProps) {
         <div className="w-1/2">
           <p className="text-2xl font-bold">Ingredients</p>
           <ul className="space-y-2 pt-4">
-            {recipe.ingredients?.map((ingredient: string, index: number) => {
-              return (
-                <li key={ingredient}>
-                  <p>{ingredient}</p>
-                  {index < recipe.ingredients.length - 1 && (
-                    <div className="my-3 border-t border-t-muted-foreground" />
-                  )}
-                </li>
-              )
-            })}
+            {recipe.ingredients
+              .sort((a, b) => a.orderNumber - b.orderNumber)
+              .map((ingredient, index) => {
+                return (
+                  <li key={ingredient.orderNumber}>
+                    <p>{ingredient.description}</p>
+                    {index < recipe.ingredients.length - 1 && (
+                      <div className="my-3 border-t border-t-muted-foreground" />
+                    )}
+                  </li>
+                )
+              })}
           </ul>
         </div>
 
@@ -59,19 +61,21 @@ export function RecipePrintVersion(props: RecipePrintVersionProps) {
           <p className="text-2xl font-bold">Directions</p>
           <ul>
             <ul className="space-y-4 pt-4">
-              {recipe.directions.map((direction) => {
-                return (
-                  <li
-                    key={`${direction.stepNumber}-direction`}
-                    className="flex flex-row gap-x-2"
-                  >
-                    <p className="text-xl font-bold text-muted-foreground">
-                      {direction.stepNumber}
-                    </p>
-                    <p className="text-lg">{direction.description}</p>
-                  </li>
-                )
-              })}
+              {recipe.directions
+                .sort((a, b) => a.stepNumber - b.stepNumber)
+                .map((direction) => {
+                  return (
+                    <li
+                      key={`${direction.stepNumber}-direction`}
+                      className="flex flex-row gap-x-2"
+                    >
+                      <p className="text-xl font-bold text-muted-foreground">
+                        {direction.stepNumber}
+                      </p>
+                      <p className="text-lg">{direction.description}</p>
+                    </li>
+                  )
+                })}
             </ul>
           </ul>
         </div>

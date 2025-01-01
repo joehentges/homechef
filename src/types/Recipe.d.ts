@@ -23,7 +23,7 @@ export interface RecipeDetails {
   cookTime: number
   difficulty?: RecipeDifficulty
   private: boolean
-  ingredients: string[]
+  ingredients: { orderNumber: number; description: string }[]
   directions: { stepNumber: number; description: string }[]
   photos?: RecipeDetailsPhoto[]
   tags?: string[]

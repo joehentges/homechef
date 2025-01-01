@@ -71,8 +71,7 @@ export async function getRecipeByIdUseCase(
     cookTime: recipe.cookTime,
     difficulty: recipe.difficulty,
     private: recipe.private,
-    ingredients:
-      recipeIngredients?.map((ingredient) => ingredient.description) ?? [],
+    ingredients: recipeIngredients ?? [],
     photos: recipePhotos,
     directions:
       recipeDirections?.map((direction) => ({
@@ -178,8 +177,7 @@ export async function addRecipeUseCase(
       cookTime: recipe.cookTime,
       difficulty: recipe.difficulty,
       private: recipe.private,
-      ingredients:
-        recipeIngredients?.map((ingredient) => ingredient.description) ?? [],
+      ingredients: recipeIngredients ?? [],
       photos: recipePhotos,
       directions:
         recipeDirections?.map((direction) => ({
