@@ -15,6 +15,13 @@
       "when": 1735686599960,
       "tag": "0001_special_ben_urich",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1735709288697,
+      "tag": "0002_right_proteus",
+      "breakpoints": true
     }
   ]
 }

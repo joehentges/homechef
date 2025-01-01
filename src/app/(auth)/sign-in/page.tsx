@@ -22,7 +22,6 @@ export default async function SignInPage(props: SignInPageProps) {
 
   const { from } = await props.searchParams
   const fromIsNotUrl = !pathIsUrl(from || "")
-  console.log(from, fromIsNotUrl, fromIsNotUrl ? `?from=${from}` : "")
 
   return (
     <div className="flex h-full flex-col justify-between space-y-8 px-4 py-8">
