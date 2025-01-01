@@ -40,6 +40,4 @@ export function RecipeImage(props: RecipeImageProps) {
       <CookingPotIcon className="absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 transform text-muted-foreground" />
     </div>
   )
-  {
-  }
 }

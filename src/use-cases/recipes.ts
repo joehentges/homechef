@@ -24,6 +24,7 @@ import {
 } from "@/data-access/recipes-import-details"
 import { getTagsByName } from "@/data-access/tags"
 import { getUser } from "@/data-access/users"
+import { createTransaction } from "@/data-access/utils"
 import { getDomain } from "@/lib/get-domain"
 
 export async function getRecipeByIdUseCase(
@@ -104,74 +105,90 @@ export async function addRecipeUseCase(
     tags,
   } = recipeDetails
 
-  let user
-  if (author) {
-    user = await getUser(author.userId)
-  }
+  const recipeDetailsFormatted = await createTransaction(async (trx) => {
+    let user
+    if (author) {
+      user = await getUser(author.userId)
+    }
 
-  const recipe = await addRecipe({
-    userId: author?.userId,
-    title,
-    prepTime,
-    cookTime,
-    difficulty,
-    servings,
-    description,
+    const recipe = await addRecipe(
+      {
+        userId: author?.userId,
+        title,
+        prepTime,
+        cookTime,
+        difficulty,
+        servings,
+        description,
+      },
+      trx
+    )
+
+    let recipeImportDetails
+    if (importDetails) {
+      recipeImportDetails = await addRecipeImportDetails(
+        recipe.id,
+        importDetails?.url,
+        trx
+      )
+    }
+
+    const recipeIngredients = await addRecipeIngredients(
+      recipe.id,
+      ingredients,
+      trx
+    )
+
+    const recipeDirections = await addRecipeDirections(
+      recipe.id,
+      directions,
+      trx
+    )
+
+    let recipePhotos
+    if (photos) {
+      recipePhotos = await addRecipePhotos(recipe.id, photos, trx)
+    }
+
+    let tagsList
+    if (tags) {
+      tagsList = await getTagsByName(tags)
+      if (tagsList.length > 1) {
+        await addRecipeTags(recipe.id, tagsList, trx)
+      }
+    }
+
+    return {
+      author: user
+        ? {
+            userId: user.id,
+            displayName: user.displayName,
+          }
+        : undefined,
+      importDetails: recipeImportDetails
+        ? {
+            name: getDomain(recipeImportDetails.url),
+            url: recipeImportDetails.url,
+          }
+        : undefined,
+      title: recipe.title,
+      description: recipe.description,
+      servings: recipe.servings,
+      prepTime: recipe.prepTime,
+      cookTime: recipe.cookTime,
+      difficulty: recipe.difficulty,
+      private: recipe.private,
+      ingredients:
+        recipeIngredients?.map((ingredient) => ingredient.description) ?? [],
+      photos: recipePhotos,
+      directions:
+        recipeDirections?.map((direction) => ({
+          stepNumber: direction.stepNumber,
+          description: direction.description,
+        })) ?? [],
+      tags: tagsList?.map((tag) => tag.name),
+    }
   })
 
-  let recipeImportDetails
-  if (importDetails) {
-    recipeImportDetails = await addRecipeImportDetails(
-      recipe.id,
-      importDetails?.url
-    )
-  }
-
-  const recipeIngredients = await addRecipeIngredients(recipe.id, ingredients)
-
-  const recipeDirections = await addRecipeDirections(recipe.id, directions)
-
-  let recipePhotos
-  if (photos) {
-    recipePhotos = await addRecipePhotos(recipe.id, photos)
-  }
-
-  let tagsList
-  if (tags) {
-    tagsList = await getTagsByName(tags)
-    if (tagsList.length > 1) {
-      await addRecipeTags(recipe.id, tagsList)
-    }
-  }
-
-  return {
-    author: user
-      ? {
-          userId: user.id,
-          displayName: user.displayName,
-        }
-      : undefined,
-    importDetails: recipeImportDetails
-      ? {
-          name: getDomain(recipeImportDetails.url),
-          url: recipeImportDetails.url,
-        }
-      : undefined,
-    title: recipe.title,
-    description: recipe.description,
-    servings: recipe.servings,
-    prepTime: recipe.prepTime,
-    cookTime: recipe.cookTime,
-    difficulty: recipe.difficulty,
-    private: recipe.private,
-    ingredients:
-      recipeIngredients?.map((ingredient) => ingredient.description) ?? [],
-    photos: recipePhotos,
-    directions:
-      recipeDirections?.map((direction) => ({
-        stepNumber: direction.stepNumber,
-        description: direction.description,
-      })) ?? [],
-    tags: tagsList?.map((tag) => tag.name),
-  }
+  return recipeDetailsFormatted as RecipeDetails
 }

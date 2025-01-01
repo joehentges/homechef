@@ -23,10 +23,10 @@ export default async function ImportRecipePage(props: ImportRecipePageProps) {
 
   // check Database to see if recipe has already been imported
   // skip next part if it has
-  const recipeImportCheck = await getRecipeImportDetailsByUrlUseCase(url)
-  let recipeData
-  if (recipeImportCheck) {
-    recipeData = await getRecipeByIdUseCase(recipeImportCheck.recipeId)
+  let recipeImportDetails = await getRecipeImportDetailsByUrlUseCase(url)
+  let recipeDetails
+  if (recipeImportDetails) {
+    recipeDetails = await getRecipeByIdUseCase(recipeImportDetails.recipeId)
   } else {
     const importRecipeData = await importRecipe(url)
 
@@ -34,14 +34,14 @@ export default async function ImportRecipePage(props: ImportRecipePageProps) {
       throw new Error("Recipe not found")
     }
 
-    recipeData = await addRecipeUseCase(importRecipeData)
+    recipeDetails = await addRecipeUseCase(importRecipeData)
   }
 
   const user = await getCurrentUser()
 
   return (
     <div className="py-4 md:py-8">
-      <RecipeContainer user={user} recipe={recipeData} />
+      <RecipeContainer user={user} recipe={recipeDetails} />
     </div>
   )
 }

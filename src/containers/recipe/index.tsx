@@ -68,6 +68,7 @@ export function RecipeContainer(props: RecipeProps) {
                 {currentRecipe.importDetails && (
                   <Link
                     href={currentRecipe.importDetails.url}
+                    target="_blank"
                     className="text-muted-foreground transition-colors hover:text-foreground"
                   >
                     <p>From: {currentRecipe.importDetails.name}</p>

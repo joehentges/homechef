@@ -27,9 +27,10 @@ export async function getRecipePhotosByRecipeId(
 
 export async function addRecipePhotos(
   recipeId: PrimaryKey,
-  photosList: RecipeDetailsPhoto[]
+  photosList: RecipeDetailsPhoto[],
+  trx = database
 ): Promise<RecipePhoto[]> {
-  const recipePhotosListData = await database
+  const recipePhotosListData = await trx
     .insert(recipePhotos)
     .values(
       photosList.map((photo) => ({

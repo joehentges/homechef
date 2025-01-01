@@ -15,15 +15,18 @@ export async function getRecipe(
   return recipe
 }
 
-export async function addRecipe(recipe: {
-  userId?: PrimaryKey
-  title: string
-  description?: string | null
-  prepTime?: number | null
-  cookTime: number
-  difficulty?: RecipeDifficulty
-  servings: string
-}) {
+export async function addRecipe(
+  recipe: {
+    userId?: PrimaryKey
+    title: string
+    description?: string | null
+    prepTime?: number | null
+    cookTime: number
+    difficulty?: RecipeDifficulty
+    servings: string
+  },
+  trx = database
+) {
   const {
     userId,
     title,
@@ -33,7 +36,7 @@ export async function addRecipe(recipe: {
     description,
     servings,
   } = recipe
-  const [recipeData] = await database
+  const [recipeData] = await trx
     .insert(recipes)
     .values({
       userId,

@@ -28,9 +28,10 @@ export async function getRecipeIngredientsByRecipeId(
 
 export async function addRecipeIngredients(
   recipeId: PrimaryKey,
-  ingredientsList: string[]
+  ingredientsList: string[],
+  trx = database
 ): Promise<RecipeIngredient[]> {
-  const recipeIngredientsListData = await database
+  const recipeIngredientsListData = await trx
     .insert(recipeIngredients)
     .values(
       ingredientsList.map((ingredient) => ({

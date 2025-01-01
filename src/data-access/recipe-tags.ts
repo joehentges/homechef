@@ -39,9 +39,10 @@ export async function getRecipeTagsByRecipeId(recipeId: PrimaryKey): Promise<
 
 export async function addRecipeTags(
   recipeId: PrimaryKey,
-  tags: Tag[]
+  tags: Tag[],
+  trx = database
 ): Promise<RecipeTag[]> {
-  const recipeTagsListData = await database
+  const recipeTagsListData = await trx
     .insert(recipeTags)
     .values(tags.map((tag) => ({ recipeId, tagId: tag.id })))
     .returning()

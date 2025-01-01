@@ -39,9 +39,10 @@ export async function getRecipeImportDetailsByRecipeId(
 
 export async function addRecipeImportDetails(
   recipeId: PrimaryKey,
-  url: string
+  url: string,
+  trx = database
 ): Promise<RecipeImportDetails | null> {
-  const [recipeImportDetailsData] = await database
+  const [recipeImportDetailsData] = await trx
     .insert(recipeImportDetails)
     .values({
       recipeId,
