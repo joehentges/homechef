@@ -1,6 +1,7 @@
 "use client"
 
 import { RecipeDetails } from "@/types/Recipe"
+import { getDomain } from "@/lib/get-domain"
 
 import { RecipeCookTime } from "./cook-time"
 
@@ -10,7 +11,9 @@ interface RecipePrintVersionProps {
 }
 
 export function RecipePrintVersion(props: RecipePrintVersionProps) {
-  const { ref, recipe } = props
+  const { ref, recipe: recipeDetails } = props
+  const { author, importDetails, recipe, ingredients, directions } =
+    recipeDetails
 
   return (
     <div ref={ref} className="container space-y-6 p-8">
@@ -20,9 +23,9 @@ export function RecipePrintVersion(props: RecipePrintVersionProps) {
             <p className="text-center text-3xl font-bold md:text-start md:text-4xl">
               {recipe.title}
             </p>
-            {recipe.importDetails && (
+            {importDetails && (
               <p className="text-muted-foreground">
-                From: {recipe.importDetails.name}
+                From: {getDomain(importDetails.url)}
               </p>
             )}
           </div>
@@ -42,13 +45,13 @@ export function RecipePrintVersion(props: RecipePrintVersionProps) {
         <div className="w-1/2">
           <p className="text-2xl font-bold">Ingredients</p>
           <ul className="space-y-2 pt-4">
-            {recipe.ingredients
+            {ingredients
               .sort((a, b) => a.orderNumber - b.orderNumber)
               .map((ingredient, index) => {
                 return (
                   <li key={ingredient.orderNumber}>
                     <p>{ingredient.description}</p>
-                    {index < recipe.ingredients.length - 1 && (
+                    {index < ingredients.length - 1 && (
                       <div className="my-3 border-t border-t-muted-foreground" />
                     )}
                   </li>
@@ -61,7 +64,7 @@ export function RecipePrintVersion(props: RecipePrintVersionProps) {
           <p className="text-2xl font-bold">Directions</p>
           <ul>
             <ul className="space-y-4 pt-4">
-              {recipe.directions
+              {directions
                 .sort((a, b) => a.orderNumber - b.orderNumber)
                 .map((direction) => {
                   return (

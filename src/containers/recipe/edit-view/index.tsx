@@ -29,16 +29,18 @@ interface RecipeEditViewProps {
 }
 
 const editRecipeFormSchema = z.object({
-  title: z.string().min(2),
-  description: z.string(),
-  servings: z.string().min(1),
-  prepTime: z.number().min(0),
-  cookTime: z.number().min(0),
-  difficulty: z
-    .enum(["beginner", "intermediate", "advanced"])
-    .nullable()
-    .optional(),
-  private: z.boolean().default(false),
+  recipe: z.object({
+    title: z.string().min(2),
+    description: z.string(),
+    servings: z.string().min(1),
+    prepTime: z.number().min(0),
+    cookTime: z.number().min(0),
+    difficulty: z
+      .enum(["beginner", "intermediate", "advanced"])
+      .nullable()
+      .optional(),
+    private: z.boolean().default(false),
+  }),
   ingredients: z.array(
     z.object({
       orderNumber: z.number(),
@@ -72,8 +74,11 @@ export function RecipeEditView(props: RecipeEditViewProps) {
     resolver: zodResolver(editRecipeFormSchema),
     defaultValues: {
       ...startRecipe,
-      description: startRecipe.recipe.description ?? "",
-      prepTime: startRecipe.recipe.prepTime ?? 0,
+      recipe: {
+        ...startRecipe.recipe,
+        description: startRecipe.recipe.description ?? "",
+        prepTime: startRecipe.recipe.prepTime ?? 0,
+      },
       tags:
         startRecipe.tags?.map((tag) => ({
           value: tag,
@@ -87,26 +92,19 @@ export function RecipeEditView(props: RecipeEditViewProps) {
     disableEditView()
   }
 
-  const [movingIngredients, setMovingIngredients] = useState(
-    startRecipe.ingredients.map((ingredient) => ({
-      ...ingredient,
-      id: ingredient.orderNumber,
-    }))
-  )
-
   // on save - create new recipe (all imorted recipes are their own) & redirect to recipe page for newly create recipe
   // NOTE saved recipe and imported recipe cannot be the same - must have at least 1 difference (even 1 character)
   function onSubmit(values: z.infer<typeof editRecipeFormSchema>) {
-    console.log({
-      ...values,
-      ingredients: movingIngredients,
-    })
+    console.log(values)
     //execute(values)
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="select-none space-y-4"
+      >
         <div className="container flex max-w-[1000px] flex-row items-center justify-between">
           <div className="flex flex-row items-center gap-x-4">
             <button
@@ -127,7 +125,7 @@ export function RecipeEditView(props: RecipeEditViewProps) {
             <div className="flex h-full w-full flex-col justify-between space-y-2 md:space-y-8">
               <FormField
                 control={form.control}
-                name="title"
+                name="recipe.title"
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormControl>
@@ -146,7 +144,7 @@ export function RecipeEditView(props: RecipeEditViewProps) {
               <div className="flex flex-col items-center gap-x-2 gap-y-2 md:flex-row">
                 <FormField
                   control={form.control}
-                  name="servings"
+                  name="recipe.servings"
                   render={({ field }) => (
                     <FormItem className="w-full md:w-[200px]">
                       <FormControl>
@@ -160,7 +158,7 @@ export function RecipeEditView(props: RecipeEditViewProps) {
                 <div className="flex flex-row items-center gap-x-2">
                   <FormField
                     control={form.control}
-                    name="prepTime"
+                    name="recipe.prepTime"
                     render={({ field }) => (
                       <FormItem className="w-[125px]">
                         <FormControl>
@@ -181,7 +179,7 @@ export function RecipeEditView(props: RecipeEditViewProps) {
                   />
                   <FormField
                     control={form.control}
-                    name="cookTime"
+                    name="recipe.cookTime"
                     render={({ field }) => (
                       <FormItem className="w-[125px]">
                         <FormControl>
@@ -230,7 +228,7 @@ export function RecipeEditView(props: RecipeEditViewProps) {
 
           <FormField
             control={form.control}
-            name="description"
+            name="recipe.description"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
@@ -251,9 +249,13 @@ export function RecipeEditView(props: RecipeEditViewProps) {
                   <FormItem>
                     <FormControl>
                       <EditIngredients
-                        initialIngredients={movingIngredients}
-                        movingIngredients={movingIngredients}
-                        setMovingIngredients={setMovingIngredients}
+                        initialIngredients={startRecipe.ingredients.map(
+                          (ingredient) => ({
+                            ...ingredient,
+                            orderNumber: `${ingredient.orderNumber}`,
+                          })
+                        )}
+                        setIngredients={field.onChange}
                       />
                     </FormControl>
                     <FormMessage />
