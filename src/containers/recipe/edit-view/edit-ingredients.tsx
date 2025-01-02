@@ -5,6 +5,7 @@ import { Reorder, useDragControls } from "framer-motion"
 import { GripVerticalIcon } from "lucide-react"
 
 import { Input } from "@/components/ui/input"
+import { AutosizeTextarea } from "@/components/autosize-textarea"
 
 // NOTE! the orderNumber here is being used as an id
 // when the form is submitted - it is correctly numbered based on the array order
@@ -22,7 +23,7 @@ export function EditIngredients(props: EditIngredientsProps) {
   const { ingredients, setIngredients } = props
 
   function onEditIngredientInputBlur(
-    event: React.FocusEvent<HTMLInputElement>,
+    event: React.FocusEvent<HTMLTextAreaElement, Element>,
     orderNumber: number
   ) {
     const value = event.target.value
@@ -57,7 +58,9 @@ export function EditIngredients(props: EditIngredientsProps) {
     return nextAvailable + 1
   }
 
-  function onAddIngredientInputBlur(event: React.FocusEvent<HTMLInputElement>) {
+  function onAddIngredientInputBlur(
+    event: React.FocusEvent<HTMLTextAreaElement, Element>
+  ) {
     const value = event.target.value
     if (!!value) {
       setIngredients([
@@ -78,7 +81,7 @@ export function EditIngredients(props: EditIngredientsProps) {
         />
       ))}
       <div className="my-2 flex flex-row items-center gap-x-2">
-        <Input
+        <AutosizeTextarea
           placeholder="Enter an ingredient"
           onBlur={onAddIngredientInputBlur}
         />
@@ -91,7 +94,7 @@ export function EditIngredients(props: EditIngredientsProps) {
 interface IngredientItemProps {
   ingredient: Ingredient
   onBlur: (
-    event: React.FocusEvent<HTMLInputElement>,
+    event: React.FocusEvent<HTMLTextAreaElement, Element>,
     orderNumber: number
   ) => void
 }
@@ -108,7 +111,7 @@ function IngredientItem(props: IngredientItemProps) {
       dragControls={dragControls}
     >
       <div className="group my-2 flex flex-row items-center gap-x-2">
-        <Input
+        <AutosizeTextarea
           defaultValue={ingredient.description}
           onBlur={(e) => onBlur(e, ingredient.orderNumber)}
         />
