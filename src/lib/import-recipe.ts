@@ -2,7 +2,7 @@
 
 import * as cheerio from "cheerio"
 
-import { RecipeDetails } from "@/types/Recipe"
+import { FormattedRecipeDetails } from "@/types/Recipe"
 
 import { getDomain } from "./get-domain"
 
@@ -45,7 +45,9 @@ function tryMetadata(jsonString: string) {
   return undefined
 }
 
-export async function importRecipe(url: string): Promise<RecipeDetails | null> {
+export async function importRecipe(
+  url: string
+): Promise<FormattedRecipeDetails | null> {
   try {
     const html = await fetchPageHtml(url)
     const $ = cheerio.load(html)
@@ -250,7 +252,7 @@ function handleTimeDescrepency(
   }
 }
 
-function formatData(recipeData: any, url: string): RecipeDetails {
+function formatData(recipeData: any, url: string): FormattedRecipeDetails {
   const { prepTime, cookTime } = handleTimeDescrepency(
     formatDuration(recipeData.prepTime) || 0,
     formatDuration(recipeData.cookTime) || 0,

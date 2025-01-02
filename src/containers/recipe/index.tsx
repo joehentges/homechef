@@ -7,6 +7,7 @@ import { useReactToPrint } from "react-to-print"
 
 import { RecipeDetails } from "@/types/Recipe"
 import { User } from "@/db/schemas"
+import { getDomain } from "@/lib/get-domain"
 
 import { RecipeCookTime } from "./cook-time"
 import { RecipeEditView } from "./edit-view"
@@ -23,7 +24,16 @@ interface RecipeProps {
 }
 
 export function RecipeContainer(props: RecipeProps) {
-  const { user, recipe, availableTags } = props
+  const { user, recipe: recipeDetails, availableTags } = props
+  const {
+    author,
+    importDetails,
+    recipe,
+    ingredients,
+    directions,
+    photos,
+    tags,
+  } = recipeDetails
   const isAuthenticated = !!user
 
   const recipePrintVersionRef = useRef(null)
@@ -41,7 +51,7 @@ export function RecipeContainer(props: RecipeProps) {
   if (enableEditView) {
     return (
       <RecipeEditView
-        startRecipe={recipe}
+        startRecipe={recipeDetails}
         availableTags={availableTags}
         disableEditView={() => setEnableEditView(false)}
       />
@@ -51,11 +61,14 @@ export function RecipeContainer(props: RecipeProps) {
   return (
     <>
       <div className="hidden">
-        <RecipePrintVersion recipe={recipe} ref={recipePrintVersionRef} />
+        <RecipePrintVersion
+          recipe={recipeDetails}
+          ref={recipePrintVersionRef}
+        />
       </div>
-      <div className="container max-w-[850px] space-y-6 rounded-3xl bg-primary/20 p-4 md:p-8">
+      <div className="container max-w-[1000px] space-y-6 rounded-3xl bg-primary/20 p-4 md:p-8">
         <div className="flex flex-col items-center gap-x-6 gap-y-4 md:flex-row md:items-start">
-          <RecipeImage photos={recipe.photos} />
+          <RecipeImage photos={photos} />
 
           <div className="flex w-full flex-col justify-between space-y-2 md:space-y-4">
             <div className="flex flex-col-reverse items-center justify-between gap-y-4 md:flex-row md:items-start">
@@ -63,13 +76,13 @@ export function RecipeContainer(props: RecipeProps) {
                 <p className="text-center text-3xl font-bold md:text-start md:text-4xl">
                   {recipe.title}
                 </p>
-                {recipe.importDetails && (
+                {importDetails && (
                   <Link
-                    href={recipe.importDetails.url}
+                    href={importDetails.url}
                     target="_blank"
                     className="text-muted-foreground transition-colors hover:text-foreground"
                   >
-                    <p>From: {recipe.importDetails.name}</p>
+                    <p>From: {getDomain(importDetails.url)}</p>
                   </Link>
                 )}
               </div>
@@ -105,7 +118,7 @@ export function RecipeContainer(props: RecipeProps) {
                 prepTime={recipe.prepTime}
                 cookTime={recipe.cookTime}
               />
-              <RecipeTags tags={recipe.tags} />
+              <RecipeTags tags={tags} />
             </div>
           </div>
         </div>
@@ -116,13 +129,13 @@ export function RecipeContainer(props: RecipeProps) {
           <div className="md:w-1/2">
             <p className="text-2xl font-bold">Ingredients</p>
             <ul className="space-y-2 pt-4">
-              {recipe.ingredients
+              {ingredients
                 .sort((a, b) => a.orderNumber - b.orderNumber)
                 .map((ingredient, index) => {
                   return (
                     <li key={ingredient.orderNumber}>
                       <p>{ingredient.description}</p>
-                      {index < recipe.ingredients.length - 1 && (
+                      {index < ingredients.length - 1 && (
                         <div className="my-3 border-t border-t-muted-foreground" />
                       )}
                     </li>
@@ -135,7 +148,7 @@ export function RecipeContainer(props: RecipeProps) {
             <p className="text-2xl font-bold">Directions</p>
             <ul>
               <ul className="space-y-4 pt-4">
-                {recipe.directions
+                {directions
                   .sort((a, b) => a.orderNumber - b.orderNumber)
                   .map((direction) => {
                     return (

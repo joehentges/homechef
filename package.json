@@ -18,8 +18,6 @@
     "temp": "tsx temp2.ts"
   },
   "dependencies": {
-    "@dnd-kit/core": "^6.3.1",
-    "@dnd-kit/modifiers": "^9.0.0",
     "@hookform/resolvers": "^3.9.1",
     "@oslojs/crypto": "^1.0.1",
     "@oslojs/encoding": "^1.1.0",
@@ -54,6 +52,7 @@
     "react-player": "^2.16.0",
     "react-to-print": "^3.0.4",
     "resend": "^4.0.1",
+    "swapy": "^1.0.3",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
     "unique-names-generator": "^4.7.1",

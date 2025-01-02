@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { MoveLeftIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
@@ -20,7 +20,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { MultipleSelector } from "@/components/multiple-selector"
 
 import { RecipeImage } from "../image"
-import { EditIngredients } from "./edit-ingredients"
+import { EditIngredients } from "./edit-ingredients2"
 
 interface RecipeEditViewProps {
   startRecipe: RecipeDetails
@@ -72,8 +72,8 @@ export function RecipeEditView(props: RecipeEditViewProps) {
     resolver: zodResolver(editRecipeFormSchema),
     defaultValues: {
       ...startRecipe,
-      description: startRecipe.description ?? "",
-      prepTime: startRecipe.prepTime ?? 0,
+      description: startRecipe.recipe.description ?? "",
+      prepTime: startRecipe.recipe.prepTime ?? 0,
       tags:
         startRecipe.tags?.map((tag) => ({
           value: tag,
@@ -87,14 +87,22 @@ export function RecipeEditView(props: RecipeEditViewProps) {
     disableEditView()
   }
 
+  const [movingIngredients, setMovingIngredients] = useState(
+    startRecipe.ingredients.map((ingredient) => ({
+      ...ingredient,
+      id: ingredient.orderNumber,
+    }))
+  )
+
   // on save - create new recipe (all imorted recipes are their own) & redirect to recipe page for newly create recipe
   // NOTE saved recipe and imported recipe cannot be the same - must have at least 1 difference (even 1 character)
   function onSubmit(values: z.infer<typeof editRecipeFormSchema>) {
-    console.log(values)
+    console.log({
+      ...values,
+      ingredients: movingIngredients,
+    })
     //execute(values)
   }
-
-  console.log(form.getValues())
 
   return (
     <Form {...form}>
@@ -140,7 +148,7 @@ export function RecipeEditView(props: RecipeEditViewProps) {
                   control={form.control}
                   name="servings"
                   render={({ field }) => (
-                    <FormItem className="w-[200px]">
+                    <FormItem className="w-full md:w-[200px]">
                       <FormControl>
                         <Input {...field} placeholder="Servings" type="text" />
                       </FormControl>
@@ -149,48 +157,50 @@ export function RecipeEditView(props: RecipeEditViewProps) {
                   )}
                 />
 
-                <FormField
-                  control={form.control}
-                  name="prepTime"
-                  render={({ field }) => (
-                    <FormItem className="w-[125px]">
-                      <FormControl>
-                        <div className="relative">
-                          <Input
-                            {...field}
-                            placeholder="Prep time"
-                            type="number"
-                          />
-                          <span className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-sm text-muted-foreground peer-disabled:opacity-50">
-                            min
-                          </span>
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="cookTime"
-                  render={({ field }) => (
-                    <FormItem className="w-[125px]">
-                      <FormControl>
-                        <div className="relative">
-                          <Input
-                            {...field}
-                            placeholder="Cook time"
-                            type="number"
-                          />
-                          <span className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-sm text-muted-foreground peer-disabled:opacity-50">
-                            min
-                          </span>
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <div className="flex flex-row items-center gap-x-2">
+                  <FormField
+                    control={form.control}
+                    name="prepTime"
+                    render={({ field }) => (
+                      <FormItem className="w-[125px]">
+                        <FormControl>
+                          <div className="relative">
+                            <Input
+                              {...field}
+                              placeholder="Prep time"
+                              type="number"
+                            />
+                            <span className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-sm text-muted-foreground peer-disabled:opacity-50">
+                              min
+                            </span>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="cookTime"
+                    render={({ field }) => (
+                      <FormItem className="w-[125px]">
+                        <FormControl>
+                          <div className="relative">
+                            <Input
+                              {...field}
+                              placeholder="Cook time"
+                              type="number"
+                            />
+                            <span className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-sm text-muted-foreground peer-disabled:opacity-50">
+                              min
+                            </span>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -198,27 +208,24 @@ export function RecipeEditView(props: RecipeEditViewProps) {
           <FormField
             control={form.control}
             name="tags"
-            render={({ field }) => {
-              console.log("field", field)
-              return (
-                <FormItem>
-                  <FormControl>
-                    <MultipleSelector
-                      className="bg-background hover:bg-background"
-                      options={availableTags.map((tag) => ({
-                        value: tag.name,
-                        label: tag.name,
-                      }))}
-                      onChange={field.onChange}
-                      value={field.value}
-                      placeholder="Select tags"
-                      maxSelected={10}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )
-            }}
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <MultipleSelector
+                    className="bg-background hover:bg-background"
+                    options={availableTags.map((tag) => ({
+                      value: tag.name,
+                      label: tag.name,
+                    }))}
+                    onChange={field.onChange}
+                    value={field.value}
+                    placeholder="Select tags"
+                    maxSelected={10}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
 
           <FormField
@@ -236,8 +243,23 @@ export function RecipeEditView(props: RecipeEditViewProps) {
 
           <div className="flex flex-col gap-x-16 gap-y-12 md:flex-row md:items-start">
             <div className="md:w-3/4">
-              <p className="text-2xl font-bold">Ingredients</p>
-              <EditIngredients ingredients={form.getValues().ingredients} />
+              <p className="pb-4 text-2xl font-bold">Ingredients</p>
+              <FormField
+                control={form.control}
+                name="ingredients"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <EditIngredients
+                        initialIngredients={movingIngredients}
+                        movingIngredients={movingIngredients}
+                        setMovingIngredients={setMovingIngredients}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
 
             <div className="w-full">

@@ -1,5 +1,5 @@
 import { PrimaryKey } from "@/types"
-import { RecipeDetails } from "@/types/Recipe"
+import { FormattedRecipeDetails, RecipeDetails } from "@/types/Recipe"
 import {
   addRecipeDirections,
   getRecipeDirectionsByRecipeId,
@@ -52,33 +52,13 @@ export async function getRecipeByIdUseCase(
   const recipeTags = await getRecipeTagsByRecipeId(recipeId)
 
   return {
-    author: user
-      ? {
-          userId: user.id,
-          displayName: user.displayName,
-        }
-      : undefined,
-    importDetails: recipeImportDetails
-      ? {
-          name: getDomain(recipeImportDetails.url),
-          url: recipeImportDetails.url,
-        }
-      : undefined,
-    title: recipe.title,
-    description: recipe.description,
-    servings: recipe.servings,
-    prepTime: recipe.prepTime,
-    cookTime: recipe.cookTime,
-    difficulty: recipe.difficulty,
-    private: recipe.private,
+    author: user,
+    importDetails: recipeImportDetails,
+    recipe,
     ingredients: recipeIngredients ?? [],
-    photos: recipePhotos,
-    directions:
-      recipeDirections?.map((direction) => ({
-        orderNumber: direction.orderNumber,
-        description: direction.description,
-      })) ?? [],
-    tags: recipeTags?.map((tag) => tag.name),
+    photos: recipePhotos ?? [],
+    directions: recipeDirections ?? [],
+    tags: recipeTags?.map((tag) => tag.name) ?? [],
   }
 }
 
@@ -87,7 +67,7 @@ export async function getRecipeImportDetailsByUrlUseCase(url: string) {
 }
 
 export async function addRecipeUseCase(
-  recipeDetails: RecipeDetails
+  formattedRecipeDetails: FormattedRecipeDetails
 ): Promise<RecipeDetails> {
   const {
     author,
@@ -102,9 +82,9 @@ export async function addRecipeUseCase(
     directions,
     photos,
     tags,
-  } = recipeDetails
+  } = formattedRecipeDetails
 
-  const recipeDetailsFormatted = await createTransaction(async (trx) => {
+  const recipeDetails = await createTransaction(async (trx) => {
     let user
     if (author) {
       user = await getUser(author.userId)
@@ -158,37 +138,17 @@ export async function addRecipeUseCase(
     }
 
     return {
-      author: user
-        ? {
-            userId: user.id,
-            displayName: user.displayName,
-          }
-        : undefined,
-      importDetails: recipeImportDetails
-        ? {
-            name: getDomain(recipeImportDetails.url),
-            url: recipeImportDetails.url,
-          }
-        : undefined,
-      title: recipe.title,
-      description: recipe.description,
-      servings: recipe.servings,
-      prepTime: recipe.prepTime,
-      cookTime: recipe.cookTime,
-      difficulty: recipe.difficulty,
-      private: recipe.private,
+      author: user,
+      importDetails: recipeImportDetails,
+      recipe,
       ingredients: recipeIngredients ?? [],
-      photos: recipePhotos,
-      directions:
-        recipeDirections?.map((direction) => ({
-          orderNumber: direction.orderNumber,
-          description: direction.description,
-        })) ?? [],
-      tags: tagsList?.map((tag) => tag.name),
+      photos: recipePhotos ?? [],
+      directions: recipeDirections ?? [],
+      tags: tagsList?.map((tag) => tag.name) ?? [],
     }
   })
 
-  return recipeDetailsFormatted as RecipeDetails
+  return recipeDetails as RecipeDetails
 }
 
 export async function getAvailableRecipeTagsUseCase() {

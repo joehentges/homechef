@@ -1,3 +1,13 @@
+import {
+  Recipe,
+  RecipeDirection,
+  RecipeImportDetails,
+  RecipeIngredient,
+  RecipePhoto,
+  RecipeTag,
+  User,
+} from "@/db/schemas"
+
 import { PrimaryKey } from "."
 
 export type RecipeDetailsPhoto = {
@@ -8,6 +18,16 @@ export type RecipeDetailsPhoto = {
 export type RecipeDifficulty = "beginner" | "intermediate" | "advanced" | null
 
 export interface RecipeDetails {
+  recipe: Recipe
+  author?: User
+  importDetails?: RecipeImportDetails | null
+  ingredients: RecipeIngredient[]
+  directions: RecipeDirection[]
+  photos: RecipePhoto[]
+  tags: string[]
+}
+
+interface FormattedRecipeDetails {
   author?: {
     userId: PrimaryKey
     displayName: string
