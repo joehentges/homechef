@@ -20,7 +20,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { MultipleSelector } from "@/components/multiple-selector"
 
 import { RecipeImage } from "../image"
-import { EditIngredients } from "./edit-ingredients2"
+import { EditIngredients } from "./edit-ingredients"
 
 interface RecipeEditViewProps {
   startRecipe: RecipeDetails
@@ -44,13 +44,13 @@ const editRecipeFormSchema = z.object({
   ingredients: z.array(
     z.object({
       orderNumber: z.number(),
-      description: z.string().min(2),
+      description: z.string().min(3),
     })
   ),
   directions: z.array(
     z.object({
       orderNumber: z.number(),
-      description: z.string().min(2),
+      description: z.string().min(3),
     })
   ),
   photos: z.array(
@@ -101,10 +101,7 @@ export function RecipeEditView(props: RecipeEditViewProps) {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="select-none space-y-4"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <div className="container flex max-w-[1000px] flex-row items-center justify-between">
           <div className="flex flex-row items-center gap-x-4">
             <button
@@ -116,8 +113,9 @@ export function RecipeEditView(props: RecipeEditViewProps) {
             <p className="text-xl">Edit recipe</p>
           </div>
 
-          <Button>Save recipe</Button>
+          <Button type="submit">Save recipe</Button>
         </div>
+
         <div className="container max-w-[1000px] space-y-6 rounded-3xl bg-primary/20 p-4 md:p-8">
           <div className="flex flex-col items-center gap-x-6 gap-y-4 md:flex-row md:items-start">
             <RecipeImage photos={startRecipe.photos} />
@@ -240,25 +238,24 @@ export function RecipeEditView(props: RecipeEditViewProps) {
           />
 
           <div className="flex flex-col gap-x-16 gap-y-12 md:flex-row md:items-start">
-            <div className="md:w-3/4">
-              <p className="pb-4 text-2xl font-bold">Ingredients</p>
+            <div className="select-none md:w-3/4">
+              <p className="pb-3 text-2xl font-bold">Ingredients</p>
               <FormField
                 control={form.control}
                 name="ingredients"
                 render={({ field }) => (
                   <FormItem>
+                    {form.formState.errors.ingredients && (
+                      <p className="text-sm text-destructive">
+                        Ingredients must be at least 3 characters
+                      </p>
+                    )}
                     <FormControl>
                       <EditIngredients
-                        initialIngredients={startRecipe.ingredients.map(
-                          (ingredient) => ({
-                            ...ingredient,
-                            orderNumber: `${ingredient.orderNumber}`,
-                          })
-                        )}
+                        ingredients={field.value}
                         setIngredients={field.onChange}
                       />
                     </FormControl>
-                    <FormMessage />
                   </FormItem>
                 )}
               />
