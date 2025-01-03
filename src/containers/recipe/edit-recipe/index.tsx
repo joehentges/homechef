@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { MoveLeftIcon } from "lucide-react"
+import { CookingPotIcon, MoveLeftIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -19,7 +19,6 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { MultipleSelector } from "@/components/multiple-selector"
 
-import { RecipeImage } from "../view-recipe/image"
 import { EditDirections } from "./edit-directions"
 import { EditIngredients } from "./edit-ingredients"
 
@@ -53,12 +52,6 @@ const editRecipeFormSchema = z.object({
     z.object({
       orderNumber: z.number(),
       description: z.string().min(3),
-    })
-  ),
-  photos: z.array(
-    z.object({
-      photoUrl: z.string().url(),
-      defaultPhoto: z.boolean().default(false),
     })
   ),
   tags: z.array(
@@ -129,7 +122,9 @@ export function EditRecipe(props: EditRecipeProps) {
 
         <div className="container max-w-[1000px] space-y-6 rounded-3xl bg-primary/20 p-4 md:p-8">
           <div className="flex flex-col items-center gap-x-6 gap-y-4 md:flex-row md:items-start">
-            <RecipeImage photos={startRecipe.photos} />
+            <div className="center relative h-[250px] w-[350px] max-w-full rounded-2xl bg-primary/20 md:h-[125px] md:w-[175px] md:rounded-l-3xl">
+              <CookingPotIcon className="absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 transform text-muted-foreground" />
+            </div>
 
             <div className="flex h-full w-full flex-col justify-between space-y-2 md:space-y-8">
               <FormField

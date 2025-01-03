@@ -3,15 +3,8 @@ import { FormattedRecipeDetails, RecipeDetails } from "@/types/Recipe"
 export function formatRecipe(
   recipeDetails: RecipeDetails
 ): FormattedRecipeDetails {
-  const {
-    author,
-    importDetails,
-    recipe,
-    ingredients,
-    directions,
-    photos,
-    tags,
-  } = recipeDetails
+  const { author, importDetails, recipe, ingredients, directions, tags } =
+    recipeDetails
 
   return {
     author: author
@@ -42,7 +35,6 @@ export function formatRecipe(
       orderNumber: direction.orderNumber,
       description: direction.description,
     })),
-    photos,
     tags,
   }
 }

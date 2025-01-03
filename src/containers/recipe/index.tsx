@@ -37,7 +37,6 @@ export function RecipeContainer(props: RecipeContainerProps) {
           author: user,
           ingredients: [],
           directions: [],
-          photos: [],
           tags: [],
         }}
         availableTags={availableTags}

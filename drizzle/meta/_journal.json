@@ -36,6 +36,13 @@
       "when": 1735763626499,
       "tag": "0004_premium_dark_beast",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1735930744599,
+      "tag": "0005_classy_toad_men",
+      "breakpoints": true
     }
   ]
 }

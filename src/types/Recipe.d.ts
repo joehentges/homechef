@@ -3,7 +3,6 @@ import {
   RecipeDirection,
   RecipeImportDetails,
   RecipeIngredient,
-  RecipePhoto,
   RecipeTag,
   User,
 } from "@/db/schemas"
@@ -23,7 +22,6 @@ export interface RecipeDetails {
   importDetails?: RecipeImportDetails | null
   ingredients: RecipeIngredient[]
   directions: RecipeDirection[]
-  photos: RecipePhoto[]
   tags: string[]
 }
 
@@ -46,6 +44,5 @@ interface FormattedRecipeDetails {
   }
   ingredients: { orderNumber: number; description: string }[]
   directions: { orderNumber: number; description: string }[]
-  photos?: RecipeDetailsPhoto[]
   tags?: string[]
 }

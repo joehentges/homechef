@@ -9,10 +9,6 @@ import {
   getRecipeIngredientsByRecipeId,
 } from "@/data-access/recipe-ingredients"
 import {
-  addRecipePhotos,
-  getRecipePhotosByRecipeId,
-} from "@/data-access/recipe-photos"
-import {
   addRecipeTags,
   getRecipeTagsByRecipeId,
 } from "@/data-access/recipe-tags"
@@ -44,8 +40,6 @@ export async function getRecipeByIdUseCase(
 
   const recipeIngredients = await getRecipeIngredientsByRecipeId(recipeId)
 
-  const recipePhotos = await getRecipePhotosByRecipeId(recipeId)
-
   const recipeDirections = await getRecipeDirectionsByRecipeId(recipeId)
 
   const recipeTags = await getRecipeTagsByRecipeId(recipeId)
@@ -55,7 +49,6 @@ export async function getRecipeByIdUseCase(
     importDetails: recipeImportDetails,
     recipe,
     ingredients: recipeIngredients ?? [],
-    photos: recipePhotos ?? [],
     directions: recipeDirections ?? [],
     tags: recipeTags?.map((tag) => tag.name) ?? [],
   }
@@ -68,15 +61,8 @@ export async function getRecipeImportDetailsByUrlUseCase(url: string) {
 export async function addRecipeUseCase(
   formattedRecipeDetails: FormattedRecipeDetails
 ): Promise<RecipeDetails> {
-  const {
-    author,
-    importDetails,
-    recipe,
-    ingredients,
-    directions,
-    photos,
-    tags,
-  } = formattedRecipeDetails
+  const { author, importDetails, recipe, ingredients, directions, tags } =
+    formattedRecipeDetails
 
   const recipeDetails = await createTransaction(async (trx) => {
     let user
@@ -118,11 +104,6 @@ export async function addRecipeUseCase(
       trx
     )
 
-    let recipePhotos
-    if (photos) {
-      recipePhotos = await addRecipePhotos(newRecipe.id, photos, trx)
-    }
-
     let tagsList
     if (tags) {
       tagsList = await getTagsByName(tags)
@@ -136,7 +117,6 @@ export async function addRecipeUseCase(
       importDetails: recipeImportDetails,
       recipe,
       ingredients: recipeIngredients ?? [],
-      photos: recipePhotos ?? [],
       directions: recipeDirections ?? [],
       tags: tagsList?.map((tag) => tag.name) ?? [],
     }

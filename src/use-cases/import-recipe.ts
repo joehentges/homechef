@@ -127,28 +127,6 @@ function formatServings(servings: any) {
   }
 }
 
-function formatPhotos(photos: any) {
-  if (Array.isArray(photos)) {
-    return photos.map((photo) => {
-      if (typeof photo === "string") {
-        return photo
-      }
-
-      if (photo["@type"] === "ImageObject") {
-        return photo.url ?? photo.URL
-      }
-    })
-  }
-
-  if (photos["@type"] === "ImageObject") {
-    return [photos.url ?? photos.URL]
-  }
-
-  if (typeof photos === "string") {
-    return [photos]
-  }
-}
-
 function fixMarkupCharacters(word: string) {
   return word
     .replace(/&amp;/g, "&")
@@ -278,10 +256,6 @@ function formatData(recipeData: any, url: string): FormattedRecipeDetails {
         orderNumber: index,
       })) || [],
     directions: formatDirections(recipeData.recipeInstructions) || [],
-    photos: formatPhotos(recipeData.image)?.map((photo) => ({
-      defaultPhoto: false,
-      photoUrl: photo,
-    })),
     tags: formatKeywords(recipeData.keywords),
   }
 }
