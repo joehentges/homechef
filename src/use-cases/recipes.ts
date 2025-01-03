@@ -25,7 +25,6 @@ import {
 import { getAllTags, getTagsByName } from "@/data-access/tags"
 import { getUser } from "@/data-access/users"
 import { createTransaction } from "@/data-access/utils"
-import { getDomain } from "@/lib/get-domain"
 
 export async function getRecipeByIdUseCase(
   recipeId: PrimaryKey
@@ -72,12 +71,7 @@ export async function addRecipeUseCase(
   const {
     author,
     importDetails,
-    title,
-    description,
-    prepTime,
-    cookTime,
-    difficulty,
-    servings,
+    recipe,
     ingredients,
     directions,
     photos,
@@ -87,18 +81,18 @@ export async function addRecipeUseCase(
   const recipeDetails = await createTransaction(async (trx) => {
     let user
     if (author) {
-      user = await getUser(author.userId)
+      user = await getUser(author.id)
     }
 
-    const recipe = await addRecipe(
+    const newRecipe = await addRecipe(
       {
-        userId: author?.userId,
-        title,
-        prepTime,
-        cookTime,
-        difficulty,
-        servings,
-        description,
+        userId: author?.id,
+        title: recipe.title,
+        prepTime: recipe.prepTime,
+        cookTime: recipe.cookTime,
+        difficulty: recipe.difficulty,
+        servings: recipe.servings,
+        description: recipe.description,
       },
       trx
     )
@@ -106,34 +100,34 @@ export async function addRecipeUseCase(
     let recipeImportDetails
     if (importDetails) {
       recipeImportDetails = await addRecipeImportDetails(
-        recipe.id,
+        newRecipe.id,
         importDetails?.url,
         trx
       )
     }
 
     const recipeIngredients = await addRecipeIngredients(
-      recipe.id,
+      newRecipe.id,
       ingredients,
       trx
     )
 
     const recipeDirections = await addRecipeDirections(
-      recipe.id,
+      newRecipe.id,
       directions,
       trx
     )
 
     let recipePhotos
     if (photos) {
-      recipePhotos = await addRecipePhotos(recipe.id, photos, trx)
+      recipePhotos = await addRecipePhotos(newRecipe.id, photos, trx)
     }
 
     let tagsList
     if (tags) {
       tagsList = await getTagsByName(tags)
       if (tagsList.length > 1) {
-        await addRecipeTags(recipe.id, tagsList, trx)
+        await addRecipeTags(newRecipe.id, tagsList, trx)
       }
     }
 

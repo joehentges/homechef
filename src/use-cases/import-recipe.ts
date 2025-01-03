@@ -260,17 +260,18 @@ function formatData(recipeData: any, url: string): FormattedRecipeDetails {
 
   return {
     importDetails: {
-      name: getDomain(url),
       url,
     },
-    title: fixMarkupCharacters(recipeData.name),
-    description: recipeData.description
-      ? fixMarkupCharacters(recipeData.description)
-      : undefined,
-    servings: formatServings(recipeData.recipeYield) ?? `1 serving`,
-    prepTime,
-    cookTime,
-    private: false,
+    recipe: {
+      title: fixMarkupCharacters(recipeData.name),
+      description: recipeData.description
+        ? fixMarkupCharacters(recipeData.description)
+        : undefined,
+      servings: formatServings(recipeData.recipeYield) ?? `1 serving`,
+      prepTime,
+      cookTime,
+      private: false,
+    },
     ingredients:
       recipeData.recipeIngredient.map((ing: string, index: number) => ({
         description: ing.replace("((", "(").replace("))", ")"),

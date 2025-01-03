@@ -29,20 +29,21 @@ export interface RecipeDetails {
 
 interface FormattedRecipeDetails {
   author?: {
-    userId: PrimaryKey
+    id: PrimaryKey
     displayName: string
   }
   importDetails?: {
-    name: string
     url: string
   }
-  title: string
-  description?: string | null
-  servings: string
-  prepTime: number | null
-  cookTime: number
-  difficulty?: RecipeDifficulty
-  private: boolean
+  recipe: {
+    title: string
+    description?: string | null
+    servings: string
+    prepTime: number | null
+    cookTime: number
+    difficulty?: RecipeDifficulty
+    private: boolean
+  }
   ingredients: { orderNumber: number; description: string }[]
   directions: { orderNumber: number; description: string }[]
   photos?: RecipeDetailsPhoto[]

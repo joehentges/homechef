@@ -6,7 +6,7 @@ import { MoveLeftIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-import { RecipeDetails } from "@/types/Recipe"
+import { FormattedRecipeDetails, RecipeDetails } from "@/types/Recipe"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -19,14 +19,15 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { MultipleSelector } from "@/components/multiple-selector"
 
-import { RecipeImage } from "../image"
+import { RecipeImage } from "../view-recipe/image"
 import { EditDirections } from "./edit-directions"
 import { EditIngredients } from "./edit-ingredients"
 
-interface RecipeEditViewProps {
-  startRecipe: RecipeDetails
+interface EditRecipeProps {
+  newRecipe?: boolean
+  startRecipe: FormattedRecipeDetails
   availableTags: { name: string }[]
-  disableEditView: () => void
+  onDisableEditView?: () => void
 }
 
 const editRecipeFormSchema = z.object({
@@ -68,8 +69,13 @@ const editRecipeFormSchema = z.object({
   ),
 })
 
-export function RecipeEditView(props: RecipeEditViewProps) {
-  const { startRecipe, availableTags, disableEditView } = props
+export function EditRecipe(props: EditRecipeProps) {
+  const {
+    newRecipe = false,
+    startRecipe,
+    availableTags,
+    onDisableEditView,
+  } = props
 
   const form = useForm<z.infer<typeof editRecipeFormSchema>>({
     resolver: zodResolver(editRecipeFormSchema),
@@ -90,7 +96,9 @@ export function RecipeEditView(props: RecipeEditViewProps) {
 
   function onBackButtonClicked() {
     form.reset()
-    disableEditView()
+    if (onDisableEditView) {
+      onDisableEditView()
+    }
   }
 
   // on save - create new recipe (all imorted recipes are their own) & redirect to recipe page for newly create recipe
@@ -105,13 +113,15 @@ export function RecipeEditView(props: RecipeEditViewProps) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <div className="container flex max-w-[1000px] flex-row items-center justify-between">
           <div className="flex flex-row items-center gap-x-4">
-            <button
-              onClick={onBackButtonClicked}
-              className="text-muted-foreground transition-colors hover:text-foreground"
-            >
-              <MoveLeftIcon />
-            </button>
-            <p className="text-xl">Edit recipe</p>
+            {onDisableEditView && (
+              <button
+                onClick={onBackButtonClicked}
+                className="text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <MoveLeftIcon />
+              </button>
+            )}
+            <p className="text-xl">{newRecipe ? "New" : "Edit"} recipe</p>
           </div>
 
           <Button type="submit">Save recipe</Button>

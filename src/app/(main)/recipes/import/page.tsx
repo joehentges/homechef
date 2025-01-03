@@ -1,3 +1,4 @@
+import { formatRecipe } from "@/lib/format-recipe"
 import { getCurrentUser } from "@/lib/session"
 import { importRecipeUseCase } from "@/use-cases/import-recipe"
 import {
@@ -39,7 +40,7 @@ export default async function ImportRecipePage(props: ImportRecipePageProps) {
     <div className="py-4 md:py-8">
       <RecipeContainer
         user={user}
-        recipe={recipeDetails}
+        recipe={formatRecipe(recipeDetails)}
         availableTags={availableTags}
       />
     </div>

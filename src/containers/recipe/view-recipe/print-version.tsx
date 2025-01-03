@@ -1,13 +1,13 @@
 "use client"
 
-import { RecipeDetails } from "@/types/Recipe"
+import { FormattedRecipeDetails } from "@/types/Recipe"
 import { getDomain } from "@/lib/get-domain"
 
 import { RecipeCookTime } from "./cook-time"
 
 interface RecipePrintVersionProps {
   ref: React.Ref<HTMLDivElement>
-  recipe: RecipeDetails
+  recipe: FormattedRecipeDetails
 }
 
 export function RecipePrintVersion(props: RecipePrintVersionProps) {
@@ -23,7 +23,12 @@ export function RecipePrintVersion(props: RecipePrintVersionProps) {
             <p className="text-center text-3xl font-bold md:text-start md:text-4xl">
               {recipe.title}
             </p>
-            {importDetails && (
+            {author && (
+              <p className="text-muted-foreground">
+                From: {author.displayName}
+              </p>
+            )}
+            {!author && importDetails && (
               <p className="text-muted-foreground">
                 From: {getDomain(importDetails.url)}
               </p>
