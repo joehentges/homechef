@@ -3,8 +3,9 @@
 import * as cheerio from "cheerio"
 
 import { FormattedRecipeDetails } from "@/types/Recipe"
+import { getDomain } from "@/lib/get-domain"
 
-import { getDomain } from "./get-domain"
+import { addRecipeUseCase } from "./recipes"
 
 async function fetchPageHtml(url: string) {
   const response = await fetch(url)
@@ -45,9 +46,7 @@ function tryMetadata(jsonString: string) {
   return undefined
 }
 
-export async function importRecipe(
-  url: string
-): Promise<FormattedRecipeDetails | null> {
+async function importRecipe(url: string): Promise<object | null | undefined> {
   try {
     const html = await fetchPageHtml(url)
     const $ = cheerio.load(html)
@@ -55,7 +54,7 @@ export async function importRecipe(
     if (jsonLdScript) {
       const jsonDetais = tryMetadata(jsonLdScript)
       if (jsonDetais) {
-        return formatData(jsonDetais, url)
+        return jsonDetais
       }
     }
     return null
@@ -284,4 +283,16 @@ function formatData(recipeData: any, url: string): FormattedRecipeDetails {
     })),
     tags: formatKeywords(recipeData.keywords),
   }
+}
+
+export async function importRecipeUseCase(url: string) {
+  const importRecipeData = await importRecipe(url)
+
+  if (!importRecipeData) {
+    throw new Error("Recipe not found")
+  }
+
+  const formattedRecipeData = formatData(importRecipeData, url)
+
+  return addRecipeUseCase(formattedRecipeData)
 }

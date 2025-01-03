@@ -1,7 +1,6 @@
-import { importRecipe } from "@/lib/import-recipe"
 import { getCurrentUser } from "@/lib/session"
+import { importRecipeUseCase } from "@/use-cases/import-recipe"
 import {
-  addRecipeUseCase,
   getAvailableRecipeTagsUseCase,
   getRecipeByIdUseCase,
   getRecipeImportDetailsByUrlUseCase,
@@ -29,13 +28,7 @@ export default async function ImportRecipePage(props: ImportRecipePageProps) {
   if (recipeImportDetails) {
     recipeDetails = await getRecipeByIdUseCase(recipeImportDetails.recipeId)
   } else {
-    const importRecipeData = await importRecipe(url)
-
-    if (!importRecipeData) {
-      throw new Error("Recipe not found")
-    }
-
-    recipeDetails = await addRecipeUseCase(importRecipeData)
+    recipeDetails = await importRecipeUseCase(url)
   }
 
   const user = await getCurrentUser()
