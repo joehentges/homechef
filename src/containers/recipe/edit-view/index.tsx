@@ -20,6 +20,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { MultipleSelector } from "@/components/multiple-selector"
 
 import { RecipeImage } from "../image"
+import { EditDirections } from "./edit-directions"
 import { EditIngredients } from "./edit-ingredients"
 
 interface RecipeEditViewProps {
@@ -237,7 +238,7 @@ export function RecipeEditView(props: RecipeEditViewProps) {
             )}
           />
 
-          <div className="flex flex-col gap-x-16 gap-y-12 md:flex-row md:items-start">
+          <div className="flex flex-col gap-x-10 gap-y-12 md:flex-row md:items-start">
             <div className="select-none md:w-3/4">
               <p className="pb-3 text-2xl font-bold">Ingredients</p>
               <FormField
@@ -261,25 +262,27 @@ export function RecipeEditView(props: RecipeEditViewProps) {
               />
             </div>
 
-            <div className="w-full">
-              <p className="text-2xl font-bold">Directions</p>
-              <ul>
-                <ul className="space-y-4 pt-4">
-                  {startRecipe.directions.map((direction) => {
-                    return (
-                      <li
-                        key={`${direction.orderNumber}-direction`}
-                        className="flex flex-row gap-x-2"
-                      >
-                        <p className="text-xl font-bold text-red-500">
-                          {direction.orderNumber}
-                        </p>
-                        <p className="text-lg">{direction.description}</p>
-                      </li>
-                    )
-                  })}
-                </ul>
-              </ul>
+            <div className="w-full select-none">
+              <p className="pb-3 text-2xl font-bold">Directions</p>
+              <FormField
+                control={form.control}
+                name="directions"
+                render={({ field }) => (
+                  <FormItem>
+                    {form.formState.errors.ingredients && (
+                      <p className="text-sm text-destructive">
+                        Directions must be at least 3 characters
+                      </p>
+                    )}
+                    <FormControl>
+                      <EditDirections
+                        directions={field.value}
+                        setDirections={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
             </div>
           </div>
         </div>
