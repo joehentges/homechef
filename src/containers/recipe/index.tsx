@@ -76,7 +76,16 @@ export function RecipeContainer(props: RecipeProps) {
                 <p className="text-center text-3xl font-bold md:text-start md:text-4xl">
                   {recipe.title}
                 </p>
-                {importDetails && (
+                {author && (
+                  <Link
+                    href={`/profile/${author.id}`}
+                    target="_blank"
+                    className="text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    <p>From: {author.displayName}</p>
+                  </Link>
+                )}
+                {!author && importDetails && (
                   <Link
                     href={importDetails.url}
                     target="_blank"
