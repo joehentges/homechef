@@ -12,7 +12,7 @@ interface ImportDetailsProps {
   importedBy?: {
     id: number
     displayName: string
-  }
+  } | null
   url: string
 }
 

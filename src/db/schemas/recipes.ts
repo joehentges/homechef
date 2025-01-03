@@ -29,6 +29,7 @@ export const recipes = pgTable("recipes", {
   }),
   servings: text("servings").notNull(),
   private: boolean("private").default(false).notNull(),
+  photo: text("photo"),
 })
 
 export type Recipe = typeof recipes.$inferSelect

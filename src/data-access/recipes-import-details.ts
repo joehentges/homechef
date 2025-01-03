@@ -30,7 +30,7 @@ export async function getRecipeImportDetailsByUrl(
 export async function getRecipeImportDetailsByRecipeId(
   recipeId: PrimaryKey
 ): Promise<RecipeDetailsImmportDetails | undefined> {
-  const [recipeImportDetailsData] = await database
+  const recipeImportDetailsData = await database
     .select({
       id: recipeImportDetails.id,
       dateCreated: recipeImportDetails.dateCreated,
@@ -44,9 +44,9 @@ export async function getRecipeImportDetailsByRecipeId(
     })
     .from(recipeImportDetails)
     .where(eq(recipeImportDetails.recipeId, recipeId))
-    .innerJoin(users, eq(recipeImportDetails.importedBy, users.id))
+    .fullJoin(users, eq(recipeImportDetails.importedBy, users.id))
 
-  return recipeImportDetailsData
+  return recipeImportDetailsData[0]
 }
 
 export async function addRecipeImportDetails(

@@ -17,14 +17,10 @@ export type RecipeDetailsPhoto = {
 export type RecipeDifficulty = "beginner" | "intermediate" | "advanced" | null
 
 export type RecipeDetailsImmportDetails = {
-  id: number
-  dateCreated: Date
-  dateUpdated: Date
-  recipeId: number
-  importedBy: {
+  importedBy?: {
     id: number
     displayName: string
-  }
+  } | null
   url: recipeImportDetails.url
 }
 
@@ -37,7 +33,7 @@ export interface RecipeDetails {
   tags: string[]
 }
 
-interface FormattedRecipeDetails {
+export interface FormattedRecipeDetails {
   author?: {
     id: PrimaryKey
     displayName: string
@@ -46,7 +42,7 @@ interface FormattedRecipeDetails {
     importedBy?: {
       id: number
       displayName: string
-    }
+    } | null
     url: string
   }
   recipe: {
@@ -57,25 +53,7 @@ interface FormattedRecipeDetails {
     cookTime: number
     difficulty?: RecipeDifficulty
     private: boolean
-  }
-  ingredients: { orderNumber: number; description: string }[]
-  directions: { orderNumber: number; description: string }[]
-  tags?: string[]
-}
-
-interface FormattedImportRecipeDetails {
-  importDetails: {
-    importedBy?: PrimaryKey
-    url: string
-  }
-  recipe: {
-    title: string
-    description?: string | null
-    servings: string
-    prepTime: number
-    cookTime: number
-    difficulty?: RecipeDifficulty
-    private: boolean
+    photo?: string | null
   }
   ingredients: { orderNumber: number; description: string }[]
   directions: { orderNumber: number; description: string }[]

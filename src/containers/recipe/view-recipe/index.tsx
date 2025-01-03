@@ -11,6 +11,7 @@ import { getDomain } from "@/lib/get-domain"
 
 import { RecipeCookTime } from "./cook-time"
 import { EnableEditView } from "./enable-edit-view"
+import { RecipeImage } from "./image"
 import { ImportDetails } from "./import-details"
 import { RecipePrintVersion } from "./print-version"
 import { SaveRecipe } from "./save-recipe"
@@ -38,7 +39,7 @@ export function ViewRecipe(props: ViewRecipeProps) {
     `,
   })
 
-  console.log(importDetails)
+  console.log(recipeDetails)
 
   return (
     <>
@@ -50,9 +51,7 @@ export function ViewRecipe(props: ViewRecipeProps) {
       </div>
       <div className="container max-w-[1000px] space-y-6 rounded-3xl bg-primary/20 p-4 md:p-8">
         <div className="flex flex-col items-center gap-x-6 gap-y-4 md:flex-row md:items-start">
-          <div className="center relative h-[250px] w-[350px] max-w-full rounded-2xl bg-primary/20 md:h-[125px] md:w-[175px] md:rounded-l-3xl">
-            <CookingPotIcon className="absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 transform text-muted-foreground" />
-          </div>
+          <RecipeImage photo={recipe.photo} />
 
           <div className="flex w-full flex-col justify-between space-y-2 md:space-y-4">
             <div className="flex flex-col-reverse items-center justify-between gap-y-4 md:flex-row md:items-start">

@@ -20,10 +20,11 @@ export async function addRecipe(
     userId?: PrimaryKey
     title: string
     description?: string | null
-    prepTime?: number | null
+    prepTime: number
     cookTime: number
     difficulty?: RecipeDifficulty
     servings: string
+    photo?: string | null
   },
   trx = database
 ) {
@@ -35,6 +36,7 @@ export async function addRecipe(
     cookTime,
     description,
     servings,
+    photo,
   } = recipe
   const [recipeData] = await trx
     .insert(recipes)
@@ -46,6 +48,7 @@ export async function addRecipe(
       cookTime,
       difficulty,
       servings,
+      photo,
     })
     .returning()
 

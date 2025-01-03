@@ -6,6 +6,8 @@ export function formatRecipe(
   const { author, importDetails, recipe, ingredients, directions, tags } =
     recipeDetails
 
+  console.log(recipeDetails)
+
   return {
     author: author
       ? {
@@ -27,6 +29,7 @@ export function formatRecipe(
       cookTime: recipe.cookTime,
       difficulty: recipe.difficulty,
       private: recipe.private,
+      photo: recipe.photo,
     },
     ingredients: ingredients.map((ingredient) => ({
       orderNumber: ingredient.orderNumber,

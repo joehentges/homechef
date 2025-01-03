@@ -2,13 +2,15 @@
 
 import * as cheerio from "cheerio"
 
-import { FormattedImportRecipeDetails, RecipeDetails } from "@/types/Recipe"
+import { PrimaryKey } from "@/types"
+import { RecipeDetails, RecipeDifficulty } from "@/types/Recipe"
 import { addRecipeDirections } from "@/data-access/recipe-directions"
 import { addRecipeIngredients } from "@/data-access/recipe-ingredients"
 import { addRecipeTags } from "@/data-access/recipe-tags"
 import { addRecipe } from "@/data-access/recipes"
 import { addRecipeImportDetails } from "@/data-access/recipes-import-details"
 import { getTagsByName } from "@/data-access/tags"
+import { getUser } from "@/data-access/users"
 import { createTransaction } from "@/data-access/utils"
 
 async function fetchPageHtml(url: string) {
@@ -233,6 +235,44 @@ function handleTimeDescrepency(
   }
 }
 
+function getPhoto(photos: any): string | undefined {
+  if (Array.isArray(photos)) {
+    const holdPhoto = photos.at(0)
+    if (typeof holdPhoto === "string") {
+      return holdPhoto
+    }
+    if (holdPhoto["@type"] === "ImageObject") {
+      return holdPhoto.url ?? holdPhoto.URL
+    }
+  }
+  if (photos["@type"] === "ImageObject") {
+    return photos.url ?? photos.URL
+  }
+  if (typeof photos === "string") {
+    return photos
+  }
+}
+
+interface FormattedImportRecipeDetails {
+  importDetails: {
+    importedBy?: PrimaryKey
+    url: string
+  }
+  recipe: {
+    title: string
+    description?: string | null
+    servings: string
+    prepTime: number
+    cookTime: number
+    difficulty?: RecipeDifficulty
+    private: boolean
+    photo?: string | null
+  }
+  ingredients: { orderNumber: number; description: string }[]
+  directions: { orderNumber: number; description: string }[]
+  tags?: string[]
+}
+
 function formatData(
   recipeData: any,
   url: string,
@@ -243,6 +283,8 @@ function formatData(
     formatDuration(recipeData.cookTime) || 0,
     formatDuration(recipeData.totalTime) || 0
   )
+
+  console.log(getPhoto(recipeData.image), recipeData.image)
 
   return {
     importDetails: {
@@ -258,6 +300,7 @@ function formatData(
       prepTime,
       cookTime,
       private: false,
+      photo: getPhoto(recipeData.image),
     },
     ingredients:
       recipeData.recipeIngredient.map((ing: string, index: number) => ({
@@ -282,6 +325,11 @@ export async function importRecipeUseCase(url: string, importedBy?: number) {
     formattedRecipeData
 
   const recipeDetails = await createTransaction(async (trx) => {
+    let user
+    if (importedBy) {
+      user = await getUser(importedBy)
+    }
+
     const newRecipe = await addRecipe(
       {
         title: recipe.title,
@@ -290,6 +338,7 @@ export async function importRecipeUseCase(url: string, importedBy?: number) {
         difficulty: recipe.difficulty,
         servings: recipe.servings,
         description: recipe.description,
+        photo: recipe.photo,
       },
       trx
     )
@@ -327,7 +376,10 @@ export async function importRecipeUseCase(url: string, importedBy?: number) {
     }
 
     return {
-      importDetails: recipeImportDetails,
+      importDetails: {
+        ...recipeImportDetails,
+        importedBy: user,
+      },
       recipe,
       ingredients: recipeIngredients ?? [],
       directions: recipeDirections ?? [],

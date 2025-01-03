@@ -36,6 +36,8 @@ export default async function ImportRecipePage(props: ImportRecipePageProps) {
 
   const availableTags = await getAvailableRecipeTagsUseCase()
 
+  console.log(recipeDetails)
+
   return (
     <div className="py-4 md:py-8">
       <RecipeContainer

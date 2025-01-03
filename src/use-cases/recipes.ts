@@ -42,6 +42,7 @@ export async function getRecipeByIdUseCase(
   const recipeDirections = await getRecipeDirectionsByRecipeId(recipeId)
 
   const recipeTags = await getRecipeTagsByRecipeId(recipeId)
+  console.log(recipeImportDetails)
 
   return {
     author: user,
@@ -60,7 +61,7 @@ export async function getRecipeImportDetailsByUrlUseCase(url: string) {
 export async function addRecipeUseCase(
   formattedRecipeDetails: FormattedRecipeDetails
 ): Promise<RecipeDetails> {
-  const { author, importDetails, recipe, ingredients, directions, tags } =
+  const { author, recipe, ingredients, directions, tags } =
     formattedRecipeDetails
 
   const recipeDetails = await createTransaction(async (trx) => {
