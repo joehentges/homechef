@@ -1,12 +1,11 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { CookingPotIcon, MoveLeftIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-import { FormattedRecipeDetails, RecipeDetails } from "@/types/Recipe"
+import { FormattedRecipeDetails } from "@/types/Recipe"
 import { Button } from "@/components/ui/button"
 import {
   Form,

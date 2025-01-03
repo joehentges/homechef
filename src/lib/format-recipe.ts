@@ -6,8 +6,6 @@ export function formatRecipe(
   const { author, importDetails, recipe, ingredients, directions, tags } =
     recipeDetails
 
-  console.log(recipeDetails)
-
   return {
     author: author
       ? {
