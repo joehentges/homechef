@@ -28,7 +28,7 @@ export function RecipeContainer(props: RecipeContainerProps) {
           recipe: {
             title: "",
             description: null,
-            prepTime: null,
+            prepTime: 0,
             cookTime: 0,
             difficulty: null,
             servings: "",

@@ -233,7 +233,7 @@ function handleTimeDescrepency(
 ) {
   if (totalTime < prepTime + cookTime) {
     return {
-      prepTime: null,
+      prepTime: 0,
       cookTime: totalTime,
     }
   }

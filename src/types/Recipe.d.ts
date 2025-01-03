@@ -39,7 +39,7 @@ interface FormattedRecipeDetails {
     title: string
     description?: string | null
     servings: string
-    prepTime: number | null
+    prepTime: number
     cookTime: number
     difficulty?: RecipeDifficulty
     private: boolean

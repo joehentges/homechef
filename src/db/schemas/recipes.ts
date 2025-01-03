@@ -22,7 +22,7 @@ export const recipes = pgTable("recipes", {
   }),
   title: text("title").notNull(),
   description: text("description"),
-  prepTime: integer("prep_time").default(0),
+  prepTime: integer("prep_time").notNull().default(0),
   cookTime: integer("cook_time").notNull(),
   difficulty: text("difficulty", {
     enum: ["beginner", "intermediate", "advanced"],
