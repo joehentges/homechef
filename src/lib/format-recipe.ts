@@ -15,6 +15,7 @@ export function formatRecipe(
       : undefined,
     importDetails: importDetails
       ? {
+          importedBy: importDetails.importedBy,
           url: importDetails.url,
         }
       : undefined,

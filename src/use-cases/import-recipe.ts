@@ -2,10 +2,14 @@
 
 import * as cheerio from "cheerio"
 
-import { FormattedRecipeDetails } from "@/types/Recipe"
-import { getDomain } from "@/lib/get-domain"
-
-import { addRecipeUseCase } from "./recipes"
+import { FormattedImportRecipeDetails, RecipeDetails } from "@/types/Recipe"
+import { addRecipeDirections } from "@/data-access/recipe-directions"
+import { addRecipeIngredients } from "@/data-access/recipe-ingredients"
+import { addRecipeTags } from "@/data-access/recipe-tags"
+import { addRecipe } from "@/data-access/recipes"
+import { addRecipeImportDetails } from "@/data-access/recipes-import-details"
+import { getTagsByName } from "@/data-access/tags"
+import { createTransaction } from "@/data-access/utils"
 
 async function fetchPageHtml(url: string) {
   const response = await fetch(url)
@@ -229,7 +233,11 @@ function handleTimeDescrepency(
   }
 }
 
-function formatData(recipeData: any, url: string): FormattedRecipeDetails {
+function formatData(
+  recipeData: any,
+  url: string,
+  importedBy?: number
+): FormattedImportRecipeDetails {
   const { prepTime, cookTime } = handleTimeDescrepency(
     formatDuration(recipeData.prepTime) || 0,
     formatDuration(recipeData.cookTime) || 0,
@@ -238,6 +246,7 @@ function formatData(recipeData: any, url: string): FormattedRecipeDetails {
 
   return {
     importDetails: {
+      importedBy,
       url,
     },
     recipe: {
@@ -260,14 +269,71 @@ function formatData(recipeData: any, url: string): FormattedRecipeDetails {
   }
 }
 
-export async function importRecipeUseCase(url: string) {
+export async function importRecipeUseCase(url: string, importedBy?: number) {
   const importRecipeData = await importRecipe(url)
 
   if (!importRecipeData) {
     throw new Error("Recipe not found")
   }
 
-  const formattedRecipeData = formatData(importRecipeData, url)
+  const formattedRecipeData = formatData(importRecipeData, url, importedBy)
 
-  return addRecipeUseCase(formattedRecipeData)
+  const { importDetails, recipe, ingredients, directions, tags } =
+    formattedRecipeData
+
+  const recipeDetails = await createTransaction(async (trx) => {
+    const newRecipe = await addRecipe(
+      {
+        title: recipe.title,
+        prepTime: recipe.prepTime,
+        cookTime: recipe.cookTime,
+        difficulty: recipe.difficulty,
+        servings: recipe.servings,
+        description: recipe.description,
+      },
+      trx
+    )
+
+    let recipeImportDetails
+    if (importDetails) {
+      recipeImportDetails = await addRecipeImportDetails(
+        {
+          importedBy,
+          recipeId: newRecipe.id,
+          url: importDetails.url,
+        },
+        trx
+      )
+    }
+
+    const recipeIngredients = await addRecipeIngredients(
+      newRecipe.id,
+      ingredients,
+      trx
+    )
+
+    const recipeDirections = await addRecipeDirections(
+      newRecipe.id,
+      directions,
+      trx
+    )
+
+    let tagsList
+    if (tags) {
+      tagsList = await getTagsByName(tags)
+      if (tagsList.length > 1) {
+        await addRecipeTags(newRecipe.id, tagsList, trx)
+      }
+    }
+
+    return {
+      importDetails: recipeImportDetails,
+      recipe,
+      ingredients: recipeIngredients ?? [],
+      directions: recipeDirections ?? [],
+      tags: tagsList?.map((tag) => tag.name) ?? [],
+    }
+  })
+
+  return recipeDetails as RecipeDetails
 }

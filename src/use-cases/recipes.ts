@@ -14,7 +14,6 @@ import {
 } from "@/data-access/recipe-tags"
 import { addRecipe, getRecipe } from "@/data-access/recipes"
 import {
-  addRecipeImportDetails,
   getRecipeImportDetailsByRecipeId,
   getRecipeImportDetailsByUrl,
 } from "@/data-access/recipes-import-details"
@@ -83,15 +82,6 @@ export async function addRecipeUseCase(
       trx
     )
 
-    let recipeImportDetails
-    if (importDetails) {
-      recipeImportDetails = await addRecipeImportDetails(
-        newRecipe.id,
-        importDetails?.url,
-        trx
-      )
-    }
-
     const recipeIngredients = await addRecipeIngredients(
       newRecipe.id,
       ingredients,
@@ -114,7 +104,6 @@ export async function addRecipeUseCase(
 
     return {
       author: user,
-      importDetails: recipeImportDetails,
       recipe,
       ingredients: recipeIngredients ?? [],
       directions: recipeDirections ?? [],

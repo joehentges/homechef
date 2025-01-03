@@ -43,6 +43,13 @@
       "when": 1735930744599,
       "tag": "0005_classy_toad_men",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1735933269771,
+      "tag": "0006_bouncy_shinobi_shaw",
+      "breakpoints": true
     }
   ]
 }

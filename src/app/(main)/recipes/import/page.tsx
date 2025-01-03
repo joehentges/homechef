@@ -22,6 +22,8 @@ export default async function ImportRecipePage(props: ImportRecipePageProps) {
     throw new Error("Url not found")
   }
 
+  const user = await getCurrentUser()
+
   // check Database to see if recipe has already been imported
   // skip next part if it has
   let recipeImportDetails = await getRecipeImportDetailsByUrlUseCase(url)
@@ -29,10 +31,8 @@ export default async function ImportRecipePage(props: ImportRecipePageProps) {
   if (recipeImportDetails) {
     recipeDetails = await getRecipeByIdUseCase(recipeImportDetails.recipeId)
   } else {
-    recipeDetails = await importRecipeUseCase(url)
+    recipeDetails = await importRecipeUseCase(url, user?.id)
   }
-
-  const user = await getCurrentUser()
 
   const availableTags = await getAvailableRecipeTagsUseCase()
 

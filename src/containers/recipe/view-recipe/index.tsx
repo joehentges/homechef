@@ -11,6 +11,7 @@ import { getDomain } from "@/lib/get-domain"
 
 import { RecipeCookTime } from "./cook-time"
 import { EnableEditView } from "./enable-edit-view"
+import { ImportDetails } from "./import-details"
 import { RecipePrintVersion } from "./print-version"
 import { SaveRecipe } from "./save-recipe"
 import { RecipeTags } from "./tags"
@@ -36,6 +37,8 @@ export function ViewRecipe(props: ViewRecipeProps) {
     }
     `,
   })
+
+  console.log(importDetails)
 
   return (
     <>
@@ -67,13 +70,10 @@ export function ViewRecipe(props: ViewRecipeProps) {
                   </Link>
                 )}
                 {!author && importDetails && (
-                  <Link
-                    href={importDetails.url}
-                    target="_blank"
-                    className="text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    <p>From: {getDomain(importDetails.url)}</p>
-                  </Link>
+                  <ImportDetails
+                    importedBy={importDetails.importedBy}
+                    url={importDetails.url}
+                  />
                 )}
               </div>
               <div className="flex flex-row gap-x-4 pt-2 text-muted-foreground">
