@@ -6,7 +6,11 @@ import { z } from "zod"
 
 import { rateLimitByKey } from "@/lib/limiter"
 import { authenticatedAction } from "@/lib/safe-action"
-import { addRecipeUseCase, updateRecipeUseCase } from "@/use-cases/recipes"
+import {
+  addRecipeUseCase,
+  deleteRecipeUseCase,
+  updateRecipeUseCase,
+} from "@/use-cases/recipes"
 
 const recipeAddOrUpdateActionSchema = z.object({
   recipe: z.object({
@@ -137,5 +141,11 @@ export const deleteRecipeAction = authenticatedAction
     })
   )
   .handler(async ({ input, ctx: { user } }) => {
-    //
+    await rateLimitByKey({
+      key: `delete-recipe-author-${user.id}`,
+      limit: 3,
+      window: 10000,
+    })
+    await deleteRecipeUseCase(input.recipeId)
+    redirect(`/profile/${user.id}`)
   })

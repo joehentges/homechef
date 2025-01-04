@@ -20,7 +20,12 @@ import {
   deleteRecipeTagsByRecipeId,
   getRecipeTagsByRecipeId,
 } from "@/data-access/recipe-tags"
-import { addRecipe, getRecipe, updateRecipe } from "@/data-access/recipes"
+import {
+  addRecipe,
+  deleteRecipe,
+  getRecipe,
+  updateRecipe,
+} from "@/data-access/recipes"
 import {
   getRecipeImportDetailsByRecipeId,
   getRecipeImportDetailsByUrl,
@@ -211,4 +216,8 @@ export async function updateRecipeUseCase(
   })
 
   return updatedRecipeDetails as RecipeDetails
+}
+
+export async function deleteRecipeUseCase(recipeId: PrimaryKey) {
+  await deleteRecipe(recipeId)
 }

@@ -85,8 +85,8 @@ export function ViewRecipe(props: ViewRecipeProps) {
                 {author && user && user.id === author.id && (
                   <DisplayStatus isPrivate={recipe.private} />
                 )}
-                {isRecipeOwner ? (
-                  <DeleteRecipe />
+                {isRecipeOwner && recipe.id ? (
+                  <DeleteRecipe recipeId={recipe.id} title={recipe.title} />
                 ) : (
                   <SaveRecipe
                     isAuthenticated={isAuthenticated}

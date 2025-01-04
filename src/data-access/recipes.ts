@@ -99,3 +99,7 @@ export async function updateRecipe(
 
   return recipeData
 }
+
+export async function deleteRecipe(recipeId: PrimaryKey) {
+  await database.delete(recipes).where(eq(recipes.id, recipeId)).returning()
+}
