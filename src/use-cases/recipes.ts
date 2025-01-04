@@ -35,7 +35,11 @@ import {
   getFirstUserImportedById,
   getUserRecipeImportsByIdAndUserId,
 } from "@/data-access/user-recipe-imports"
-import { addUserRecipe } from "@/data-access/user-recipes"
+import {
+  addUserRecipe,
+  deleteUserRecipeByRecipeIdAndUserId,
+  getUserRecipeByRecipeIdAndUserId,
+} from "@/data-access/user-recipes"
 import { getUser } from "@/data-access/users"
 import { createTransaction } from "@/data-access/utils"
 
@@ -220,4 +224,25 @@ export async function updateRecipeUseCase(
 
 export async function deleteRecipeUseCase(recipeId: PrimaryKey) {
   await deleteRecipe(recipeId)
+}
+
+export async function isRecipeSavedUseCase(
+  recipeId: PrimaryKey,
+  userId: PrimaryKey
+): Promise<boolean> {
+  return !!(await getUserRecipeByRecipeIdAndUserId(recipeId, userId))
+}
+
+export async function saveRecipeUseCase(
+  recipeId: PrimaryKey,
+  userId: PrimaryKey
+) {
+  return addUserRecipe(userId, recipeId)
+}
+
+export async function unsaveRecipeUseCase(
+  recipeId: PrimaryKey,
+  userId: PrimaryKey
+) {
+  return deleteUserRecipeByRecipeIdAndUserId(recipeId, userId)
 }

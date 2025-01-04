@@ -1,13 +1,11 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button } from "@react-email/components"
-import { BookmarkCheckIcon, BookmarkIcon, TrashIcon } from "lucide-react"
+import { TrashIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useServerAction } from "zsa-react"
 
-import { getDomain } from "@/lib/get-domain"
 import {
   Dialog,
   DialogContent,
@@ -22,7 +20,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -87,7 +84,13 @@ export function DeleteRecipe(props: DeleteRecipeProps) {
   }
 
   return (
-    <Dialog>
+    <Dialog
+      onOpenChange={(open) => {
+        if (open) {
+          form.reset()
+        }
+      }}
+    >
       <TooltipProvider>
         <Tooltip delayDuration={0}>
           <DialogTrigger asChild>

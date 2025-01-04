@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { BookmarkCheckIcon, BookmarkIcon } from "lucide-react"
+import { useServerAction } from "zsa-react"
 
 import {
   Tooltip,
@@ -10,22 +11,50 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { useFromPath } from "@/hooks/use-from-path"
+import { useToast } from "@/hooks/use-toast"
+
+import { saveRecipeAction, unsaveRecipeAction } from "../actions"
 
 interface SaveRecipeProps {
+  recipeId: number
   isAuthenticated: boolean
   isSaved: boolean
 }
 
 export function SaveRecipe(props: SaveRecipeProps) {
-  const { isAuthenticated, isSaved } = props
+  const { recipeId, isAuthenticated, isSaved } = props
 
+  const { toast } = useToast()
   const fromPath = useFromPath()
+
+  const { execute, isPending } = useServerAction(
+    isSaved ? unsaveRecipeAction : saveRecipeAction,
+    {
+      onError({ err }) {
+        toast({
+          title: "Something went wrong",
+          description: err.message,
+          variant: "destructive",
+        })
+      },
+      onSuccess() {
+        // store email in localstorage
+        toast({
+          title: `You have ${isSaved ? "saved" : "unsaved"} the recipe`,
+          description: `You will ${isSaved ? "find" : "no longer find"} the recipe in your cookbook.`,
+        })
+      },
+    }
+  )
 
   if (isAuthenticated) {
     return (
       <TooltipProvider>
         <Tooltip delayDuration={0}>
-          <TooltipTrigger className="transition-colors hover:text-foreground">
+          <TooltipTrigger
+            className="transition-colors hover:text-foreground"
+            onClick={() => execute({ recipeId })}
+          >
             {isSaved ? (
               <BookmarkCheckIcon className="h-5 w-5" />
             ) : (

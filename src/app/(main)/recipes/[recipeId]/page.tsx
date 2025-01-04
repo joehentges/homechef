@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/session"
 import {
   getAvailableRecipeTagsUseCase,
   getRecipeByIdUseCase,
+  isRecipeSavedUseCase,
 } from "@/use-cases/recipes"
 import { RecipeContainer } from "@/containers/recipe"
 
@@ -19,14 +20,29 @@ export default async function ImportRecipePage(props: ImportRecipePageProps) {
   const recipeIdNum = parseInt(recipeId)
 
   if (!recipeIdNum) {
-    throw new Error("Recioe not found")
+    throw new Error("Recipe not found")
   }
 
   const user = await getCurrentUser()
 
   const recipeDetails = await getRecipeByIdUseCase(recipeIdNum)
 
+  if (recipeDetails.recipe.private && !user) {
+    throw new Error("Recipe not found")
+  }
+  if (
+    recipeDetails.recipe.private &&
+    user &&
+    recipeDetails.recipe.userId !== user.id
+  ) {
+    throw new Error("Recipe not found")
+  }
+
   const availableTags = await getAvailableRecipeTagsUseCase()
+
+  const recipeIsSaved = user
+    ? await isRecipeSavedUseCase(recipeDetails.recipe.id, user.id)
+    : false
 
   return (
     <div className="py-4 md:py-8">
@@ -34,6 +50,7 @@ export default async function ImportRecipePage(props: ImportRecipePageProps) {
         user={user}
         recipe={formatRecipe(recipeDetails)}
         availableTags={availableTags}
+        recipeIsSaved={recipeIsSaved}
       />
     </div>
   )

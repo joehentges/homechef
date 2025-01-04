@@ -21,6 +21,7 @@ import { RecipeTags } from "./tags"
 
 interface ViewRecipeProps {
   isRecipeOwner: boolean
+  recipeIsSaved: boolean
   user?: User
   recipe: FormattedRecipeDetails
   onEditRecipeClicked: () => void
@@ -29,6 +30,7 @@ interface ViewRecipeProps {
 export function ViewRecipe(props: ViewRecipeProps) {
   const {
     isRecipeOwner,
+    recipeIsSaved,
     user,
     recipe: recipeDetails,
     onEditRecipeClicked,
@@ -85,12 +87,14 @@ export function ViewRecipe(props: ViewRecipeProps) {
                 {author && user && user.id === author.id && (
                   <DisplayStatus isPrivate={recipe.private} />
                 )}
-                {isRecipeOwner && recipe.id ? (
+                {isRecipeOwner && recipe.id && (
                   <DeleteRecipe recipeId={recipe.id} title={recipe.title} />
-                ) : (
+                )}
+                {!isRecipeOwner && recipe.id && (
                   <SaveRecipe
+                    recipeId={recipe.id}
                     isAuthenticated={isAuthenticated}
-                    isSaved={true}
+                    isSaved={recipeIsSaved}
                   />
                 )}
                 <button

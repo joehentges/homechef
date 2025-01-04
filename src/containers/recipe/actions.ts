@@ -9,6 +9,8 @@ import { authenticatedAction } from "@/lib/safe-action"
 import {
   addRecipeUseCase,
   deleteRecipeUseCase,
+  saveRecipeUseCase,
+  unsaveRecipeUseCase,
   updateRecipeUseCase,
 } from "@/use-cases/recipes"
 
@@ -52,7 +54,7 @@ export const addRecipeAction = authenticatedAction
   .input(recipeAddOrUpdateActionSchema)
   .handler(async ({ input, ctx: { user } }) => {
     await rateLimitByKey({
-      key: `edit-recipe-author-${user.id}`,
+      key: `add-recipe-${user.id}`,
       limit: 3,
       window: 10000,
     })
@@ -83,7 +85,7 @@ export const updateRecipeAction = authenticatedAction
   .input(recipeAddOrUpdateActionSchema)
   .handler(async ({ input, ctx: { user } }) => {
     await rateLimitByKey({
-      key: `edit-recipe-author-${user.id}`,
+      key: `update-recipe-${user.id}`,
       limit: 3,
       window: 10000,
     })
@@ -120,14 +122,14 @@ export const deleteRecipeAction = authenticatedAction
         originalTitle: z.string().min(1),
         input: z.string().min(1),
       })
-      .refine(({ originalTitle, input }) => originalTitle === input, {
+      .refine(async ({ originalTitle, input }) => originalTitle === input, {
         message: "Title does not match original",
         path: ["input"],
       })
   )
   .handler(async ({ input, ctx: { user } }) => {
     await rateLimitByKey({
-      key: `delete-recipe-author-${user.id}`,
+      key: `delete-recipe-${user.id}`,
       limit: 3,
       window: 10000,
     })
@@ -143,7 +145,13 @@ export const saveRecipeAction = authenticatedAction
     })
   )
   .handler(async ({ input, ctx: { user } }) => {
-    //
+    await rateLimitByKey({
+      key: `save-recipe-${user.id}`,
+      limit: 3,
+      window: 10000,
+    })
+    await saveRecipeUseCase(input.recipeId, user.id)
+    revalidatePath(`/recipes/${input.recipeId}`)
   })
 
 export const unsaveRecipeAction = authenticatedAction
@@ -154,5 +162,11 @@ export const unsaveRecipeAction = authenticatedAction
     })
   )
   .handler(async ({ input, ctx: { user } }) => {
-    //
+    await rateLimitByKey({
+      key: `save-recipe-${user.id}`,
+      limit: 3,
+      window: 10000,
+    })
+    await unsaveRecipeUseCase(input.recipeId, user.id)
+    revalidatePath(`/recipes/${input.recipeId}`)
   })

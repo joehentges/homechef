@@ -8,6 +8,7 @@ import {
   getAvailableRecipeTagsUseCase,
   getRecipeByIdUseCase,
   getRecipeImportDetailsByUrlUseCase,
+  isRecipeSavedUseCase,
 } from "@/use-cases/recipes"
 import { RecipeContainer } from "@/containers/recipe"
 
@@ -43,6 +44,10 @@ export default async function ImportRecipePage(props: ImportRecipePageProps) {
 
   const availableTags = await getAvailableRecipeTagsUseCase()
 
+  const recipeIsSaved = user
+    ? await isRecipeSavedUseCase(recipeDetails.recipe.id, user.id)
+    : false
+
   return (
     <div className="py-4 md:py-8">
       <RecipeContainer
@@ -50,6 +55,7 @@ export default async function ImportRecipePage(props: ImportRecipePageProps) {
         user={user}
         recipe={formatRecipe(recipeDetails)}
         availableTags={availableTags}
+        recipeIsSaved={recipeIsSaved}
       />
     </div>
   )

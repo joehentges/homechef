@@ -13,10 +13,17 @@ interface RecipeContainerProps {
   user?: User
   recipe?: FormattedRecipeDetails
   availableTags: { name: string }[]
+  recipeIsSaved: boolean
 }
 
 export function RecipeContainer(props: RecipeContainerProps) {
-  const { importedRecipe, user, recipe, availableTags } = props
+  const {
+    importedRecipe,
+    user,
+    recipe,
+    availableTags,
+    recipeIsSaved = false,
+  } = props
 
   const [enableEditView, setEnableEditView] = useState<boolean>(false)
 
@@ -70,6 +77,7 @@ export function RecipeContainer(props: RecipeContainerProps) {
   return (
     <ViewRecipe
       isRecipeOwner={recipe.author?.id === user?.id}
+      recipeIsSaved={recipeIsSaved}
       user={user}
       recipe={recipe}
       onEditRecipeClicked={() => setEnableEditView(true)}
