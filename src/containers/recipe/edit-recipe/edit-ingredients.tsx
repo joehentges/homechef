@@ -4,7 +4,6 @@ import React, { Dispatch, SetStateAction } from "react"
 import { Reorder, useDragControls } from "framer-motion"
 import { GripVerticalIcon } from "lucide-react"
 
-import { Input } from "@/components/ui/input"
 import { AutosizeTextarea } from "@/components/autosize-textarea"
 
 // NOTE! the orderNumber here is being used as an id

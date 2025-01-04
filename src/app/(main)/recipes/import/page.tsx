@@ -29,7 +29,7 @@ export default async function ImportRecipePage(props: ImportRecipePageProps) {
 
   // check Database to see if recipe has already been imported
   // skip next part if it has
-  let { recipeImportDetails, userRecipeImport } =
+  const { recipeImportDetails, userRecipeImport } =
     await getRecipeImportDetailsByUrlUseCase(url, user?.id)
   let recipeDetails
   if (recipeImportDetails) {

@@ -1,11 +1,9 @@
 import { Dispatch, SetStateAction, useState } from "react"
 import { CookingPotIcon } from "lucide-react"
 
-import { getDomain } from "@/lib/get-domain"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogFooter,
   DialogTitle,
@@ -50,6 +48,7 @@ export function EditImage(props: EditImageProps) {
     setPhotoPathInput(null)
     setPhotoPathInputError(false)
     setPhoto(null)
+    setDialogOpen(false)
   }
 
   return (
@@ -97,9 +96,7 @@ export function EditImage(props: EditImageProps) {
           )}
           <DialogFooter className="space-x-2">
             <Button onClick={onPhotoSet}>Set photo</Button>
-            <DialogClose>
-              <Button onClick={onClearPhoto}>Clear photo</Button>
-            </DialogClose>
+            <Button onClick={onClearPhoto}>Clear photo</Button>
           </DialogFooter>
         </div>
       </DialogContent>

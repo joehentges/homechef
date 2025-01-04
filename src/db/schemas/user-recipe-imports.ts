@@ -1,4 +1,4 @@
-import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core"
+import { integer, pgTable, serial, timestamp } from "drizzle-orm/pg-core"
 
 import { recipeImportDetails } from "./recipe-import-details"
 import { users } from "./users"
