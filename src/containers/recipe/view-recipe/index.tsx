@@ -2,7 +2,7 @@
 
 import { useRef } from "react"
 import Link from "next/link"
-import { PrinterIcon, Share2Icon, TrophyIcon } from "lucide-react"
+import { PrinterIcon, Share2Icon } from "lucide-react"
 import { useReactToPrint } from "react-to-print"
 
 import { FormattedRecipeDetails } from "@/types/Recipe"

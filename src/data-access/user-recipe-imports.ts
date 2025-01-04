@@ -1,4 +1,4 @@
-import { and, asc, desc, eq } from "drizzle-orm"
+import { and, asc, eq } from "drizzle-orm"
 
 import { PrimaryKey } from "@/types"
 import { UserDetails } from "@/types/Recipe"

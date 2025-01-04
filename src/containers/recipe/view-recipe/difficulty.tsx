@@ -1,9 +1,8 @@
 "use client"
 
-import { ClockIcon, TrophyIcon } from "lucide-react"
+import { TrophyIcon } from "lucide-react"
 
 import { RecipeDifficulty as RecipeDifficultyType } from "@/types/Recipe"
-import { formatTime } from "@/lib/format-time"
 import {
   Tooltip,
   TooltipContent,
