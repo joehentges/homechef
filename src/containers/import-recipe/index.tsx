@@ -33,41 +33,42 @@ export function ImportRecipe() {
   }
 
   return (
-    <div className="py-16" id="import-recipe">
-      <div className="container flex flex-col items-center gap-6 md:flex-row">
-        <div className="w-full space-y-2 text-center md:text-start">
-          <p className="font-header text-4xl font-bold">Import a recipe</p>
-          <p>
-            Remove the unnecesary details, just get the ingredients and
-            directions.
-          </p>
-        </div>
-
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex w-full flex-row gap-x-2"
-          >
-            <FormField
-              control={form.control}
-              name="url"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="Paste the recipe URL"
-                      type="text"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit">Get recipe</Button>
-          </form>
-        </Form>
+    <div
+      className="container flex flex-col items-center gap-6 md:flex-row"
+      id="import-recipe"
+    >
+      <div className="w-full space-y-2 text-center md:text-start">
+        <p className="font-header text-4xl font-bold">Grab any recipe</p>
+        <p>
+          Remove the unnecesary details, just get the ingredients and
+          directions.
+        </p>
       </div>
+
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex w-full flex-row gap-x-2"
+        >
+          <FormField
+            control={form.control}
+            name="url"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormControl>
+                  <Input
+                    {...field}
+                    placeholder="Paste the recipe URL"
+                    type="text"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit">Get recipe</Button>
+        </form>
+      </Form>
     </div>
   )
 }

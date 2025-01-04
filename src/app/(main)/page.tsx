@@ -46,11 +46,13 @@ export default async function HomePage() {
         </div>
       </div>
 
-      <ImportRecipe />
+      <div className="space-y-16 py-16">
+        <ImportRecipe />
 
-      {randomRecipes && <FeaturedRecipeSearch recipes={randomRecipes} />}
+        {randomRecipes && <FeaturedRecipeSearch recipes={randomRecipes} />}
 
-      <FeaturedVideos videos={videos} />
+        <FeaturedVideos videos={videos} />
+      </div>
     </div>
   )
 }
