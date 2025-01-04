@@ -145,6 +145,7 @@ function fixMarkupCharacters(word: string) {
     .replace(/&mdash;/g, "—")
     .replace(/&ndash;/g, "-")
     .replace(/&#x27;/g, "'")
+    .replace(/&#39;/g, "'")
 }
 
 function formatKeywords(keywords: any) {
@@ -205,7 +206,9 @@ function formatKeywords(keywords: any) {
 function formatDirections(directions: any) {
   return directions?.map((inst: any, index: number) => ({
     orderNumber: index,
-    description: typeof inst === "string" ? inst : inst.text,
+    description: fixMarkupCharacters(
+      typeof inst === "string" ? inst : inst.text
+    ),
   }))
 }
 
@@ -303,7 +306,9 @@ function formatData(
     },
     ingredients:
       recipeData.recipeIngredient.map((ing: string, index: number) => ({
-        description: ing.replace("((", "(").replace("))", ")"),
+        description: fixMarkupCharacters(
+          ing.replace("((", "(").replace("))", ")")
+        ),
         orderNumber: index,
       })) || [],
     directions: formatDirections(recipeData.recipeInstructions) || [],

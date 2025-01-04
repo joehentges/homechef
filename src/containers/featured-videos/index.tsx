@@ -26,8 +26,8 @@ export function FeaturedVideos(props: FeaturedVideosProps) {
   }
 
   return (
-    <div className="container pb-5">
-      <div className="rounded-3xl bg-primary/20 p-4 md:p-8">
+    <div className="py-16">
+      <div className="container rounded-3xl bg-primary/20 p-4 md:p-8">
         <p className="font-header text-4xl font-bold md:text-5xl">Videos</p>
 
         <div className="flex flex-col gap-12 pt-6 lg:flex-row">

@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils"
 import { getRandomRecipesUseCase } from "@/use-cases/recipes"
 import { FeaturedRecipeSearch } from "@/containers/featured-recipe-search"
 import { FeaturedVideos } from "@/containers/featured-videos"
+import { ImportRecipe } from "@/containers/import-recipe"
 
 import { videos } from "../../../mocks/featured-videos"
 
@@ -44,6 +45,8 @@ export default async function HomePage() {
           <p>Recipes</p>
         </div>
       </div>
+
+      <ImportRecipe />
 
       {randomRecipes && <FeaturedRecipeSearch recipes={randomRecipes} />}
 
