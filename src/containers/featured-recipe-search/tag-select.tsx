@@ -1,8 +1,10 @@
 import {
   CakeSliceIcon,
+  CookieIcon,
   MartiniIcon,
   SaladIcon,
   SandwichIcon,
+  ShieldQuestionIcon,
   SoupIcon,
 } from "lucide-react"
 import { useQueryState } from "nuqs"
@@ -15,40 +17,37 @@ const Icons = {
   salad: SaladIcon,
   sandwich: SandwichIcon,
   soup: SoupIcon,
+  cookie: CookieIcon,
+  default: ShieldQuestionIcon,
 } as const
 
 type Icon = keyof typeof Icons
 
-export type Tag = {
-  label: string
-  icon: Icon
-}
-
 interface TagSelectProps {
-  tags: Tag[]
+  tags: string[]
 }
 
 export function TagSelect(props: TagSelectProps) {
   const { tags } = props
   const [selectedTag, setTag] = useQueryState("tag", { defaultValue: "" })
 
-  function onTagSelected(tag: Tag) {
-    if (tag.label === selectedTag) {
+  function onTagSelected(tag: string) {
+    if (tag === selectedTag) {
       return setTag("")
     }
-    setTag(tag.label)
+    setTag(tag)
   }
 
   return (
     <div className="flex flex-row flex-wrap justify-center gap-2 md:flex-col md:gap-y-4">
       {tags.map((tag) => {
-        const IconElement = Icons[tag.icon]
-        const selected = tag.label === selectedTag
+        const IconElement = Icons[tag as Icon] ?? Icons.default
+        const selected = tag === selectedTag
         return (
           <button
-            key={tag.label}
+            key={tag}
             className={cn(
-              "flex w-[150px] items-center gap-x-2 rounded-3xl border px-3 py-2 transition-colors hover:bg-primary/30 md:w-[200px]",
+              "flex w-[150px] items-center gap-x-2 rounded-3xl border px-3 py-2 capitalize transition-colors hover:bg-primary/30 md:w-[200px]",
               selected && "bg-primary/80 hover:bg-primary/60 dark:bg-primary/70"
             )}
             onClick={() => onTagSelected(tag)}
@@ -61,7 +60,7 @@ export function TagSelect(props: TagSelectProps) {
             >
               <IconElement className="h-5 w-5" />
             </span>
-            {tag.label}
+            {tag}
           </button>
         )
       })}

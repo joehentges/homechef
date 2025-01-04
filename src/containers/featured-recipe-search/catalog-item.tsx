@@ -1,29 +1,70 @@
 import Link from "next/link"
 import { User2Icon } from "lucide-react"
 
+import { Recipe } from "@/db/schemas"
+import { formatTime } from "@/lib/format-time"
 import { cn } from "@/lib/utils"
 
 interface CatalogItemProps {
-  href: string
+  recipe: Recipe
   alternate?: boolean
-  image: string
-  title: string
-  servings: number
-  cookTime: string
 }
 
 export function CatalogItem(props: CatalogItemProps) {
-  const { href, alternate, image, title, servings, cookTime } = props
+  const { recipe, alternate } = props
+  const { id, photo, title, servings, cookTime, prepTime } = recipe
+  const servingsNum = parseInt(servings)
+
+  function getServings() {
+    if (Number.isNaN(servingsNum)) {
+      return (
+        <div className="gap-x-2e flex items-center gap-x-1">
+          <p>Uknown</p>
+          <User2Icon
+            className={cn(
+              "h-4 w-4 transition-colors group-hover:text-foreground/80",
+              alternate && "group-hover:text-background/80"
+            )}
+          />
+        </div>
+      )
+    }
+    if (servingsNum > 5) {
+      return (
+        <div className="gap-x-2e flex items-center gap-x-1">
+          <p>{servingsNum}</p>
+          <User2Icon
+            className={cn(
+              "h-4 w-4 transition-colors group-hover:text-foreground/80",
+              alternate && "group-hover:text-background/80"
+            )}
+          />
+        </div>
+      )
+    }
+
+    return new Array(servingsNum)
+      .fill(null)
+      .map((_, index) => (
+        <User2Icon
+          key={index}
+          className={cn(
+            "h-4 w-4 transition-colors group-hover:text-foreground/80",
+            alternate && "group-hover:text-background/80"
+          )}
+        />
+      ))
+  }
 
   return (
     <Link
-      href={href}
+      href={`/recipes/${id}`}
       className="group flex w-full flex-row items-center lg:min-w-[325px] lg:max-w-[350px]"
     >
       <div
         className="z-10 h-24 w-32 rounded-full bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('${image}')`,
+          backgroundImage: `url('${photo}')`,
         }}
       >
         <div className="h-full w-full rounded-full bg-primary/10 opacity-0 transition-opacity group-hover:opacity-100" />
@@ -47,26 +88,7 @@ export function CatalogItem(props: CatalogItemProps) {
         <div className="flex flex-row text-xs md:text-sm">
           <div className="w-full space-y-2">
             <p>Servings</p>
-            <div className="flex">
-              {servings > 5 ? (
-                <div className="gap-x-2e flex items-center gap-x-1">
-                  <p>{servings}</p>
-                  <User2Icon className="h-4 w-4 transition-colors group-hover:text-foreground/80" />
-                </div>
-              ) : (
-                new Array(servings)
-                  .fill(null)
-                  .map((_, index) => (
-                    <User2Icon
-                      key={index}
-                      className={cn(
-                        "h-4 w-4 transition-colors group-hover:text-foreground/80",
-                        alternate && "group-hover:text-background/80"
-                      )}
-                    />
-                  ))
-              )}
-            </div>
+            <div className="flex">{getServings()}</div>
           </div>
           <div className="w-full space-y-2">
             <p>Cook Time</p>
@@ -76,7 +98,7 @@ export function CatalogItem(props: CatalogItemProps) {
                 alternate && "group-hover:text-background/80"
               )}
             >
-              {cookTime}
+              {formatTime(cookTime + prepTime)}
             </p>
           </div>
         </div>

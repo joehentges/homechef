@@ -1,19 +1,33 @@
-import {
-  CatalogFeaturedItem,
-  CatalogFeaturedItemProps,
-} from "./catalog-featured-item"
+import { Recipe } from "@/db/schemas"
+
+import { CatalogFeaturedItem } from "./catalog-featured-item"
 import { CatalogItem } from "./catalog-item"
 import { CatalogPagination } from "./catalog-pagination"
 
 export interface CatalogProps {
-  items: CatalogFeaturedItemProps[]
+  items: Recipe[]
   pageCount: number
 }
 
 export function Catalog(props: CatalogProps) {
   const { items, pageCount } = props
 
-  const catalogFeaturedItem = items[0]
+  function findAndRemoveFirstWithDescription() {
+    const remainingItems = [...items]
+
+    for (let i = 0; i < remainingItems.length; i++) {
+      const item = remainingItems[i]
+      if (item && item.description !== undefined && item.description !== null) {
+        const removedObject = remainingItems.splice(i, 1)[0]
+        return { catalogFeaturedItem: removedObject, remainingItems }
+      }
+    }
+
+    return { catalogFeaturedItem: undefined, remainingItems }
+  }
+
+  const { catalogFeaturedItem, remainingItems } =
+    findAndRemoveFirstWithDescription()
 
   if (!catalogFeaturedItem) {
     return <p>None found</p>
@@ -22,38 +36,23 @@ export function Catalog(props: CatalogProps) {
   return (
     <div className="flex w-full flex-col gap-y-4">
       <div className="flex w-full flex-col gap-4 lg:flex-row">
-        <CatalogFeaturedItem
-          href={catalogFeaturedItem.href}
-          image={catalogFeaturedItem.image}
-          title={catalogFeaturedItem.title}
-          description={catalogFeaturedItem.description}
-          servings={catalogFeaturedItem.servings}
-          cookTime={catalogFeaturedItem.cookTime}
-        />
+        <CatalogFeaturedItem recipe={catalogFeaturedItem} />
         <div className="flex flex-col justify-center gap-y-4">
-          {items.slice(1, 3).map((item, index) => (
+          {remainingItems.slice(0, 2).map((item, index) => (
             <CatalogItem
               key={`${item.title}-${index}`}
               alternate={index === 0}
-              href={item.href}
-              image={item.image}
-              title={item.title}
-              servings={item.servings}
-              cookTime={item.cookTime}
+              recipe={item}
             />
           ))}
         </div>
       </div>
       <div className="flex w-full flex-row flex-wrap justify-between gap-4">
-        {items.slice(3).map((item, index) => (
+        {remainingItems.slice(2).map((item, index) => (
           <CatalogItem
             key={`${item.title}-${index}`}
             alternate={index === 1}
-            href={item.href}
-            image={item.image}
-            title={item.title}
-            servings={item.servings}
-            cookTime={item.cookTime}
+            recipe={item}
           />
         ))}
       </div>

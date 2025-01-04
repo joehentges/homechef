@@ -2,16 +2,22 @@
 
 import { useQueryStates } from "nuqs"
 
-import {
-  featuredRecipes,
-  featuredRecipeTags,
-} from "../../../mocks/featured-recipes"
+import { Recipe } from "@/db/schemas"
+
 import { Catalog } from "./catalog"
 import { Input } from "./input"
 import { SortBySelect } from "./sort-by-select"
 import { TagSelect } from "./tag-select"
 
-export function FeaturedRecipeSearch() {
+type FeaturedRecipe = Recipe & { tags: string[] }
+
+interface FeaturedRecipeSearch {
+  recipes: FeaturedRecipe[]
+}
+
+export function FeaturedRecipeSearch(props: FeaturedRecipeSearch) {
+  const { recipes } = props
+
   const [searchValues] = useQueryStates({
     search: { defaultValue: "", parse: (value) => value || "" },
     sortBy: { defaultValue: "Newest", parse: (value) => value || "Newest" },
@@ -19,10 +25,28 @@ export function FeaturedRecipeSearch() {
     page: { defaultValue: "1", parse: (value) => value || "1" },
   })
 
-  console.log(searchValues)
+  function extractUniqueTags(
+    recipes: FeaturedRecipe[],
+    limit: number = 5
+  ): string[] {
+    const uniqueTags = new Set<string>()
 
-  const catalogTags = featuredRecipeTags
-  const catalogItems = featuredRecipes
+    for (const item of recipes) {
+      for (const tag of item.tags) {
+        if (uniqueTags.size < limit) {
+          uniqueTags.add(tag)
+        } else {
+          break // Stop adding tags once the limit is reached
+        }
+      }
+      if (uniqueTags.size === limit) break //optimization, break out of outer loop as well
+    }
+
+    return [...uniqueTags]
+  }
+
+  const catalogTags = extractUniqueTags(recipes)
+  const catalogItems = recipes
 
   return (
     <div className="container py-8 md:py-16" id="featured-recipe-search">

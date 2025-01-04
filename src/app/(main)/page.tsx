@@ -1,12 +1,15 @@
 import { HeartIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { getRandomRecipesUseCase } from "@/use-cases/recipes"
 import { FeaturedRecipeSearch } from "@/containers/featured-recipe-search"
 import { FeaturedVideos } from "@/containers/featured-videos"
 
 import { videos } from "../../../mocks/featured-videos"
 
 export default async function HomePage() {
+  const randomRecipes = await getRandomRecipesUseCase(50)
+
   return (
     <div>
       <div
@@ -42,7 +45,7 @@ export default async function HomePage() {
         </div>
       </div>
 
-      <FeaturedRecipeSearch />
+      {randomRecipes && <FeaturedRecipeSearch recipes={randomRecipes} />}
 
       <FeaturedVideos videos={videos} />
     </div>

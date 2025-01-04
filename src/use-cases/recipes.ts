@@ -23,6 +23,7 @@ import {
 import {
   addRecipe,
   deleteRecipe,
+  getRandomRecipes,
   getRecipe,
   updateRecipe,
 } from "@/data-access/recipes"
@@ -42,6 +43,21 @@ import {
 } from "@/data-access/user-recipes"
 import { getUser } from "@/data-access/users"
 import { createTransaction } from "@/data-access/utils"
+
+export async function getRandomRecipesUseCase(limit: number) {
+  const randomRecipes = await getRandomRecipes(limit)
+
+  if (!randomRecipes) {
+    return []
+  }
+
+  const mappedRecipes = randomRecipes.map(async (recipe) => {
+    const tags = await getRecipeTagsByRecipeId(recipe.id)
+    return { ...recipe, tags: tags?.map((tag) => tag.name) ?? [] }
+  })
+
+  return Promise.all(mappedRecipes)
+}
 
 export async function getRecipeByIdUseCase(
   recipeId: PrimaryKey

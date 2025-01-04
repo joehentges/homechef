@@ -29,7 +29,6 @@ export function SortBySelect() {
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="Newest">Newest</SelectItem>
-          <SelectItem value="Rating">Rating</SelectItem>
           <SelectItem value="Fastest">Fastest</SelectItem>
           <SelectItem value="Easiest">Easiest</SelectItem>
         </SelectContent>

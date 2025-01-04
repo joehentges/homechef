@@ -1,9 +1,9 @@
-import { eq } from "drizzle-orm"
+import { eq, sql } from "drizzle-orm"
 
 import { PrimaryKey } from "@/types"
 import { RecipeDifficulty } from "@/types/Recipe"
 import { database } from "@/db"
-import { Recipe, recipes } from "@/db/schemas"
+import { Recipe, recipes, recipeTags, tags } from "@/db/schemas"
 
 export async function getRecipe(
   recipeId: PrimaryKey
@@ -13,6 +13,17 @@ export async function getRecipe(
   })
 
   return recipe
+}
+
+export async function getRandomRecipes(
+  limit: number
+): Promise<Recipe[] | undefined> {
+  const recipesList = await database.query.recipes.findMany({
+    limit,
+    orderBy: sql`random()`,
+  })
+
+  return recipesList
 }
 
 export async function addRecipe(
