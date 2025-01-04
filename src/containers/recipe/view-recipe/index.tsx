@@ -2,7 +2,7 @@
 
 import { useRef } from "react"
 import Link from "next/link"
-import { CookingPotIcon, PrinterIcon, Share2Icon } from "lucide-react"
+import { PrinterIcon, Share2Icon } from "lucide-react"
 import { useReactToPrint } from "react-to-print"
 
 import { FormattedRecipeDetails } from "@/types/Recipe"
@@ -10,6 +10,7 @@ import { User } from "@/db/schemas"
 import { getDomain } from "@/lib/get-domain"
 
 import { RecipeCookTime } from "./cook-time"
+import { DisplayStatus } from "./display-status"
 import { EnableEditView } from "./enable-edit-view"
 import { RecipeImage } from "./image"
 import { ImportDetails } from "./import-details"
@@ -76,6 +77,9 @@ export function ViewRecipe(props: ViewRecipeProps) {
                 )}
               </div>
               <div className="flex flex-row gap-x-4 pt-2 text-muted-foreground">
+                {author && user && user.id === author.id && (
+                  <DisplayStatus isPrivate={recipe.private} />
+                )}
                 <SaveRecipe isAuthenticated={isAuthenticated} />
                 <button
                   onClick={() => reactToPrintFn()}
