@@ -31,6 +31,7 @@ export interface FormattedRecipeDetails {
     url: string
   }
   recipe: {
+    id?: PrimaryKey
     title: string
     description?: string | null
     servings: string

@@ -42,3 +42,12 @@ export async function addRecipeDirections(
 
   return recipeDirectionsListData
 }
+
+export async function deleteRecipeDirectionsByRecipeId(
+  recipeId: PrimaryKey,
+  trx = database
+) {
+  await trx
+    .delete(recipeDirections)
+    .where(eq(recipeDirections.recipeId, recipeId))
+}

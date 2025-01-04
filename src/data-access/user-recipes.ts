@@ -26,9 +26,10 @@ export async function getUserRecipesByUserId(
 
 export async function addUserRecipe(
   userId: PrimaryKey,
-  recipeId: PrimaryKey
+  recipeId: PrimaryKey,
+  trx = database
 ): Promise<UserRecipe> {
-  const [userRecipe] = await database
+  const [userRecipe] = await trx
     .insert(userRecipes)
     .values({
       userId,

@@ -49,3 +49,10 @@ export async function addRecipeTags(
 
   return recipeTagsListData
 }
+
+export async function deleteRecipeTagsByRecipeId(
+  recipeId: PrimaryKey,
+  trx = database
+) {
+  await trx.delete(recipeTags).where(eq(recipeTags.recipeId, recipeId))
+}

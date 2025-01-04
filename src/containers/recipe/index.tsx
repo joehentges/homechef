@@ -24,6 +24,7 @@ export function RecipeContainer(props: RecipeContainerProps) {
     return (
       <EditRecipe
         newRecipe
+        isRecipeOwner={false}
         startRecipe={{
           recipe: {
             title: "",
@@ -47,6 +48,9 @@ export function RecipeContainer(props: RecipeContainerProps) {
   if (enableEditView) {
     return (
       <EditRecipe
+        isRecipeOwner={
+          recipe.author?.id === user?.id || !!!recipe.importDetails
+        }
         startRecipe={recipe}
         availableTags={availableTags}
         onDisableEditView={() => setEnableEditView(false)}

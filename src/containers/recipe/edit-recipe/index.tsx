@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { MoveLeftIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+import { useServerAction } from "zsa-react"
 
 import { FormattedRecipeDetails } from "@/types/Recipe"
 import { Button } from "@/components/ui/button"
@@ -17,26 +18,31 @@ import {
 import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
 import { AutosizeTextarea } from "@/components/autosize-textarea"
+import { LoaderButton } from "@/components/loader-button"
 import { MultipleSelector } from "@/components/multiple-selector"
+import { useToast } from "@/hooks/use-toast"
 
+import { addRecipeAction, updateRecipeAction } from "../actions"
 import { EditDirections } from "./edit-directions"
 import { EditImage } from "./edit-image"
 import { EditIngredients } from "./edit-ingredients"
 
 interface EditRecipeProps {
   newRecipe?: boolean
+  isRecipeOwner: boolean
   startRecipe: FormattedRecipeDetails
   availableTags: { name: string }[]
   onDisableEditView?: () => void
 }
 
-const editRecipeFormSchema = z.object({
+const recipeActionFormSchema = z.object({
   recipe: z.object({
+    id: z.coerce.number().optional(),
     title: z.string().min(2),
     description: z.string(),
     servings: z.string().min(1),
-    prepTime: z.number().min(0),
-    cookTime: z.number().min(0),
+    prepTime: z.coerce.number().min(0),
+    cookTime: z.coerce.number().min(0),
     difficulty: z
       .enum(["beginner", "intermediate", "advanced"])
       .nullable()
@@ -46,13 +52,13 @@ const editRecipeFormSchema = z.object({
   }),
   ingredients: z.array(
     z.object({
-      orderNumber: z.number(),
+      orderNumber: z.coerce.number(),
       description: z.string().min(3),
     })
   ),
   directions: z.array(
     z.object({
-      orderNumber: z.number(),
+      orderNumber: z.coerce.number(),
       description: z.string().min(3),
     })
   ),
@@ -67,21 +73,48 @@ const editRecipeFormSchema = z.object({
 export function EditRecipe(props: EditRecipeProps) {
   const {
     newRecipe = false,
+    isRecipeOwner,
     startRecipe,
     availableTags,
     onDisableEditView,
   } = props
+  const { toast } = useToast()
 
-  const form = useForm<z.infer<typeof editRecipeFormSchema>>({
-    resolver: zodResolver(editRecipeFormSchema),
+  const { execute, isPending } = useServerAction(
+    newRecipe || isRecipeOwner ? addRecipeAction : updateRecipeAction,
+    {
+      onError({ err }) {
+        toast({
+          title: "Something went wrong",
+          description: err.message,
+          variant: "destructive",
+        })
+      },
+      onSuccess() {
+        toast({
+          title: `Successfully ${newRecipe ? "created" : "updated"} recipe`,
+          description: `Take a look at your ${newRecipe ? "new" : "updated"} recipe`,
+        })
+      },
+    }
+  )
+
+  const form = useForm<z.infer<typeof recipeActionFormSchema>>({
+    resolver: zodResolver(recipeActionFormSchema),
     defaultValues: {
-      ...startRecipe,
       recipe: {
-        ...startRecipe.recipe,
+        id: startRecipe.recipe.id,
+        title: startRecipe.recipe.title,
+        servings: startRecipe.recipe.servings,
+        prepTime: startRecipe.recipe.prepTime,
+        cookTime: startRecipe.recipe.cookTime,
+        difficulty: startRecipe.recipe.difficulty,
+        private: startRecipe.recipe.private,
         description: startRecipe.recipe.description ?? "",
-        prepTime: startRecipe.recipe.prepTime ?? 0,
         photo: startRecipe.recipe.photo ?? undefined,
       },
+      ingredients: startRecipe.ingredients,
+      directions: startRecipe.directions,
       tags:
         startRecipe.tags?.map((tag) => ({
           value: tag,
@@ -99,10 +132,12 @@ export function EditRecipe(props: EditRecipeProps) {
 
   // on save - create new recipe (all imorted recipes are their own) & redirect to recipe page for newly create recipe
   // NOTE saved recipe and imported recipe cannot be the same - must have at least 1 difference (even 1 character)
-  function onSubmit(values: z.infer<typeof editRecipeFormSchema>) {
+  function onSubmit(values: z.infer<typeof recipeActionFormSchema>) {
     console.log(values)
-    //execute(values)
+    execute(values)
   }
+
+  console.log(form.formState.errors)
 
   return (
     <Form {...form}>
@@ -150,7 +185,10 @@ export function EditRecipe(props: EditRecipeProps) {
                 </FormItem>
               )}
             />
-            <Button type="submit">Save recipe</Button>
+
+            <LoaderButton isLoading={isPending} type="submit">
+              {newRecipe ? "Create" : "Update"} recipe
+            </LoaderButton>
           </div>
         </div>
 

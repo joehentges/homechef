@@ -24,6 +24,7 @@ export async function addRecipe(
     cookTime: number
     difficulty?: RecipeDifficulty
     servings: string
+    private?: boolean
     photo?: string | null
   },
   trx = database
@@ -36,6 +37,7 @@ export async function addRecipe(
     cookTime,
     description,
     servings,
+    private: isPrivate,
     photo,
   } = recipe
   const [recipeData] = await trx
@@ -48,8 +50,51 @@ export async function addRecipe(
       cookTime,
       difficulty,
       servings,
+      private: isPrivate,
       photo,
     })
+    .returning()
+
+  return recipeData
+}
+
+export async function updateRecipe(
+  recipeId: PrimaryKey,
+  recipe: {
+    title: string
+    description?: string | null
+    prepTime: number
+    cookTime: number
+    difficulty?: RecipeDifficulty
+    servings: string
+    private?: boolean
+    photo?: string | null
+  },
+  trx = database
+) {
+  const {
+    title,
+    difficulty,
+    prepTime,
+    cookTime,
+    description,
+    servings,
+    private: isPrivate,
+    photo,
+  } = recipe
+  const [recipeData] = await trx
+    .update(recipes)
+    .set({
+      title,
+      description,
+      prepTime,
+      cookTime,
+      difficulty,
+      servings,
+      private: isPrivate,
+      photo,
+    })
+    .where(eq(recipes.id, recipeId))
     .returning()
 
   return recipeData

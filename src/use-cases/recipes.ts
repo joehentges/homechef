@@ -4,19 +4,23 @@ import {
   RecipeDetails,
   UserDetails,
 } from "@/types/Recipe"
+import { User } from "@/db/schemas"
 import {
   addRecipeDirections,
+  deleteRecipeDirectionsByRecipeId,
   getRecipeDirectionsByRecipeId,
 } from "@/data-access/recipe-directions"
 import {
   addRecipeIngredients,
+  deleteRecipeIngredientsByRecipeId,
   getRecipeIngredientsByRecipeId,
 } from "@/data-access/recipe-ingredients"
 import {
   addRecipeTags,
+  deleteRecipeTagsByRecipeId,
   getRecipeTagsByRecipeId,
 } from "@/data-access/recipe-tags"
-import { addRecipe, getRecipe } from "@/data-access/recipes"
+import { addRecipe, getRecipe, updateRecipe } from "@/data-access/recipes"
 import {
   getRecipeImportDetailsByRecipeId,
   getRecipeImportDetailsByUrl,
@@ -26,6 +30,7 @@ import {
   getFirstUserImportedById,
   getUserRecipeImportsByIdAndUserId,
 } from "@/data-access/user-recipe-imports"
+import { addUserRecipe } from "@/data-access/user-recipes"
 import { getUser } from "@/data-access/users"
 import { createTransaction } from "@/data-access/utils"
 
@@ -86,29 +91,28 @@ export async function getRecipeImportDetailsByUrlUseCase(
 }
 
 export async function addRecipeUseCase(
-  formattedRecipeDetails: FormattedRecipeDetails
+  formattedRecipeDetails: FormattedRecipeDetails,
+  user: User
 ): Promise<RecipeDetails> {
-  const { author, recipe, ingredients, directions, tags } =
-    formattedRecipeDetails
+  const { recipe, ingredients, directions, tags } = formattedRecipeDetails
 
   const recipeDetails = await createTransaction(async (trx) => {
-    let user
-    if (author) {
-      user = await getUser(author.id)
-    }
-
     const newRecipe = await addRecipe(
       {
-        userId: author?.id,
+        userId: user.id,
         title: recipe.title,
         prepTime: recipe.prepTime,
         cookTime: recipe.cookTime,
         difficulty: recipe.difficulty,
         servings: recipe.servings,
         description: recipe.description,
+        private: recipe.private,
+        photo: recipe.photo,
       },
       trx
     )
+
+    await addUserRecipe(user.id, newRecipe.id, trx)
 
     const recipeIngredients = await addRecipeIngredients(
       newRecipe.id,
@@ -132,16 +136,81 @@ export async function addRecipeUseCase(
 
     return {
       author: user,
-      recipe,
+      recipe: newRecipe,
       ingredients: recipeIngredients ?? [],
       directions: recipeDirections ?? [],
       tags: tagsList?.map((tag) => tag.name) ?? [],
     }
   })
 
+  console.log("test2", recipeDetails)
+
   return recipeDetails as RecipeDetails
 }
 
 export async function getAvailableRecipeTagsUseCase() {
   return getAllTags()
+}
+
+export async function updateRecipeUseCase(
+  formattedRecipeDetails: FormattedRecipeDetails,
+  user: User
+) {
+  const { recipe, ingredients, directions, tags } = formattedRecipeDetails
+
+  const updatedRecipeDetails = await createTransaction(async (trx) => {
+    if (!recipe.id) {
+      throw new Error()
+    }
+    const updatedRecipe = await updateRecipe(
+      recipe.id,
+      {
+        title: recipe.title,
+        prepTime: recipe.prepTime,
+        cookTime: recipe.cookTime,
+        difficulty: recipe.difficulty,
+        servings: recipe.servings,
+        description: recipe.description,
+        private: recipe.private,
+        photo: recipe.photo,
+      },
+      trx
+    )
+
+    await deleteRecipeIngredientsByRecipeId(updatedRecipe.id, trx)
+
+    const updatedRecipeIngredients = await addRecipeIngredients(
+      updatedRecipe.id,
+      ingredients,
+      trx
+    )
+
+    await deleteRecipeDirectionsByRecipeId(updatedRecipe.id, trx)
+
+    const updatedRecipeDirections = await addRecipeDirections(
+      updatedRecipe.id,
+      directions,
+      trx
+    )
+
+    await deleteRecipeTagsByRecipeId(updatedRecipe.id, trx)
+
+    let updatedTagsList
+    if (tags) {
+      updatedTagsList = await getTagsByName(tags)
+      if (updatedTagsList.length > 1) {
+        await addRecipeTags(updatedRecipe.id, updatedTagsList, trx)
+      }
+    }
+
+    return {
+      author: user,
+      recipe: updatedRecipe,
+      ingredients: updatedRecipeIngredients ?? [],
+      directions: updatedRecipeDirections ?? [],
+      tags: updatedTagsList?.map((tag) => tag.name) ?? [],
+    }
+  })
+
+  return updatedRecipeDetails as RecipeDetails
 }
