@@ -111,6 +111,30 @@ export const updateRecipeAction = authenticatedAction
     revalidatePath(`/recipes/${recipe.recipe.id}`)
   })
 
+export const deleteRecipeAction = authenticatedAction
+  .createServerAction()
+  .input(
+    z
+      .object({
+        recipeId: z.number(),
+        originalTitle: z.string().min(1),
+        input: z.string().min(1),
+      })
+      .refine(({ originalTitle, input }) => originalTitle === input, {
+        message: "Title does not match original",
+        path: ["input"],
+      })
+  )
+  .handler(async ({ input, ctx: { user } }) => {
+    await rateLimitByKey({
+      key: `delete-recipe-author-${user.id}`,
+      limit: 3,
+      window: 10000,
+    })
+    await deleteRecipeUseCase(input.recipeId)
+    redirect(`/profile/${user.id}`)
+  })
+
 export const saveRecipeAction = authenticatedAction
   .createServerAction()
   .input(
@@ -131,21 +155,4 @@ export const unsaveRecipeAction = authenticatedAction
   )
   .handler(async ({ input, ctx: { user } }) => {
     //
-  })
-
-export const deleteRecipeAction = authenticatedAction
-  .createServerAction()
-  .input(
-    z.object({
-      recipeId: z.number(),
-    })
-  )
-  .handler(async ({ input, ctx: { user } }) => {
-    await rateLimitByKey({
-      key: `delete-recipe-author-${user.id}`,
-      limit: 3,
-      window: 10000,
-    })
-    await deleteRecipeUseCase(input.recipeId)
-    redirect(`/profile/${user.id}`)
   })
