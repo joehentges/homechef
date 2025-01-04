@@ -7,7 +7,6 @@ import { useReactToPrint } from "react-to-print"
 
 import { FormattedRecipeDetails } from "@/types/Recipe"
 import { User } from "@/db/schemas"
-import { getDomain } from "@/lib/get-domain"
 
 import { RecipeCookTime } from "./cook-time"
 import { DisplayStatus } from "./display-status"
@@ -39,8 +38,6 @@ export function ViewRecipe(props: ViewRecipeProps) {
     }
     `,
   })
-
-  console.log(recipeDetails)
 
   return (
     <>

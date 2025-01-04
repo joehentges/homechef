@@ -19,8 +19,6 @@ interface ImportDetailsProps {
 export function ImportDetails(props: ImportDetailsProps) {
   const { importedBy, url } = props
 
-  console.log(importedBy)
-
   if (importedBy) {
     return (
       <TooltipProvider>

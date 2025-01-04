@@ -3,8 +3,15 @@ import { FormattedRecipeDetails, RecipeDetails } from "@/types/Recipe"
 export function formatRecipe(
   recipeDetails: RecipeDetails
 ): FormattedRecipeDetails {
-  const { author, importDetails, recipe, ingredients, directions, tags } =
-    recipeDetails
+  const {
+    author,
+    importDetails,
+    firstToImportRecipe,
+    recipe,
+    ingredients,
+    directions,
+    tags,
+  } = recipeDetails
 
   return {
     author: author
@@ -15,7 +22,7 @@ export function formatRecipe(
       : undefined,
     importDetails: importDetails
       ? {
-          importedBy: importDetails.importedBy,
+          importedBy: firstToImportRecipe,
           url: importDetails.url,
         }
       : undefined,

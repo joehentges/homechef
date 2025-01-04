@@ -1,5 +1,9 @@
 import { PrimaryKey } from "@/types"
-import { FormattedRecipeDetails, RecipeDetails } from "@/types/Recipe"
+import {
+  FormattedRecipeDetails,
+  RecipeDetails,
+  UserDetails,
+} from "@/types/Recipe"
 import {
   addRecipeDirections,
   getRecipeDirectionsByRecipeId,
@@ -18,6 +22,11 @@ import {
   getRecipeImportDetailsByUrl,
 } from "@/data-access/recipes-import-details"
 import { getAllTags, getTagsByName } from "@/data-access/tags"
+import {
+  getFirstUserImportedById,
+  getUserRecipeImportsByIdAndUserId,
+} from "@/data-access/user-recipe-imports"
+import { getUserRecipeById } from "@/data-access/user-recipes"
 import { getUser } from "@/data-access/users"
 import { createTransaction } from "@/data-access/utils"
 
@@ -37,16 +46,21 @@ export async function getRecipeByIdUseCase(
 
   const recipeImportDetails = await getRecipeImportDetailsByRecipeId(recipeId)
 
+  let firstToImportRecipe: UserDetails | undefined
+  if (recipeImportDetails) {
+    firstToImportRecipe = await getFirstUserImportedById(recipeImportDetails.id)
+  }
+
   const recipeIngredients = await getRecipeIngredientsByRecipeId(recipeId)
 
   const recipeDirections = await getRecipeDirectionsByRecipeId(recipeId)
 
   const recipeTags = await getRecipeTagsByRecipeId(recipeId)
-  console.log(recipeImportDetails)
 
   return {
     author: user,
     importDetails: recipeImportDetails,
+    firstToImportRecipe,
     recipe,
     ingredients: recipeIngredients ?? [],
     directions: recipeDirections ?? [],
@@ -54,8 +68,22 @@ export async function getRecipeByIdUseCase(
   }
 }
 
-export async function getRecipeImportDetailsByUrlUseCase(url: string) {
-  return getRecipeImportDetailsByUrl(url)
+export async function getRecipeImportDetailsByUrlUseCase(
+  url: string,
+  userId?: PrimaryKey
+) {
+  const recipeImportDetails = await getRecipeImportDetailsByUrl(url)
+  let userRecipeImport
+  if (recipeImportDetails && userId) {
+    userRecipeImport = await getUserRecipeImportsByIdAndUserId(
+      recipeImportDetails?.id,
+      userId
+    )
+  }
+  return {
+    recipeImportDetails,
+    userRecipeImport,
+  }
 }
 
 export async function addRecipeUseCase(

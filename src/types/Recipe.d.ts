@@ -5,6 +5,7 @@ import {
   RecipeIngredient,
   RecipeTag,
   User,
+  UserRecipeImport,
 } from "@/db/schemas"
 
 import { PrimaryKey } from "."
@@ -16,33 +17,25 @@ export type RecipeDetailsPhoto = {
 
 export type RecipeDifficulty = "beginner" | "intermediate" | "advanced" | null
 
-export type RecipeDetailsImmportDetails = {
-  importedBy?: {
-    id: number
-    displayName: string
-  } | null
-  url: recipeImportDetails.url
+export type UserDetails = {
+  id: PrimaryKey
+  displayName: string
 }
 
 export interface RecipeDetails {
   recipe: Recipe
   author?: User
   importDetails?: RecipeDetailsImmportDetails | null
+  firstToImportRecipe?: UserDetails | null
   ingredients: RecipeIngredient[]
   directions: RecipeDirection[]
   tags: string[]
 }
 
 export interface FormattedRecipeDetails {
-  author?: {
-    id: PrimaryKey
-    displayName: string
-  }
+  author?: UserDetails
   importDetails?: {
-    importedBy?: {
-      id: number
-      displayName: string
-    } | null
+    importedBy?: UserDetails | null
     url: string
   }
   recipe: {

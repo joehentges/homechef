@@ -1,9 +1,8 @@
 import { eq } from "drizzle-orm"
 
 import { PrimaryKey } from "@/types"
-import { RecipeDetailsImmportDetails } from "@/types/Recipe"
 import { database } from "@/db"
-import { RecipeImportDetails, recipeImportDetails, users } from "@/db/schemas"
+import { RecipeImportDetails, recipeImportDetails } from "@/db/schemas"
 
 export async function getRecipeImportDetails(
   recipeImportDetailsId: PrimaryKey
@@ -29,24 +28,13 @@ export async function getRecipeImportDetailsByUrl(
 
 export async function getRecipeImportDetailsByRecipeId(
   recipeId: PrimaryKey
-): Promise<RecipeDetailsImmportDetails | undefined> {
-  const recipeImportDetailsData = await database
-    .select({
-      id: recipeImportDetails.id,
-      dateCreated: recipeImportDetails.dateCreated,
-      dateUpdated: recipeImportDetails.dateUpdated,
-      recipeId: recipeImportDetails.recipeId,
-      importedBy: {
-        id: users.id,
-        displayName: users.displayName,
-      },
-      url: recipeImportDetails.url,
+): Promise<RecipeImportDetails | undefined> {
+  const recipeImportDetailsData =
+    await database.query.recipeImportDetails.findFirst({
+      where: eq(recipeImportDetails.recipeId, recipeId),
     })
-    .from(recipeImportDetails)
-    .where(eq(recipeImportDetails.recipeId, recipeId))
-    .fullJoin(users, eq(recipeImportDetails.importedBy, users.id))
 
-  return recipeImportDetailsData[0]
+  return recipeImportDetailsData
 }
 
 export async function addRecipeImportDetails(

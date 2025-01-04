@@ -1,6 +1,9 @@
 import { formatRecipe } from "@/lib/format-recipe"
 import { getCurrentUser } from "@/lib/session"
-import { importRecipeUseCase } from "@/use-cases/import-recipe"
+import {
+  addUserRecipeImportUseCase,
+  importRecipeUseCase,
+} from "@/use-cases/import-recipe"
 import {
   getAvailableRecipeTagsUseCase,
   getRecipeByIdUseCase,
@@ -26,17 +29,19 @@ export default async function ImportRecipePage(props: ImportRecipePageProps) {
 
   // check Database to see if recipe has already been imported
   // skip next part if it has
-  let recipeImportDetails = await getRecipeImportDetailsByUrlUseCase(url)
+  let { recipeImportDetails, userRecipeImport } =
+    await getRecipeImportDetailsByUrlUseCase(url, user?.id)
   let recipeDetails
   if (recipeImportDetails) {
     recipeDetails = await getRecipeByIdUseCase(recipeImportDetails.recipeId)
+    if (user && !userRecipeImport) {
+      await addUserRecipeImportUseCase(recipeImportDetails.id, user.id)
+    }
   } else {
     recipeDetails = await importRecipeUseCase(url, user?.id)
   }
 
   const availableTags = await getAvailableRecipeTagsUseCase()
-
-  console.log(recipeDetails)
 
   return (
     <div className="py-4 md:py-8">

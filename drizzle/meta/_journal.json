@@ -57,6 +57,20 @@
       "when": 1735936584774,
       "tag": "0007_illegal_roughhouse",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1735966783198,
+      "tag": "0008_hesitant_alex_wilder",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1735966891569,
+      "tag": "0009_futuristic_ego",
+      "breakpoints": true
     }
   ]
 }

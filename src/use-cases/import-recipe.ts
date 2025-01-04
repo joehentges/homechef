@@ -10,6 +10,7 @@ import { addRecipeTags } from "@/data-access/recipe-tags"
 import { addRecipe } from "@/data-access/recipes"
 import { addRecipeImportDetails } from "@/data-access/recipes-import-details"
 import { getTagsByName } from "@/data-access/tags"
+import { addUserRecipeImport } from "@/data-access/user-recipe-imports"
 import { getUser } from "@/data-access/users"
 import { createTransaction } from "@/data-access/utils"
 
@@ -284,8 +285,6 @@ function formatData(
     formatDuration(recipeData.totalTime) || 0
   )
 
-  console.log(getPhoto(recipeData.image), recipeData.image)
-
   return {
     importDetails: {
       importedBy,
@@ -343,13 +342,21 @@ export async function importRecipeUseCase(url: string, importedBy?: number) {
       trx
     )
 
-    let recipeImportDetails
-    if (importDetails) {
-      recipeImportDetails = await addRecipeImportDetails(
+    const recipeImportDetails = await addRecipeImportDetails(
+      {
+        importedBy,
+        recipeId: newRecipe.id,
+        url: importDetails.url,
+      },
+      trx
+    )
+
+    let userRecipeImport
+    if (user && recipeImportDetails) {
+      userRecipeImport = await addUserRecipeImport(
         {
-          importedBy,
-          recipeId: newRecipe.id,
-          url: importDetails.url,
+          recipeImportDetailsId: recipeImportDetails?.id,
+          userId: user.id,
         },
         trx
       )
@@ -388,4 +395,14 @@ export async function importRecipeUseCase(url: string, importedBy?: number) {
   })
 
   return recipeDetails as RecipeDetails
+}
+
+export async function addUserRecipeImportUseCase(
+  recipeImportDetailsId: PrimaryKey,
+  userId: PrimaryKey
+) {
+  return addUserRecipeImport({
+    recipeImportDetailsId,
+    userId,
+  })
 }
