@@ -9,13 +9,14 @@ import { EditRecipe } from "./edit-recipe"
 import { ViewRecipe } from "./view-recipe"
 
 interface RecipeContainerProps {
+  importedRecipe?: boolean
   user?: User
   recipe?: FormattedRecipeDetails
   availableTags: { name: string }[]
 }
 
 export function RecipeContainer(props: RecipeContainerProps) {
-  const { user, recipe, availableTags } = props
+  const { importedRecipe, user, recipe, availableTags } = props
 
   const [enableEditView, setEnableEditView] = useState<boolean>(false)
 
@@ -46,11 +47,19 @@ export function RecipeContainer(props: RecipeContainerProps) {
   }
 
   if (enableEditView) {
+    if (importedRecipe) {
+      return (
+        <EditRecipe
+          isRecipeOwner={false}
+          startRecipe={recipe}
+          availableTags={availableTags}
+          onDisableEditView={() => setEnableEditView(false)}
+        />
+      )
+    }
     return (
       <EditRecipe
-        isRecipeOwner={
-          recipe.author?.id === user?.id || !!!recipe.importDetails
-        }
+        isRecipeOwner={recipe.author?.id === user?.id}
         startRecipe={recipe}
         availableTags={availableTags}
         onDisableEditView={() => setEnableEditView(false)}
@@ -60,6 +69,7 @@ export function RecipeContainer(props: RecipeContainerProps) {
 
   return (
     <ViewRecipe
+      isRecipeOwner={recipe.author?.id === user?.id}
       user={user}
       recipe={recipe}
       onEditRecipeClicked={() => setEnableEditView(true)}

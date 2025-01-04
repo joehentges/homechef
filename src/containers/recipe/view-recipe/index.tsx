@@ -2,13 +2,15 @@
 
 import { useRef } from "react"
 import Link from "next/link"
-import { PrinterIcon, Share2Icon } from "lucide-react"
+import { PrinterIcon, Share2Icon, TrophyIcon } from "lucide-react"
 import { useReactToPrint } from "react-to-print"
 
 import { FormattedRecipeDetails } from "@/types/Recipe"
 import { User } from "@/db/schemas"
 
 import { RecipeCookTime } from "./cook-time"
+import { DeleteRecipe } from "./delete-recipe"
+import { RecipeDifficulty } from "./difficulty"
 import { DisplayStatus } from "./display-status"
 import { EnableEditView } from "./enable-edit-view"
 import { RecipeImage } from "./image"
@@ -18,13 +20,19 @@ import { SaveRecipe } from "./save-recipe"
 import { RecipeTags } from "./tags"
 
 interface ViewRecipeProps {
+  isRecipeOwner: boolean
   user?: User
   recipe: FormattedRecipeDetails
   onEditRecipeClicked: () => void
 }
 
 export function ViewRecipe(props: ViewRecipeProps) {
-  const { user, recipe: recipeDetails, onEditRecipeClicked } = props
+  const {
+    isRecipeOwner,
+    user,
+    recipe: recipeDetails,
+    onEditRecipeClicked,
+  } = props
   const { author, importDetails, recipe, ingredients, directions, tags } =
     recipeDetails
   const isAuthenticated = !!user
@@ -77,7 +85,14 @@ export function ViewRecipe(props: ViewRecipeProps) {
                 {author && user && user.id === author.id && (
                   <DisplayStatus isPrivate={recipe.private} />
                 )}
-                <SaveRecipe isAuthenticated={isAuthenticated} />
+                {isRecipeOwner ? (
+                  <DeleteRecipe />
+                ) : (
+                  <SaveRecipe
+                    isAuthenticated={isAuthenticated}
+                    isSaved={true}
+                  />
+                )}
                 <button
                   onClick={() => reactToPrintFn()}
                   className="transition-colors hover:text-foreground"
@@ -109,6 +124,7 @@ export function ViewRecipe(props: ViewRecipeProps) {
                 cookTime={recipe.cookTime}
               />
               <RecipeTags tags={tags} />
+              <RecipeDifficulty difficulty={recipe.difficulty} />
             </div>
           </div>
         </div>
@@ -147,7 +163,7 @@ export function ViewRecipe(props: ViewRecipeProps) {
                         className="flex flex-row gap-x-2"
                       >
                         <p className="text-xl font-bold text-red-500">
-                          {direction.orderNumber}
+                          {direction.orderNumber + 1}
                         </p>
                         <p className="text-lg">{direction.description}</p>
                       </li>

@@ -143,8 +143,6 @@ export async function addRecipeUseCase(
     }
   })
 
-  console.log("test2", recipeDetails)
-
   return recipeDetails as RecipeDetails
 }
 

@@ -1,12 +1,13 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { MoveLeftIcon } from "lucide-react"
+import { ClockIcon, MoveLeftIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useServerAction } from "zsa-react"
 
 import { FormattedRecipeDetails } from "@/types/Recipe"
+import { formatTime } from "@/lib/format-time"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -17,15 +18,23 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { AutosizeTextarea } from "@/components/autosize-textarea"
 import { LoaderButton } from "@/components/loader-button"
 import { MultipleSelector } from "@/components/multiple-selector"
 import { useToast } from "@/hooks/use-toast"
 
 import { addRecipeAction, updateRecipeAction } from "../actions"
+import { EditDifficulty } from "./edit-difficulty"
 import { EditDirections } from "./edit-directions"
 import { EditImage } from "./edit-image"
 import { EditIngredients } from "./edit-ingredients"
+import { SaveRecipe } from "./save-recipe"
 
 interface EditRecipeProps {
   newRecipe?: boolean
@@ -72,7 +81,7 @@ const recipeActionFormSchema = z.object({
 
 export function EditRecipe(props: EditRecipeProps) {
   const {
-    newRecipe = false,
+    newRecipe,
     isRecipeOwner,
     startRecipe,
     availableTags,
@@ -81,7 +90,7 @@ export function EditRecipe(props: EditRecipeProps) {
   const { toast } = useToast()
 
   const { execute, isPending } = useServerAction(
-    newRecipe || isRecipeOwner ? addRecipeAction : updateRecipeAction,
+    isRecipeOwner ? updateRecipeAction : addRecipeAction,
     {
       onError({ err }) {
         toast({
@@ -95,6 +104,9 @@ export function EditRecipe(props: EditRecipeProps) {
           title: `Successfully ${newRecipe ? "created" : "updated"} recipe`,
           description: `Take a look at your ${newRecipe ? "new" : "updated"} recipe`,
         })
+        if (onDisableEditView) {
+          onDisableEditView()
+        }
       },
     }
   )
@@ -133,11 +145,8 @@ export function EditRecipe(props: EditRecipeProps) {
   // on save - create new recipe (all imorted recipes are their own) & redirect to recipe page for newly create recipe
   // NOTE saved recipe and imported recipe cannot be the same - must have at least 1 difference (even 1 character)
   function onSubmit(values: z.infer<typeof recipeActionFormSchema>) {
-    console.log(values)
     execute(values)
   }
-
-  console.log(form.formState.errors)
 
   return (
     <Form {...form}>
@@ -186,9 +195,12 @@ export function EditRecipe(props: EditRecipeProps) {
               )}
             />
 
-            <LoaderButton isLoading={isPending} type="submit">
-              {newRecipe ? "Create" : "Update"} recipe
-            </LoaderButton>
+            <SaveRecipe
+              isPending={isPending}
+              isDirty={form.formState.isDirty}
+              label={`${newRecipe ? "Create" : "Update"} recipe`}
+              isRecipeOwner={isRecipeOwner}
+            />
           </div>
         </div>
 
@@ -231,7 +243,7 @@ export function EditRecipe(props: EditRecipeProps) {
                   control={form.control}
                   name="recipe.servings"
                   render={({ field }) => (
-                    <FormItem className="w-full md:w-[200px]">
+                    <FormItem className="w-full">
                       <FormControl>
                         <Input {...field} placeholder="Servings" type="text" />
                       </FormControl>
@@ -240,12 +252,12 @@ export function EditRecipe(props: EditRecipeProps) {
                   )}
                 />
 
-                <div className="flex flex-row items-center gap-x-2">
+                <div className="flex w-full flex-row gap-x-2 md:w-auto">
                   <FormField
                     control={form.control}
                     name="recipe.prepTime"
                     render={({ field }) => (
-                      <FormItem className="w-[125px]">
+                      <FormItem className="w-full min-w-[100px] md:max-w-[125px]">
                         <FormControl>
                           <div className="relative">
                             <Input
@@ -266,7 +278,7 @@ export function EditRecipe(props: EditRecipeProps) {
                     control={form.control}
                     name="recipe.cookTime"
                     render={({ field }) => (
-                      <FormItem className="w-[125px]">
+                      <FormItem className="w-full min-w-[100px] md:max-w-[125px]">
                         <FormControl>
                           <div className="relative">
                             <Input
@@ -284,6 +296,22 @@ export function EditRecipe(props: EditRecipeProps) {
                     )}
                   />
                 </div>
+
+                <FormField
+                  control={form.control}
+                  name="recipe.difficulty"
+                  render={({ field }) => (
+                    <FormItem className="w-full md:w-auto">
+                      <FormControl>
+                        <EditDifficulty
+                          difficulty={field.value}
+                          setDifficulty={field.onChange}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             </div>
           </div>

@@ -1,5 +1,6 @@
 "use server"
 
+import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { z } from "zod"
 
@@ -7,7 +8,7 @@ import { rateLimitByKey } from "@/lib/limiter"
 import { authenticatedAction } from "@/lib/safe-action"
 import { addRecipeUseCase, updateRecipeUseCase } from "@/use-cases/recipes"
 
-const recipeActionSchema = z.object({
+const recipeAddOrUpdateActionSchema = z.object({
   recipe: z.object({
     id: z.number().optional(),
     title: z.string().min(2),
@@ -44,7 +45,7 @@ const recipeActionSchema = z.object({
 
 export const addRecipeAction = authenticatedAction
   .createServerAction()
-  .input(recipeActionSchema)
+  .input(recipeAddOrUpdateActionSchema)
   .handler(async ({ input, ctx: { user } }) => {
     await rateLimitByKey({
       key: `edit-recipe-author-${user.id}`,
@@ -55,9 +56,16 @@ export const addRecipeAction = authenticatedAction
       {
         recipe: {
           ...input.recipe,
+          difficulty: input.recipe.difficulty ?? null,
         },
-        ingredients: input.ingredients,
-        directions: input.directions,
+        ingredients: input.ingredients.map((ingredient, index) => ({
+          description: ingredient.description,
+          orderNumber: index,
+        })),
+        directions: input.directions.map((directions, index) => ({
+          description: directions.description,
+          orderNumber: index,
+        })),
         tags: input.tags.map((tag) => tag.value),
       },
       user
@@ -68,7 +76,7 @@ export const addRecipeAction = authenticatedAction
 
 export const updateRecipeAction = authenticatedAction
   .createServerAction()
-  .input(recipeActionSchema)
+  .input(recipeAddOrUpdateActionSchema)
   .handler(async ({ input, ctx: { user } }) => {
     await rateLimitByKey({
       key: `edit-recipe-author-${user.id}`,
@@ -82,12 +90,52 @@ export const updateRecipeAction = authenticatedAction
       {
         recipe: {
           ...input.recipe,
+          difficulty: input.recipe.difficulty ?? null,
         },
-        ingredients: input.ingredients,
-        directions: input.directions,
+        ingredients: input.ingredients.map((ingredient, index) => ({
+          description: ingredient.description,
+          orderNumber: index,
+        })),
+        directions: input.directions.map((directions, index) => ({
+          description: directions.description,
+          orderNumber: index,
+        })),
         tags: input.tags.map((tag) => tag.value),
       },
       user
     )
-    redirect(`/recipes/${recipe.recipe.id}`)
+    revalidatePath(`/recipes/${recipe.recipe.id}`)
+  })
+
+export const saveRecipeAction = authenticatedAction
+  .createServerAction()
+  .input(
+    z.object({
+      recipeId: z.number(),
+    })
+  )
+  .handler(async ({ input, ctx: { user } }) => {
+    //
+  })
+
+export const unsaveRecipeAction = authenticatedAction
+  .createServerAction()
+  .input(
+    z.object({
+      recipeId: z.number(),
+    })
+  )
+  .handler(async ({ input, ctx: { user } }) => {
+    //
+  })
+
+export const deleteRecipeAction = authenticatedAction
+  .createServerAction()
+  .input(
+    z.object({
+      recipeId: z.number(),
+    })
+  )
+  .handler(async ({ input, ctx: { user } }) => {
+    //
   })

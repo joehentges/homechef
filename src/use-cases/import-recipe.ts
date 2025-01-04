@@ -204,7 +204,7 @@ function formatKeywords(keywords: any) {
 
 function formatDirections(directions: any) {
   return directions?.map((inst: any, index: number) => ({
-    orderNumber: index + 1,
+    orderNumber: index,
     description: typeof inst === "string" ? inst : inst.text,
   }))
 }

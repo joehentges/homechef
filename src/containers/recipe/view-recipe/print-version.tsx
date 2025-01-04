@@ -4,6 +4,7 @@ import { FormattedRecipeDetails } from "@/types/Recipe"
 import { getDomain } from "@/lib/get-domain"
 
 import { RecipeCookTime } from "./cook-time"
+import { RecipeDifficulty } from "./difficulty"
 
 interface RecipePrintVersionProps {
   ref: React.Ref<HTMLDivElement>
@@ -41,6 +42,7 @@ export function RecipePrintVersion(props: RecipePrintVersionProps) {
               prepTime={recipe.prepTime}
               cookTime={recipe.cookTime}
             />
+            <RecipeDifficulty difficulty={recipe.difficulty} />
           </div>
         </div>
       </div>

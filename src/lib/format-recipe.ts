@@ -27,6 +27,7 @@ export function formatRecipe(
         }
       : undefined,
     recipe: {
+      id: recipe.id,
       title: recipe.title,
       description: recipe.description,
       servings: recipe.servings,

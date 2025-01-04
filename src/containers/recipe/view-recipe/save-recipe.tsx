@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { BookmarkIcon } from "lucide-react"
+import { BookmarkCheckIcon, BookmarkIcon } from "lucide-react"
 
 import {
   Tooltip,
@@ -12,11 +12,12 @@ import {
 import { useFromPath } from "@/hooks/use-from-path"
 
 interface SaveRecipeProps {
-  isAuthenticated?: boolean
+  isAuthenticated: boolean
+  isSaved: boolean
 }
 
 export function SaveRecipe(props: SaveRecipeProps) {
-  const { isAuthenticated } = props
+  const { isAuthenticated, isSaved } = props
 
   const fromPath = useFromPath()
 
@@ -25,10 +26,14 @@ export function SaveRecipe(props: SaveRecipeProps) {
       <TooltipProvider>
         <Tooltip delayDuration={0}>
           <TooltipTrigger className="transition-colors hover:text-foreground">
-            <BookmarkIcon className="h-5 w-5" />
+            {isSaved ? (
+              <BookmarkCheckIcon className="h-5 w-5" />
+            ) : (
+              <BookmarkIcon className="h-5 w-5" />
+            )}
           </TooltipTrigger>
           <TooltipContent>
-            <p>Save to your cookbook</p>
+            <p>{isSaved ? "Remove from" : "Save to"} your cookbook</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
