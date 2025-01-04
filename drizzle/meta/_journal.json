@@ -5,71 +5,15 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1735679225199,
-      "tag": "0000_chief_malcolm_colcord",
+      "when": 1736023332897,
+      "tag": "0000_careless_texas_twister",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "7",
-      "when": 1735686599960,
-      "tag": "0001_special_ben_urich",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1735709288697,
-      "tag": "0002_right_proteus",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1735762686924,
-      "tag": "0003_silky_plazm",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1735763626499,
-      "tag": "0004_premium_dark_beast",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1735930744599,
-      "tag": "0005_classy_toad_men",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1735933269771,
-      "tag": "0006_bouncy_shinobi_shaw",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "7",
-      "when": 1735936584774,
-      "tag": "0007_illegal_roughhouse",
-      "breakpoints": true
-    },
-    {
-      "idx": 8,
-      "version": "7",
-      "when": 1735966783198,
-      "tag": "0008_hesitant_alex_wilder",
-      "breakpoints": true
-    },
-    {
-      "idx": 9,
-      "version": "7",
-      "when": 1735966891569,
-      "tag": "0009_futuristic_ego",
+      "when": 1736023374714,
+      "tag": "0001_mighty_squadron_sinister",
       "breakpoints": true
     }
   ]

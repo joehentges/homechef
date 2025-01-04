@@ -1,4 +1,4 @@
-import { and, desc, eq } from "drizzle-orm"
+import { and, asc, desc, eq } from "drizzle-orm"
 
 import { PrimaryKey } from "@/types"
 import { UserDetails } from "@/types/Recipe"
@@ -53,7 +53,7 @@ export async function getFirstUserImportedById(
     })
     .from(userRecipeImports)
     .where(eq(userRecipeImports.recipeImportDetailsId, recipeImportDetailsId))
-    .orderBy(desc(userRecipeImports.dateCreated))
+    .orderBy(asc(userRecipeImports.dateCreated))
     .limit(1)
     .innerJoin(users, eq(userRecipeImports.userId, users.id))
 

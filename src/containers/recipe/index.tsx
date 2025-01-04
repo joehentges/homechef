@@ -76,7 +76,7 @@ export function RecipeContainer(props: RecipeContainerProps) {
 
   return (
     <ViewRecipe
-      isRecipeOwner={recipe.author?.id === user?.id}
+      isRecipeOwner={!!user && recipe.author?.id === user?.id}
       recipeIsSaved={recipeIsSaved}
       user={user}
       recipe={recipe}

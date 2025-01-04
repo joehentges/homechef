@@ -27,7 +27,7 @@ export function SaveRecipe(props: SaveRecipeProps) {
   const { toast } = useToast()
   const fromPath = useFromPath()
 
-  const { execute, isPending } = useServerAction(
+  const { execute } = useServerAction(
     isSaved ? unsaveRecipeAction : saveRecipeAction,
     {
       onError({ err }) {
@@ -38,7 +38,7 @@ export function SaveRecipe(props: SaveRecipeProps) {
         })
       },
       onSuccess() {
-        // store email in localstorage
+        // note - this executes after the action - so the saved and unsaved ternary is backwards
         toast({
           title: `You have ${isSaved ? "saved" : "unsaved"} the recipe`,
           description: `You will ${isSaved ? "find" : "no longer find"} the recipe in your cookbook.`,

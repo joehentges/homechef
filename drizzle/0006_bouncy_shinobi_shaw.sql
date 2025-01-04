@@ -1,2 +1,0 @@
-ALTER TABLE "recipe_import_details" ADD COLUMN "imported_by" integer;--> statement-breakpoint
-ALTER TABLE "recipe_import_details" ADD CONSTRAINT "recipe_import_details_imported_by_users_id_fk" FOREIGN KEY ("imported_by") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;
