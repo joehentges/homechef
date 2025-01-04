@@ -11,7 +11,7 @@ export const sendMagicLinkAction = unauthenticatedAction
   .input(
     z.object({
       email: z.string().email(),
-      from: z.string().min(2).optional(),
+      from: z.string().min(1).optional(),
     })
   )
   .handler(async ({ input }) => {

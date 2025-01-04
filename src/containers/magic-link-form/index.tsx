@@ -23,7 +23,7 @@ import { sendMagicLinkAction } from "./actions"
 
 const magicLinkFormSchema = z.object({
   email: z.string().email(),
-  from: z.string().min(2).optional(),
+  from: z.string().min(1).optional(),
 })
 
 interface MagicLinkFormProps {

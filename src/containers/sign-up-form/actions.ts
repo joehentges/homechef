@@ -15,7 +15,7 @@ export const signUpAction = unauthenticatedAction
     z.object({
       email: z.string().email(),
       password: z.string().min(8),
-      from: z.string().min(2).optional(),
+      from: z.string().min(1).optional(),
     })
   )
   .handler(async ({ input }) => {

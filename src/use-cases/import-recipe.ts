@@ -383,10 +383,8 @@ export async function importRecipeUseCase(url: string, importedBy?: number) {
     }
 
     return {
-      importDetails: {
-        ...recipeImportDetails,
-        importedBy: user,
-      },
+      importDetails: recipeImportDetails,
+      firstToImportRecipe: user,
       recipe,
       ingredients: recipeIngredients ?? [],
       directions: recipeDirections ?? [],

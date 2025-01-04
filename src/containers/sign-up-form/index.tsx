@@ -32,7 +32,7 @@ const signUpFormSchema = z
     email: z.string().email(),
     password: z.string().min(8),
     confirmPassword: z.string().min(8),
-    from: z.string().min(2).optional(),
+    from: z.string().min(1).optional(),
   })
   .refine(({ password, confirmPassword }) => password === confirmPassword, {
     message: "Passwords don't match",
