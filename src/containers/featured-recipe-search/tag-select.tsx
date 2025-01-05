@@ -1,24 +1,38 @@
 import {
+  AppleIcon,
+  BananaIcon,
+  BeefIcon,
   CakeSliceIcon,
   CookieIcon,
+  FishIcon,
+  IceCreamConeIcon,
   MartiniIcon,
+  PizzaIcon,
   SaladIcon,
   SandwichIcon,
-  ShieldQuestionIcon,
   SoupIcon,
+  TagIcon,
 } from "lucide-react"
 import { useQueryState } from "nuqs"
 
 import { cn } from "@/lib/utils"
 
 const Icons = {
+  default: TagIcon,
+  //
+  apple: AppleIcon,
+  banana: BananaIcon,
+  beef: BeefIcon,
+  cake: CakeSliceIcon,
   desert: CakeSliceIcon,
   drink: MartiniIcon,
+  fish: FishIcon,
+  "ice-cream": IceCreamConeIcon,
+  pizza: PizzaIcon,
   salad: SaladIcon,
   sandwich: SandwichIcon,
   soup: SoupIcon,
   cookie: CookieIcon,
-  default: ShieldQuestionIcon,
 } as const
 
 type Icon = keyof typeof Icons

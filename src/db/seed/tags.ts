@@ -35,6 +35,7 @@ export const tagsSeed = [
   "fusion",
 
   // Course/Dish Types
+  "drink",
   "soup",
   "salad",
   "sandwich",
