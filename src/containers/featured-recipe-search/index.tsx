@@ -24,7 +24,6 @@ export function FeaturedRecipeSearch(props: FeaturedRecipeSearch) {
     tag: { defaultValue: "", parse: (value) => value || "" },
     page: { defaultValue: "1", parse: (value) => value || "1" },
   })
-  console.log(searchValues)
 
   function extractUniqueTags(
     recipes: FeaturedRecipe[],
@@ -37,17 +36,27 @@ export function FeaturedRecipeSearch(props: FeaturedRecipeSearch) {
         if (uniqueTags.size < limit) {
           uniqueTags.add(tag)
         } else {
-          break // Stop adding tags once the limit is reached
+          break
         }
       }
-      if (uniqueTags.size === limit) break //optimization, break out of outer loop as well
+      if (uniqueTags.size === limit) {
+        break
+      }
     }
 
     return [...uniqueTags]
   }
 
   const catalogTags = extractUniqueTags(recipes)
-  const catalogItems = recipes
+
+  const itemsPerPage = 6
+  const recipePageCount = Math.ceil(recipes.length / itemsPerPage)
+  const page = (parseInt(searchValues.page) ?? 1) - 1 // want to start with 0 instead of one
+
+  const catalogPageItems = recipes.slice(
+    page * itemsPerPage,
+    (page + 1) * itemsPerPage
+  )
 
   return (
     <div className="container" id="featured-recipe-search">
@@ -61,10 +70,7 @@ export function FeaturedRecipeSearch(props: FeaturedRecipeSearch) {
 
       <div className="flex flex-col items-start gap-x-10 gap-y-6 pt-6 md:flex-row md:pt-10">
         <TagSelect tags={catalogTags} />
-        <Catalog
-          items={catalogItems}
-          pageCount={Math.ceil(catalogItems.length / 6)}
-        />
+        <Catalog items={catalogPageItems} pageCount={recipePageCount} />
       </div>
     </div>
   )
