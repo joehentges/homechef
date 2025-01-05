@@ -74,7 +74,7 @@ export function SaveRecipe(props: SaveRecipeProps) {
       <Tooltip delayDuration={0}>
         <TooltipTrigger>
           <Link
-            href={`/sign-in?from=${fromPath}`}
+            href={`/sign-in?from=${encodeURIComponent(fromPath)}`}
             className="transition-colors hover:text-foreground"
           >
             <BookmarkIcon className="h-5 w-5" />

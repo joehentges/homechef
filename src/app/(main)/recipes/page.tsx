@@ -1,7 +1,12 @@
-export default function RecipesPage() {
+import { getAvailableRecipeTagsUseCase } from "@/use-cases/recipes"
+import { RecipeSearch } from "@/containers/recipe-search"
+
+export default async function RecipesPage() {
+  const availableTags = await getAvailableRecipeTagsUseCase()
+
   return (
     <div>
-      <p>Recipes</p>
+      <RecipeSearch availableTags={availableTags} />
     </div>
   )
 }

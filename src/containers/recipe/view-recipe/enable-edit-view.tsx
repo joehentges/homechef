@@ -44,7 +44,7 @@ export function EnableEditView(props: EnableEditViewProps) {
       <Tooltip delayDuration={0}>
         <TooltipTrigger>
           <Link
-            href={`/sign-in?from=${fromPath}`}
+            href={`/sign-in?from=${encodeURIComponent(fromPath)}`}
             className="transition-colors hover:text-foreground"
           >
             <PencilIcon className="h-5 w-5" />

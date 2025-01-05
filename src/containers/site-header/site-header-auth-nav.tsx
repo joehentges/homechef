@@ -12,7 +12,7 @@ export function SiteHeaderAuthNav() {
   return (
     <>
       <Link
-        href={`/sign-in?from=${fromPath}`}
+        href={`/sign-in?from=${encodeURIComponent(fromPath)}`}
         className="flex items-center text-lg font-medium transition-colors hover:text-foreground/70 sm:text-base"
       >
         Sign In
