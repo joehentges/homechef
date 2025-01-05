@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { User2Icon } from "lucide-react"
+import { CookingPotIcon, User2Icon } from "lucide-react"
 
 import { Recipe } from "@/db/schemas"
 import { formatTime } from "@/lib/format-time"
@@ -54,14 +54,23 @@ export function CatalogFeaturedItem(props: CatalogFeaturedItemProps) {
       href={`/recipes/${id}`}
       className="group flex w-full max-w-[750px] flex-col gap-x-4 rounded-3xl bg-white dark:bg-black md:flex-row"
     >
-      <div
-        className="h-full min-h-[200px] w-full rounded-t-3xl bg-cover bg-center bg-no-repeat md:rounded-l-3xl"
-        style={{
-          backgroundImage: `url('${photo}')`,
-        }}
-      >
-        <div className="h-full w-full rounded-l-3xl bg-primary/10 opacity-0 transition-opacity group-hover:opacity-100" />
-      </div>
+      {!!photo ? (
+        <div
+          className="h-full min-h-[200px] w-full rounded-t-3xl bg-cover bg-center bg-no-repeat md:rounded-l-3xl md:rounded-tr-none"
+          style={{
+            backgroundImage: `url('${photo}')`,
+          }}
+        >
+          <div className="h-full w-full rounded-l-3xl bg-primary/10 opacity-0 transition-opacity group-hover:opacity-100" />
+        </div>
+      ) : (
+        <div className="h-full min-h-[200px] w-full rounded-t-3xl bg-white dark:bg-black md:rounded-l-3xl md:rounded-tr-none">
+          <div className="relative h-full w-full rounded-t-3xl bg-primary/30 transition-colors group-hover:bg-primary/40 md:rounded-l-3xl md:rounded-tr-none">
+            <CookingPotIcon className="absolute left-1/2 top-1/2 h-20 w-20 -translate-x-1/2 -translate-y-1/2 transform text-muted-foreground" />
+          </div>
+        </div>
+      )}
+
       <div className="flex w-full flex-col justify-between gap-y-6 p-6">
         <div className="flex flex-col gap-y-6">
           <p className="text-xl font-bold transition-colors group-hover:text-foreground/80 md:text-3xl">

@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { User2Icon } from "lucide-react"
+import { CookingPotIcon, User2Icon } from "lucide-react"
 
 import { Recipe } from "@/db/schemas"
 import { formatTime } from "@/lib/format-time"
@@ -61,14 +61,23 @@ export function CatalogItem(props: CatalogItemProps) {
       href={`/recipes/${id}`}
       className="group flex w-full flex-row items-center lg:min-w-[325px] lg:max-w-[350px]"
     >
-      <div
-        className="z-10 h-24 w-32 rounded-full bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url('${photo}')`,
-        }}
-      >
-        <div className="h-full w-full rounded-full bg-primary/10 opacity-0 transition-opacity group-hover:opacity-100" />
-      </div>
+      {!!photo ? (
+        <div
+          className="z-10 h-24 w-32 rounded-full bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('${photo}')`,
+          }}
+        >
+          <div className="h-full w-full rounded-full bg-primary/10 opacity-0 transition-opacity group-hover:opacity-100" />
+        </div>
+      ) : (
+        <div className="z-10 h-24 w-32 rounded-full bg-white dark:bg-black">
+          <div className="relative h-full w-full rounded-full bg-primary/30 transition-colors group-hover:bg-primary/40">
+            <CookingPotIcon className="absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 transform text-muted-foreground" />
+          </div>
+        </div>
+      )}
+
       <div
         className={cn(
           "-ml-12 w-full space-y-2 rounded-3xl py-4 pl-16 pr-4",
