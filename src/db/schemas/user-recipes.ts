@@ -8,9 +8,6 @@ export const userRecipes = pgTable("user_recipes", {
   dateCreated: timestamp("date_created", { mode: "date" })
     .defaultNow()
     .notNull(),
-  dateUpdated: timestamp("date_updated", { mode: "date" })
-    .defaultNow()
-    .notNull(),
   userId: integer("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),

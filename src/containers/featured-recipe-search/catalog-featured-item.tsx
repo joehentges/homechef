@@ -52,7 +52,7 @@ export function CatalogFeaturedItem(props: CatalogFeaturedItemProps) {
   return (
     <Link
       href={`/recipes/${id}`}
-      className="group flex w-full flex-col gap-x-4 rounded-3xl bg-white dark:bg-black md:flex-row"
+      className="group flex w-full max-w-[750px] flex-col gap-x-4 rounded-3xl bg-white dark:bg-black md:flex-row"
     >
       <div
         className="h-full min-h-[200px] w-full rounded-t-3xl bg-cover bg-center bg-no-repeat md:rounded-l-3xl"

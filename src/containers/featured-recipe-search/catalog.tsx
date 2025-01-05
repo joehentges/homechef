@@ -1,3 +1,5 @@
+import { FrownIcon } from "lucide-react"
+
 import { Recipe } from "@/db/schemas"
 
 import { CatalogFeaturedItem } from "./catalog-featured-item"
@@ -30,7 +32,13 @@ export function Catalog(props: CatalogProps) {
     findAndRemoveFirstWithDescription()
 
   if (!catalogFeaturedItem) {
-    return <p>None found</p>
+    return (
+      <div className="flex h-[250px] w-full flex-col items-center justify-center gap-y-3 rounded-3xl bg-primary/20 p-6">
+        <FrownIcon className="h-16 w-16 text-muted-foreground" />
+        <p className="text-3xl">No Recipes Found</p>
+        <p className="text-muted-foreground">Add or Import Some Recipes</p>
+      </div>
+    )
   }
 
   return (

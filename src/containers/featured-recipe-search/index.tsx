@@ -24,6 +24,7 @@ export function FeaturedRecipeSearch(props: FeaturedRecipeSearch) {
     tag: { defaultValue: "", parse: (value) => value || "" },
     page: { defaultValue: "1", parse: (value) => value || "1" },
   })
+  console.log(searchValues)
 
   function extractUniqueTags(
     recipes: FeaturedRecipe[],
@@ -59,7 +60,7 @@ export function FeaturedRecipeSearch(props: FeaturedRecipeSearch) {
       </div>
 
       <div className="flex flex-col items-start gap-x-10 gap-y-6 pt-6 md:flex-row md:pt-10">
-        {catalogTags.length > 0 && <TagSelect tags={catalogTags} />}
+        <TagSelect tags={catalogTags} />
         <Catalog
           items={catalogItems}
           pageCount={Math.ceil(catalogItems.length / 6)}

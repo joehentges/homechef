@@ -53,7 +53,10 @@ export function TagSelect(props: TagSelectProps) {
   }
 
   return (
-    <div className="flex flex-row flex-wrap justify-center gap-2 md:flex-col md:gap-y-4">
+    <div className="flex min-w-[150px] flex-row flex-wrap justify-center gap-2 md:min-w-[200px] md:flex-col md:gap-y-4">
+      {tags.length < 1 && (
+        <p className="text-lg text-muted-foreground">No tags available</p>
+      )}
       {tags.map((tag) => {
         const IconElement = Icons[tag as Icon] ?? Icons.default
         const selected = tag === selectedTag

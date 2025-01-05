@@ -1,5 +1,5 @@
 {
-  "id": "23ee630b-965c-41c1-b649-596c5e0f3f30",
+  "id": "91f01321-ad7f-420d-a03b-4902f09998e6",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -292,13 +292,6 @@
           "notNull": true,
           "default": "now()"
         },
-        "date_updated": {
-          "name": "date_updated",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
         "recipe_id": {
           "name": "recipe_id",
           "type": "integer",
@@ -352,13 +345,6 @@
         },
         "date_created": {
           "name": "date_created",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "date_updated": {
-          "name": "date_updated",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
@@ -424,13 +410,6 @@
           "notNull": true,
           "default": "now()"
         },
-        "date_updated": {
-          "name": "date_updated",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
         "recipe_id": {
           "name": "recipe_id",
           "type": "integer",
@@ -484,13 +463,6 @@
         },
         "date_created": {
           "name": "date_created",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "date_updated": {
-          "name": "date_updated",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
@@ -711,13 +683,6 @@
           "notNull": true,
           "default": "now()"
         },
-        "date_updated": {
-          "name": "date_updated",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
         "user_id": {
           "name": "user_id",
           "type": "integer",
@@ -783,13 +748,6 @@
           "notNull": true,
           "default": "now()"
         },
-        "date_updated": {
-          "name": "date_updated",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
         "user_id": {
           "name": "user_id",
           "type": "integer",
@@ -805,10 +763,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "user_recipes_user_id_recipes_id_fk": {
-          "name": "user_recipes_user_id_recipes_id_fk",
+        "user_recipes_user_id_users_id_fk": {
+          "name": "user_recipes_user_id_users_id_fk",
           "tableFrom": "user_recipes",
-          "tableTo": "recipes",
+          "tableTo": "users",
           "columnsFrom": [
             "user_id"
           ],

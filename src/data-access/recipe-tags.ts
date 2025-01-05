@@ -18,7 +18,6 @@ export async function getRecipeTagsByRecipeId(recipeId: PrimaryKey): Promise<
   | {
       id: number
       dateCreated: Date
-      dateUpdated: Date
       name: string
     }[]
   | undefined
@@ -27,7 +26,6 @@ export async function getRecipeTagsByRecipeId(recipeId: PrimaryKey): Promise<
     .select({
       id: recipeTags.id,
       dateCreated: recipeTags.dateCreated,
-      dateUpdated: recipeTags.dateUpdated,
       name: tags.name,
     })
     .from(recipeTags)

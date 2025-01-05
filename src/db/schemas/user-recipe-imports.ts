@@ -9,9 +9,6 @@ export const userRecipeImports = pgTable("user_recipe_imports", {
   dateCreated: timestamp("date_created", { mode: "date" })
     .defaultNow()
     .notNull(),
-  dateUpdated: timestamp("date_updated", { mode: "date" })
-    .defaultNow()
-    .notNull(),
   userId: integer("user_id")
     .references(() => users.id, { onDelete: "cascade" })
     .notNull(),

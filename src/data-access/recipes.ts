@@ -3,7 +3,7 @@ import { eq, sql } from "drizzle-orm"
 import { PrimaryKey } from "@/types"
 import { RecipeDifficulty } from "@/types/Recipe"
 import { database } from "@/db"
-import { Recipe, recipes, recipeTags, tags } from "@/db/schemas"
+import { Recipe, recipes } from "@/db/schemas"
 
 export async function getRecipe(
   recipeId: PrimaryKey
@@ -96,6 +96,7 @@ export async function updateRecipe(
   const [recipeData] = await trx
     .update(recipes)
     .set({
+      dateUpdated: new Date(),
       title,
       description,
       prepTime,
