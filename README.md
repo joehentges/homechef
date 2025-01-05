@@ -28,7 +28,7 @@ pnpm dev
 
 Open the app at [http://localhost:3000](http://localhost:3000)
 
-Two users are initially seeded with the `pnpm db:seed` command. Modify the `src\db\seed\users.ts` to change them.
+Two users are initially seeded with the `pnpm db:seed` command. Modify the `src\db\seed\users.ts` file to change them.
 
 ```bash
 email: testing@example.com
