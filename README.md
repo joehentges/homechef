@@ -23,12 +23,14 @@ RESEND_API_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 RESEND_EMAIL_FROM=email@provider.com
 ```
 
-Next, run the following commands to start the server:
+Next, run the following commands to start the server (docker compose commands optional):
 
 ```bash
 docker compose build
 
 docker compose start
+
+pnpm install
 
 pnpm db:seed
 
