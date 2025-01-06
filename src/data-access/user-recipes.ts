@@ -54,8 +54,8 @@ export async function getUserRecipesByUserId(
 }
 
 export async function addUserRecipe(
-  userId: PrimaryKey,
   recipeId: PrimaryKey,
+  userId: PrimaryKey,
   trx = database
 ): Promise<UserRecipe> {
   const [userRecipe] = await trx
@@ -70,14 +70,15 @@ export async function addUserRecipe(
 }
 
 export async function deleteUserRecipeByRecipeIdAndUserId(
-  userId: PrimaryKey,
   recipeId: PrimaryKey,
+  userId: PrimaryKey,
   trx = database
 ) {
-  await trx
+  const temp = await trx
     .delete(userRecipes)
     .where(
       and(eq(userRecipes.recipeId, recipeId), eq(userRecipes.userId, userId))
     )
     .returning()
+  console.log(temp)
 }

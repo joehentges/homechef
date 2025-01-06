@@ -253,7 +253,7 @@ export async function saveRecipeUseCase(
   recipeId: PrimaryKey,
   userId: PrimaryKey
 ) {
-  return addUserRecipe(userId, recipeId)
+  return addUserRecipe(recipeId, userId)
 }
 
 export async function unsaveRecipeUseCase(
