@@ -1,10 +1,6 @@
 # Homechef
 
----
-
 [![License](/public/README/license-badge.svg)](./LICENSE) [![Contributions](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/JoeyHentges/home-chef/issues)
-
----
 
 ## Introduction
 
@@ -60,8 +56,6 @@ pnpm db:studio
 ```
 
 Open the app at [https://local.drizzle.studio/](https://local.drizzle.studio/)
-
----
 
 ## More screenshots
 
