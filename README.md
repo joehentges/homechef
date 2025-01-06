@@ -9,8 +9,6 @@ It is focused on simplicity for the whole family to enjoy.
 
 ![promo](/public/README/promo.PNG "Promo 1")
 
----
-
 ## Getting Started
 
 First, create and modify your `.env` file. Note: the `.env.exmaple` file.
