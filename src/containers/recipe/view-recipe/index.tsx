@@ -11,10 +11,12 @@ import { User } from "@/db/schemas"
 import { RecipeCookTime } from "./cook-time"
 import { DeleteRecipe } from "./delete-recipe"
 import { RecipeDifficulty } from "./difficulty"
+import { ViewRecipeDirections } from "./directions"
 import { DisplayStatus } from "./display-status"
 import { EnableEditView } from "./enable-edit-view"
 import { RecipeImage } from "./image"
 import { ImportDetails } from "./import-details"
+import { ViewRecipeIngredients } from "./ingredients"
 import { RecipePrintVersion } from "./print-version"
 import { SaveRecipe } from "./save-recipe"
 import { RecipeTags } from "./tags"
@@ -138,43 +140,12 @@ export function ViewRecipe(props: ViewRecipeProps) {
         <div className="flex flex-col gap-x-16 gap-y-12 md:flex-row md:items-start">
           <div className="md:w-1/2">
             <p className="text-2xl font-bold">Ingredients</p>
-            <ul className="space-y-2 pt-4">
-              {ingredients
-                .sort((a, b) => a.orderNumber - b.orderNumber)
-                .map((ingredient, index) => {
-                  return (
-                    <li key={ingredient.orderNumber}>
-                      <p>{ingredient.description}</p>
-                      {index < ingredients.length - 1 && (
-                        <div className="my-3 border-t border-t-muted-foreground" />
-                      )}
-                    </li>
-                  )
-                })}
-            </ul>
+            <ViewRecipeIngredients ingredients={ingredients} />
           </div>
 
           <div className="w-full">
             <p className="text-2xl font-bold">Directions</p>
-            <ul>
-              <ul className="space-y-4 pt-4">
-                {directions
-                  .sort((a, b) => a.orderNumber - b.orderNumber)
-                  .map((direction) => {
-                    return (
-                      <li
-                        key={`${direction.orderNumber}-direction`}
-                        className="flex flex-row gap-x-2"
-                      >
-                        <p className="text-xl font-bold text-red-500">
-                          {direction.orderNumber + 1}
-                        </p>
-                        <p className="text-lg">{direction.description}</p>
-                      </li>
-                    )
-                  })}
-              </ul>
-            </ul>
+            <ViewRecipeDirections directions={directions} />
           </div>
         </div>
       </div>

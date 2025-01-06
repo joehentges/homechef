@@ -1,4 +1,19 @@
-![promo](/public/promo.PNG "Promo")
+# Homechef
+
+---
+
+[![License](/public/README/license-badge.svg)](./LICENSE) [![Contributions](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/JoeyHentges/home-chef/issues)
+
+---
+
+## Introduction
+
+A clean, simple and powerful recipe manager web application for unforgettable family recipes, empowering you to curate and share your favorite recipes.
+It is focused on simplicity for the whole family to enjoy.
+
+![promo](/public/README/promo.PNG "Promo 1")
+
+---
 
 ## Getting Started
 
@@ -46,7 +61,9 @@ pnpm db:studio
 
 Open the app at [https://local.drizzle.studio/](https://local.drizzle.studio/)
 
+---
+
 ## More screenshots
 
-![recipe-view-promo](/public/recipe-view-promo.PNG "Promo")
-![recipe-edit-promo](/public/recipe-edit-promo.PNG "Promo")
+![recipe-view-promo](/public/README/recipe-view-promo.PNG "Promo 2")
+![recipe-edit-promo](/public/README/recipe-edit-promo.PNG "Promo 3")
