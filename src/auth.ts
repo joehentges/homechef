@@ -4,7 +4,7 @@ import {
   encodeBase32LowerCaseNoPadding,
   encodeHexLowerCase,
 } from "@oslojs/encoding"
-import { eq } from "drizzle-orm"
+import { and, eq, ne } from "drizzle-orm"
 
 import { database } from "@/db"
 import { Session, sessions, User, users } from "@/db/schemas"
@@ -26,6 +26,7 @@ export async function createSession(
     userId,
     expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
   }
+
   await database.insert(sessions).values(session)
   return session
 }
@@ -39,10 +40,17 @@ export async function validateSessionToken(
     .from(sessions)
     .innerJoin(users, eq(sessions.userId, users.id))
     .where(eq(sessions.id, sessionId))
+
   if (result.length < 1) {
     return { session: null, user: null }
   }
   const { user, session } = result[0]
+
+  // delete old sessions rows - too many duplicates if they stay
+  await database
+    .delete(sessions)
+    .where(and(ne(sessions.id, sessionId), eq(sessions.userId, user.id)))
+
   if (Date.now() >= session.expiresAt.getTime()) {
     await database.delete(sessions).where(eq(sessions.id, session.id))
     return { session: null, user: null }

@@ -21,6 +21,7 @@ export async function getRandomRecipes(
   const recipesList = await database.query.recipes.findMany({
     limit,
     orderBy: sql`random()`,
+    where: eq(recipes.private, false),
   })
 
   return recipesList

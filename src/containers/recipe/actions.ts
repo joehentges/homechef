@@ -27,7 +27,7 @@ const recipeAddOrUpdateActionSchema = z.object({
       .nullable()
       .optional(),
     private: z.boolean().default(false),
-    photo: z.string().min(1).optional(),
+    photo: z.string().min(1).nullable(),
   }),
   ingredients: z.array(
     z.object({
