@@ -1,6 +1,6 @@
 # Homechef
 
-[![License](/public/README/license-badge.svg)](./LICENSE) [![Contributions](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/JoeyHentges/home-chef/issues)
+[![License](/public/README/license-badge.svg)](./LICENSE) [![Contributions](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/JoeyHentges/homechef/issues)
 
 ## Introduction
 
