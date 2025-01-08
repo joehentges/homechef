@@ -20,7 +20,7 @@ export function SiteHeader(props: SiteHeaderProps) {
         <SiteHeaderNav authenticated={!!user} />
         <nav className="flex gap-4 lg:gap-8">
           <Link
-            href="/search"
+            href="/recipes"
             className="hidden items-center text-lg font-medium transition-colors hover:text-foreground/70 sm:text-base md:flex"
           >
             <SearchIcon className="mr-2 h-4 w-4" />

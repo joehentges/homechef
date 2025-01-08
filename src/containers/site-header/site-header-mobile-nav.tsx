@@ -36,7 +36,7 @@ export function SiteHeaderMobileNav() {
             </Link>
           ))}
           <Link
-            href="/search"
+            href="/recipes"
             className="flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline"
           >
             Search

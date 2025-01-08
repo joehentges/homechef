@@ -94,7 +94,7 @@ export function RecipeSearch(props: RecipeSearchProps) {
         description: `Take a look at the recipes we found.`,
       })
       setRecipesResult(data.recipes)
-      setPageCount(Math.ceil(data.count / recipesPerPageLimit) * 20)
+      setPageCount(Math.ceil(data.count / recipesPerPageLimit))
     },
   })
 

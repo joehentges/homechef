@@ -134,7 +134,7 @@ export const deleteRecipeAction = authenticatedAction
       window: 10000,
     })
     await deleteRecipeUseCase(input.recipeId)
-    redirect(`/profile/${user.id}`)
+    redirect(`/cookbook`)
   })
 
 export const saveRecipeAction = authenticatedAction

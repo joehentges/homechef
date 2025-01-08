@@ -11,6 +11,7 @@ import { addRecipe } from "@/data-access/recipes"
 import { addRecipeImportDetails } from "@/data-access/recipes-import-details"
 import { getTagsByName } from "@/data-access/tags"
 import { addUserRecipeImport } from "@/data-access/user-recipe-imports"
+import { addUserRecipe } from "@/data-access/user-recipes"
 import { getUser } from "@/data-access/users"
 import { createTransaction } from "@/data-access/utils"
 
@@ -367,6 +368,10 @@ export async function importRecipeUseCase(url: string, importedBy?: number) {
       )
     }
 
+    if (user) {
+      await addUserRecipe(newRecipe.id, user.id, trx)
+    }
+
     const recipeIngredients = await addRecipeIngredients(
       newRecipe.id,
       ingredients,
@@ -389,8 +394,13 @@ export async function importRecipeUseCase(url: string, importedBy?: number) {
 
     return {
       importDetails: recipeImportDetails,
-      firstToImportRecipe: user,
-      recipe,
+      firstToImportRecipe: user
+        ? {
+            id: user.id,
+            displayName: user.displayName,
+          }
+        : undefined,
+      recipe: newRecipe,
       ingredients: recipeIngredients ?? [],
       directions: recipeDirections ?? [],
       tags: tagsList?.map((tag) => tag.name) ?? [],
