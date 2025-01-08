@@ -80,7 +80,7 @@ export function RecipePrintVersion(props: RecipePrintVersionProps) {
                       className="flex flex-row gap-x-2"
                     >
                       <p className="text-xl font-bold text-muted-foreground">
-                        {direction.orderNumber}
+                        {direction.orderNumber + 1}
                       </p>
                       <p className="text-lg">{direction.description}</p>
                     </li>
