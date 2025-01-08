@@ -3,7 +3,6 @@ import {
   parseAsArrayOf,
   parseAsInteger,
   parseAsString,
-  parseAsStringEnum,
 } from "nuqs/server"
 import type { SearchParams } from "nuqs/server"
 

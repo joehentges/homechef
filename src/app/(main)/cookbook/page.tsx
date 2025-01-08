@@ -3,14 +3,12 @@ import {
   parseAsArrayOf,
   parseAsInteger,
   parseAsString,
-  parseAsStringEnum,
 } from "nuqs/server"
 import type { SearchParams } from "nuqs/server"
 
 import { assertAuthenticated } from "@/lib/session"
 import {
   getAvailableRecipeTagsUseCase,
-  searchRecipesUseCase,
   searchUserRecipesUseCase,
 } from "@/use-cases/recipes"
 import { RecipeSearch } from "@/containers/recipe-search"
