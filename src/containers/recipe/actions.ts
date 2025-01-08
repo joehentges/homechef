@@ -145,7 +145,6 @@ export const saveRecipeAction = authenticatedAction
     })
   )
   .handler(async ({ input, ctx: { user } }) => {
-    console.log("save recipe action")
     await rateLimitByKey({
       key: `save-recipe-${user.id}`,
       limit: 3,
@@ -163,7 +162,6 @@ export const unsaveRecipeAction = authenticatedAction
     })
   )
   .handler(async ({ input, ctx: { user } }) => {
-    console.log("UNSAVE recipe action")
     await rateLimitByKey({
       key: `save-recipe-${user.id}`,
       limit: 3,

@@ -25,6 +25,8 @@ import {
   deleteRecipe,
   getRandomRecipes,
   getRecipe,
+  searchRecipes,
+  searchUserRecipes,
   updateRecipe,
 } from "@/data-access/recipes"
 import {
@@ -45,18 +47,7 @@ import { getUser } from "@/data-access/users"
 import { createTransaction } from "@/data-access/utils"
 
 export async function getRandomRecipesUseCase(limit: number) {
-  const randomRecipes = await getRandomRecipes(limit)
-
-  if (!randomRecipes) {
-    return []
-  }
-
-  const mappedRecipes = randomRecipes.map(async (recipe) => {
-    const tags = await getRecipeTagsByRecipeId(recipe.id)
-    return { ...recipe, tags: tags?.map((tag) => tag.name) ?? [] }
-  })
-
-  return Promise.all(mappedRecipes)
+  return getRandomRecipes(limit)
 }
 
 export async function getRecipeByIdUseCase(
@@ -137,7 +128,7 @@ export async function addRecipeUseCase(
       trx
     )
 
-    await addUserRecipe(user.id, newRecipe.id, trx)
+    await addUserRecipe(newRecipe.id, user.id, trx)
 
     const recipeIngredients = await addRecipeIngredients(
       newRecipe.id,
@@ -261,4 +252,25 @@ export async function unsaveRecipeUseCase(
   userId: PrimaryKey
 ) {
   return deleteUserRecipeByRecipeIdAndUserId(recipeId, userId)
+}
+
+export async function searchRecipesUseCase(
+  search: string,
+  searchTags: string[],
+  sortBy: "newest" | "fastest" | "easiest",
+  limit: number,
+  offset: number
+) {
+  return searchRecipes(search, searchTags, sortBy, limit, offset)
+}
+
+export async function searchUserRecipesUseCase(
+  userId: PrimaryKey,
+  search: string,
+  searchTags: string[],
+  sortBy: "newest" | "fastest" | "easiest",
+  limit: number,
+  offset: number
+) {
+  return searchUserRecipes(userId, search, searchTags, sortBy, limit, offset)
 }

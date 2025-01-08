@@ -74,11 +74,10 @@ export async function deleteUserRecipeByRecipeIdAndUserId(
   userId: PrimaryKey,
   trx = database
 ) {
-  const temp = await trx
+  await trx
     .delete(userRecipes)
     .where(
       and(eq(userRecipes.recipeId, recipeId), eq(userRecipes.userId, userId))
     )
     .returning()
-  console.log(temp)
 }

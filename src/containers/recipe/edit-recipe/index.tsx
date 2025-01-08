@@ -114,7 +114,7 @@ export function EditRecipe(props: EditRecipeProps) {
         difficulty: startRecipe.recipe.difficulty,
         private: startRecipe.recipe.private,
         description: startRecipe.recipe.description ?? "",
-        photo: startRecipe.recipe.photo ?? undefined,
+        photo: startRecipe.recipe.photo ?? null,
       },
       ingredients: startRecipe.ingredients,
       directions: startRecipe.directions,
