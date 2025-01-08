@@ -115,7 +115,7 @@ export function RecipeSearch(props: RecipeSearchProps) {
 
   return (
     <div className="py-10">
-      <div className="container space-y-6 rounded-3xl bg-primary/20 py-8">
+      <div className="container space-y-8 rounded-3xl bg-primary/20 py-8">
         <p className="text-4xl font-bold">{title}</p>
         <Form {...form}>
           <form

@@ -21,7 +21,7 @@ export async function getTagsByName(tagNames: string[]): Promise<Tag[]> {
 }
 
 export async function getAllTags(): Promise<Tag[]> {
-  const tagsList = await database.query.tags.findMany()
+  const tagsList = await database.select().from(tags).orderBy(tags.name)
 
   return tagsList
 }

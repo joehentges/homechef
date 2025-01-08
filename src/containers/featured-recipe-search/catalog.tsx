@@ -34,7 +34,7 @@ export function Catalog(props: CatalogProps) {
 
   if (!catalogFeaturedItem) {
     return (
-      <div className="flex h-[250px] w-full flex-col items-center justify-center gap-y-3 rounded-3xl bg-primary/20 p-6">
+      <div className="flex h-[300px] w-full flex-col items-center justify-center gap-y-3 rounded-3xl bg-primary/20 p-6">
         <FrownIcon className="h-16 w-16 text-muted-foreground" />
         <p className="text-3xl">No Recipes Found</p>
         <p className="text-muted-foreground">Add or Import Some Recipes</p>

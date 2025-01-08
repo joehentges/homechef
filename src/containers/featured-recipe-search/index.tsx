@@ -1,5 +1,6 @@
 "use client"
 
+import { useMemo } from "react"
 import { useQueryStates } from "nuqs"
 
 import { Recipe } from "@/db/schemas"
@@ -56,9 +57,51 @@ export function FeaturedRecipeSearch(props: FeaturedRecipeSearch) {
   const recipePageCount = Math.ceil(recipes.length / itemsPerPage)
   const page = (parseInt(searchValues.page) ?? 1) - 1 // want to start with 0 instead of one
 
-  const catalogPageItems = recipes.slice(
-    page * itemsPerPage,
-    (page + 1) * itemsPerPage
+  const sortByNewestFunction = (a: Recipe, b: Recipe) =>
+    b.dateUpdated.getTime() - a.dateUpdated.getTime()
+  const sortByFastestFunction = (a: Recipe, b: Recipe) =>
+    a.prepTime + a.cookTime - (b.prepTime + b.cookTime)
+  const difficultySortOrder = {
+    beginner: 0,
+    intermediate: 1,
+    advanced: 2,
+    null: 3,
+  }
+  const sortByEasiestFunction = (a: Recipe, b: Recipe) =>
+    difficultySortOrder[a.difficulty ?? "null"] -
+    difficultySortOrder[b.difficulty ?? "null"]
+
+  const catalogPageItems = useMemo(
+    () =>
+      recipes
+        .filter((recipe) => {
+          let matchesTags = true
+          if (!!searchValues.tag) {
+            matchesTags = recipe.tags.some((tag) => tag === searchValues.tag)
+          }
+          let matchesTitleOrDescription = true
+          if (!!searchValues.search) {
+            matchesTitleOrDescription = recipe.title
+              .toLowerCase()
+              .includes(searchValues.search)
+            if (!matchesTitleOrDescription) {
+              matchesTitleOrDescription =
+                recipe.description
+                  ?.toLowerCase()
+                  .includes(searchValues.search) ?? false
+            }
+          }
+          return matchesTags && matchesTitleOrDescription
+        })
+        .sort(
+          searchValues.sortBy === "easiest"
+            ? sortByEasiestFunction
+            : searchValues.sortBy === "fastest"
+              ? sortByFastestFunction
+              : sortByNewestFunction
+        )
+        .slice(page * itemsPerPage, (page + 1) * itemsPerPage),
+    [recipes, searchValues, page]
   )
 
   return (
