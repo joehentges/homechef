@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { DicesIcon } from "lucide-react"
+import { DicesIcon, RotateCcwIcon } from "lucide-react"
 import {
   parseAsArrayOf,
   parseAsInteger,
@@ -24,6 +24,12 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { Catalog } from "@/components/catalog"
 import { LoaderButton } from "@/components/loader-button"
 import { useToast } from "@/hooks/use-toast"
@@ -95,8 +101,8 @@ export function RecipeSearch(props: RecipeSearchProps) {
         })
       } else {
         toast({
-          title: "Successfully found some recipes",
-          description: "Take a look at the recipes we found.",
+          title: `Successfully found ${data.count} recipe${data.count > 1 ? "s" : ""}`,
+          description: `Take a look at the recipe${data.count > 1 ? "s" : ""} we found.`,
         })
       }
 
@@ -208,21 +214,32 @@ export function RecipeSearch(props: RecipeSearchProps) {
               <div className="flex w-full gap-4 md:flex-row">
                 <LoaderButton
                   isLoading={isPending}
-                  disabled={!form.formState.isDirty}
                   type="submit"
                   className="w-full rounded-3xl px-6 lg:w-auto"
                 >
                   Search
                 </LoaderButton>
 
-                <LoaderButton
-                  isLoading={isPending}
-                  onClick={onResetSubmit}
-                  className="w-full rounded-3xl px-6 lg:w-auto"
-                  variant="destructive"
-                >
-                  Reset
-                </LoaderButton>
+                <TooltipProvider>
+                  <Tooltip delayDuration={0}>
+                    <TooltipTrigger asChild>
+                      <span>
+                        <LoaderButton
+                          isLoading={isPending}
+                          onClick={onResetSubmit}
+                          className="w-full rounded-full lg:w-auto"
+                          variant="destructive"
+                          hideChildrenWhileLoading
+                        >
+                          <RotateCcwIcon />
+                        </LoaderButton>
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Reset your search</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
             </div>
           </form>

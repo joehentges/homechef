@@ -38,7 +38,10 @@ export function Catalog(props: CatalogProps) {
       <div className="flex h-[450px] w-full flex-col items-center justify-center gap-y-3 p-6">
         <FrownIcon className="h-16 w-16 text-muted-foreground" />
         <p className="text-3xl">No Recipes Found</p>
-        <p className="text-muted-foreground">Add or Import Some Recipes</p>
+        <p className="max-w-[350px] text-center text-muted-foreground">
+          Change your search, or add or import some recipes. We&apos;ll keep
+          track of them for you.
+        </p>
       </div>
     )
   }

@@ -137,7 +137,7 @@ export async function searchRecipes(
         )
       )
     )
-    .groupBy(recipes.id) // Crucial for grouping
+    .groupBy(recipes.id)
     .limit(limit)
     .offset(offset)
     .orderBy(
@@ -155,8 +155,10 @@ export async function searchRecipes(
           : desc(recipes.dateUpdated)
     )
 
-  const [recipeCount] = await database
-    .select({ count: sql<number>`count(*)` })
+  const [recipeCount] = await database // Destructure directly
+    .select({
+      count: sql<number>`count(DISTINCT ${recipes.id})`, // Count distinct recipe IDs
+    })
     .from(recipes)
     .leftJoin(recipeTags, eq(recipeTags.recipeId, recipes.id))
     .leftJoin(tags, eq(tags.id, recipeTags.tagId))
@@ -184,7 +186,6 @@ export async function searchRecipes(
         )
       )
     )
-    .groupBy(recipes.id)
 
   return {
     recipes: recipesList,
