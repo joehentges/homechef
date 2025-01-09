@@ -13,7 +13,6 @@ import {
   SoupIcon,
   TagIcon,
 } from "lucide-react"
-import { useQueryState } from "nuqs"
 
 import { cn } from "@/lib/utils"
 
@@ -38,18 +37,19 @@ const Icons = {
 type Icon = keyof typeof Icons
 
 interface TagSelectProps {
+  selectedTag: string
+  setSelectedTag: (value: string) => void
   tags: string[]
 }
 
 export function TagSelect(props: TagSelectProps) {
-  const { tags } = props
-  const [selectedTag, setTag] = useQueryState("tag", { defaultValue: "" })
+  const { selectedTag, setSelectedTag, tags } = props
 
   function onTagSelected(tag: string) {
     if (tag === selectedTag) {
-      return setTag("")
+      return setSelectedTag("")
     }
-    setTag(tag)
+    setSelectedTag(tag)
   }
 
   return (

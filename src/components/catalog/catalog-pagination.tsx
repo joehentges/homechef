@@ -23,7 +23,7 @@ interface CatalogPaginationProps {
 }
 
 export function CatalogPagination(props: CatalogPaginationProps) {
-  const { pageCount, paginationAnchor } = props
+  const { pageCount, paginationAnchor = "" } = props
 
   const [searchValues] = useQueryStates({
     search: { defaultValue: "", parse: (value) => value || "" },
@@ -41,8 +41,6 @@ export function CatalogPagination(props: CatalogPaginationProps) {
 
   const serialize = createSerializer(searchParams)
 
-  console.log(pageCount, searchValues.page)
-
   return (
     <Pagination>
       <PaginationContent>
@@ -53,7 +51,6 @@ export function CatalogPagination(props: CatalogPaginationProps) {
                 serialize({ ...searchValues, page: searchValues.page - 1 }) +
                 paginationAnchor
               }
-              className="rounded-2xl"
             />
           </PaginationItem>
         )}
@@ -72,7 +69,10 @@ export function CatalogPagination(props: CatalogPaginationProps) {
           </PaginationItem>
         ) : (
           <PaginationItem>
-            <PaginationLink href="#" className="rounded-2xl">
+            <PaginationLink
+              href="#"
+              className="pointer-events-none rounded-2xl bg-white dark:bg-black"
+            >
               {searchValues.page}
             </PaginationLink>
           </PaginationItem>
@@ -91,7 +91,7 @@ export function CatalogPagination(props: CatalogPaginationProps) {
           </PaginationItem>
         ) : (
           <PaginationItem>
-            <PaginationLink className="rounded-2xl">
+            <PaginationLink className="pointer-events-none rounded-2xl bg-white dark:bg-black">
               {searchValues.page}
             </PaginationLink>
           </PaginationItem>

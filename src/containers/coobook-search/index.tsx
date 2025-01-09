@@ -1,9 +1,15 @@
 "use client"
 
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import Link from "next/link"
 import { DicesIcon } from "lucide-react"
-import { useQueryStates } from "nuqs"
+import {
+  parseAsArrayOf,
+  parseAsInteger,
+  parseAsString,
+  parseAsStringEnum,
+  useQueryState,
+} from "nuqs"
 
 import { RecipeWithTags } from "@/types/Recipe"
 import { Recipe } from "@/db/schemas"
@@ -23,78 +29,81 @@ interface UserRecipeSearchProps {
 export function UserRecipeSearch(props: UserRecipeSearchProps) {
   const { recipes, recipesPerPageLimit, availableTags } = props
 
-  const [searchValues] = useQueryStates({
-    search: { defaultValue: "", parse: (value) => value || "" },
-    sortBy: {
-      defaultValue: "newest",
-      parse: (value) => value.toLowerCase() || "newest",
-    },
-    tags: {
-      defaultValue: "",
-      parse: (value) => value.toLowerCase() || "",
-    },
-    page: { defaultValue: "1", parse: (value) => value || "1" },
-  })
-
-  const tagsParsed = !!searchValues.tags ? searchValues.tags.split(",") : []
-
-  const page = (parseInt(searchValues.page) ?? 1) - 1 // want to start with 0 instead of one
-
-  const sortByNewestFunction = (a: Recipe, b: Recipe) =>
-    b.dateUpdated.getTime() - a.dateUpdated.getTime()
-  const sortByFastestFunction = (a: Recipe, b: Recipe) =>
-    a.prepTime + a.cookTime - (b.prepTime + b.cookTime)
-  const difficultySortOrder = {
-    beginner: 0,
-    intermediate: 1,
-    advanced: 2,
-    null: 3,
-  }
-  const sortByEasiestFunction = (a: Recipe, b: Recipe) =>
-    difficultySortOrder[a.difficulty ?? "null"] -
-    difficultySortOrder[b.difficulty ?? "null"]
+  const [search, setSearch] = useQueryState(
+    "search",
+    parseAsString.withDefault("")
+  )
+  const [sortBy, setSortBy] = useQueryState(
+    "sortBy",
+    parseAsStringEnum(["newest", "easiest", "fastest"]).withDefault("newest")
+  )
+  const [tags, setTags] = useQueryState(
+    "tags",
+    parseAsArrayOf(parseAsString, ",").withDefault([])
+  )
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1))
 
   const { catalogPageItems, totalCatalogItems } = useMemo(() => {
+    const sortByNewestFunction = (a: Recipe, b: Recipe) =>
+      b.dateUpdated.getTime() - a.dateUpdated.getTime()
+    const sortByFastestFunction = (a: Recipe, b: Recipe) =>
+      a.prepTime + a.cookTime - (b.prepTime + b.cookTime)
+    const difficultySortOrder = {
+      beginner: 0,
+      intermediate: 1,
+      advanced: 2,
+      null: 3,
+    }
+    const sortByEasiestFunction = (a: Recipe, b: Recipe) =>
+      difficultySortOrder[a.difficulty ?? "null"] -
+      difficultySortOrder[b.difficulty ?? "null"]
+
     const catalogItems = recipes
       .filter((recipe) => {
         let matchesTags = true
-        if (tagsParsed.length > 0) {
+        if (tags.length > 0) {
           matchesTags = recipe.tags.some((tag) =>
-            tagsParsed.find((searchTag) => searchTag === tag)
+            tags.find((searchTag) => searchTag === tag)
           )
         }
         let matchesTitleOrDescription = true
-        if (!!searchValues.search) {
+        if (!!search) {
           matchesTitleOrDescription = recipe.title
             .toLowerCase()
-            .includes(searchValues.search)
+            .includes(search)
           if (!matchesTitleOrDescription) {
             matchesTitleOrDescription =
-              recipe.description?.toLowerCase().includes(searchValues.search) ??
-              false
+              recipe.description?.toLowerCase().includes(search) ?? false
           }
         }
         return matchesTags && matchesTitleOrDescription
       })
       .sort(
-        searchValues.sortBy === "easiest"
+        sortBy === "easiest"
           ? sortByEasiestFunction
-          : searchValues.sortBy === "fastest"
+          : sortBy === "fastest"
             ? sortByFastestFunction
             : sortByNewestFunction
       )
 
     return {
       catalogPageItems: catalogItems.slice(
-        page * recipesPerPageLimit,
-        (page + 1) * recipesPerPageLimit
+        (page - 1) * recipesPerPageLimit,
+        page * recipesPerPageLimit
       ),
       totalCatalogItems: catalogItems.length,
     }
-  }, [recipes, searchValues, page])
+    // eslint-disable-next-line
+  }, [search, tags, sortBy, page])
 
   const recipePageCount = Math.ceil(totalCatalogItems / recipesPerPageLimit)
-  console.log(recipePageCount)
+
+  useEffect(() => {
+    if (totalCatalogItems > 0 && catalogPageItems.length === 0) {
+      setPage(1)
+    }
+    // eslint-disable-next-line
+  }, [search, tags, sortBy, page])
 
   return (
     <div className="py-10">
@@ -113,12 +122,16 @@ export function UserRecipeSearch(props: UserRecipeSearchProps) {
         </div>
 
         <div className="flex flex-col items-center gap-4 lg:flex-row">
-          <Input />
+          <Input search={search} setSearch={setSearch} />
 
           <div className="flex w-full flex-col gap-4 md:flex-row">
-            <TagSelect availableTags={availableTags} />
+            <TagSelect
+              availableTags={availableTags}
+              tags={tags}
+              setTags={setTags}
+            />
 
-            <SortBySelect />
+            <SortBySelect sortBy={sortBy} setSortBy={setSortBy} />
           </div>
         </div>
         <div className="center flex w-full justify-center">

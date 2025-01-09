@@ -2,22 +2,21 @@
 
 import { Dispatch, SetStateAction } from "react"
 import { SearchIcon } from "lucide-react"
-import { useQueryState } from "nuqs"
 
 import { Input as InputElement } from "@/components/ui/input"
 
 interface InputProps {
+  search: string
+  setSearch: (value: string) => void
   onChange: Dispatch<SetStateAction<string>>
 }
 
 export function Input(props: InputProps) {
-  const { onChange } = props
-
-  const [search, setInput] = useQueryState("search", { defaultValue: "" })
+  const { search, setSearch, onChange } = props
 
   function onInputChange(newValue: string) {
     onChange(newValue)
-    setInput(newValue)
+    setSearch(newValue)
   }
 
   return (

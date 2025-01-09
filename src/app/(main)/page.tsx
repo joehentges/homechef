@@ -83,7 +83,12 @@ export default async function HomePage() {
       <div className="space-y-16 py-16">
         <ImportRecipe />
 
-        {randomRecipes && <FeaturedRecipeSearch recipes={randomRecipes} />}
+        {randomRecipes && (
+          <FeaturedRecipeSearch
+            recipes={randomRecipes}
+            recipesPerPageLimit={6}
+          />
+        )}
 
         <FeaturedVideos videos={videos} />
       </div>

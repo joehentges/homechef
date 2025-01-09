@@ -1,7 +1,6 @@
 "use client"
 
 import { Dispatch, SetStateAction } from "react"
-import { useQueryState } from "nuqs"
 
 import {
   Select,
@@ -12,19 +11,17 @@ import {
 } from "@/components/ui/select"
 
 interface SortBySelectProps {
+  sortBy: string
+  setSortBy: (value: "newest" | "easiest" | "fastest") => void
   onChange: Dispatch<SetStateAction<string>>
 }
 
 export function SortBySelect(props: SortBySelectProps) {
-  const { onChange } = props
-
-  const [sortBy, setSortBy] = useQueryState("sortBy", {
-    defaultValue: "newest",
-  })
+  const { sortBy, setSortBy, onChange } = props
 
   function onSelectChange(value: string) {
     onChange(value)
-    setSortBy(value)
+    setSortBy(value as "newest" | "easiest" | "fastest")
   }
 
   return (

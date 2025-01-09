@@ -15,18 +15,6 @@ import { RecipeDifficulty, RecipeWithTags } from "@/types/Recipe"
 import { database } from "@/db"
 import { Recipe, recipes, recipeTags, tags, userRecipes } from "@/db/schemas"
 
-function duplicateArray<T>(arr: T[], times: number): T[] {
-  if (times <= 0) {
-    return [] // Return empty array for zero or negative times
-  }
-
-  const result: T[] = []
-  for (let i = 0; i < times; i++) {
-    result.push(...arr) // Use spread syntax for efficient concatenation
-  }
-  return result
-}
-
 export async function getRecipe(
   recipeId: PrimaryKey
 ): Promise<Recipe | undefined> {
@@ -73,7 +61,7 @@ export async function getRandomRecipes(
     .limit(limit)
     .orderBy(sql`random()`)
 
-  return duplicateArray(recipesList, 6)
+  return recipesList
 }
 
 export async function getRandomRecipe(): Promise<Recipe | undefined> {
@@ -206,7 +194,7 @@ export async function searchRecipes(
 
 export async function getUserRecipes(
   userId: PrimaryKey
-): Promise<{ recipes: RecipeWithTags[]; count: number }> {
+): Promise<RecipeWithTags[]> {
   const recipesList = await database
     .select({
       id: recipes.id,
@@ -239,28 +227,7 @@ export async function getUserRecipes(
     .where(eq(userRecipes.userId, userId))
     .groupBy(recipes.id)
 
-  const [recipeCount] = await database
-    .select({ count: sql<number>`count(*)` })
-    .from(recipes)
-    .leftJoin(recipeTags, eq(recipeTags.recipeId, recipes.id))
-    .leftJoin(tags, eq(tags.id, recipeTags.tagId))
-    .where(eq(recipes.private, false))
-    .groupBy(recipes.id) // Crucial for grouping
-
-  const temp = duplicateArray(recipesList, 50)
-  return {
-    recipes: temp.map((item, index) => ({
-      ...item,
-      title: `${item.title}-${index}`,
-      miscId: index,
-    })),
-    count: (recipeCount?.count ?? 0) * 50,
-  }
-
-  return {
-    recipes: recipesList,
-    count: recipeCount?.count ?? 0,
-  }
+  return recipesList
 }
 
 export async function addRecipe(

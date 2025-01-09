@@ -1,12 +1,16 @@
 "use client"
 
 import { SearchIcon } from "lucide-react"
-import { useQueryState } from "nuqs"
 
 import { Input as InputElement } from "@/components/ui/input"
 
-export function Input() {
-  const [search, setInput] = useQueryState("search", { defaultValue: "" })
+interface InputProps {
+  search: string
+  setSearch: (value: string) => void
+}
+
+export function Input(props: InputProps) {
+  const { search, setSearch } = props
 
   return (
     <div className="w-full md:min-w-[400px]">
@@ -17,7 +21,7 @@ export function Input() {
           type="search"
           placeholder="Search recipes..."
           value={search}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
         />
         <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
           <SearchIcon size={16} strokeWidth={2} />

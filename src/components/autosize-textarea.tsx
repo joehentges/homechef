@@ -41,6 +41,7 @@ export const useAutosizeTextArea = ({
         textAreaElement.style.height = `${scrollHeight + offsetBorder}px`
       }
     }
+    // eslint-disable-next-line
   }, [textAreaRef.current, triggerAutoSize, init, maxHeight, minHeight])
 }
 

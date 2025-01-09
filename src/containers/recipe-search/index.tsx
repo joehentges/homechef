@@ -4,7 +4,13 @@ import { useState } from "react"
 import Link from "next/link"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { DicesIcon } from "lucide-react"
-import { useQueryStates } from "nuqs"
+import {
+  parseAsArrayOf,
+  parseAsInteger,
+  parseAsString,
+  parseAsStringEnum,
+  useQueryState,
+} from "nuqs"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useServerAction } from "zsa-react"
@@ -58,25 +64,19 @@ export function RecipeSearch(props: RecipeSearchProps) {
     Math.ceil(initialRecipesCount / recipesPerPageLimit)
   )
 
-  const [searchValues] = useQueryStates({
-    search: { defaultValue: "", parse: (value) => value || "" },
-    sortBy: {
-      defaultValue: "newest",
-      parse: (value) => value.toLowerCase() || "newest",
-    },
-    tags: {
-      defaultValue: [],
-      parse: (value) => value.split(",").map((tag) => tag) || "",
-    },
-    page: {
-      defaultValue: 1,
-      parse: (value) => {
-        const parsedValue = parseInt(value, 10)
-        return isNaN(parsedValue) ? null : parsedValue
-      },
-      serialize: (value) => value?.toString() || "",
-    },
-  })
+  const [search, setSearch] = useQueryState(
+    "search",
+    parseAsString.withDefault("")
+  )
+  const [sortBy, setSortBy] = useQueryState(
+    "sortBy",
+    parseAsStringEnum(["newest", "easiest", "fastest"]).withDefault("newest")
+  )
+  const [tags, setTags] = useQueryState(
+    "tags",
+    parseAsArrayOf(parseAsString, ",").withDefault([])
+  )
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1))
 
   const { execute, isPending } = useServerAction(searchRecipesAction, {
     onError({ err }) {
@@ -87,10 +87,19 @@ export function RecipeSearch(props: RecipeSearchProps) {
       })
     },
     onSuccess({ data }) {
-      toast({
-        title: `Successfully found some recipes`,
-        description: `Take a look at the recipes we found.`,
-      })
+      if (data.recipes.length < 1) {
+        toast({
+          title: "Sorry, we couldn't find any recipes",
+          description: "Change your search to and we'll take a look again",
+          variant: "destructive",
+        })
+      } else {
+        toast({
+          title: "Successfully found some recipes",
+          description: "Take a look at the recipes we found.",
+        })
+      }
+
       setRecipesResult(data.recipes)
       setPageCount(Math.ceil(data.count / recipesPerPageLimit))
     },
@@ -99,16 +108,30 @@ export function RecipeSearch(props: RecipeSearchProps) {
   const form = useForm<z.infer<typeof recipeSearchFormSchema>>({
     resolver: zodResolver(recipeSearchFormSchema),
     defaultValues: {
-      search: searchValues.search,
-      tags: searchValues.tags,
-      sortBy: searchValues.sortBy as "newest" | "easiest" | "fastest",
+      search: search,
+      tags: tags,
+      sortBy: sortBy,
       recipesPerPageLimit,
-      page: searchValues.page,
+      page: page,
     },
   })
 
   function onSubmit(values: z.infer<typeof recipeSearchFormSchema>) {
     execute(values)
+  }
+
+  function onResetSubmit() {
+    setSearch("")
+    setTags([])
+    setSortBy("newest")
+    setPage(1)
+    execute({
+      search: "",
+      tags: [],
+      sortBy: "newest",
+      recipesPerPageLimit,
+      page: 1,
+    })
   }
 
   return (
@@ -135,7 +158,11 @@ export function RecipeSearch(props: RecipeSearchProps) {
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormControl>
-                    <Input onChange={field.onChange} />
+                    <Input
+                      search={search}
+                      setSearch={setSearch}
+                      onChange={field.onChange}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -149,6 +176,8 @@ export function RecipeSearch(props: RecipeSearchProps) {
                 <FormItem className="w-full">
                   <FormControl>
                     <TagSelect
+                      tags={tags}
+                      setTags={setTags}
                       availableTags={availableTags}
                       onChange={field.onChange}
                     />
@@ -165,20 +194,36 @@ export function RecipeSearch(props: RecipeSearchProps) {
                 render={({ field }) => (
                   <FormItem className="w-full lg:w-auto">
                     <FormControl>
-                      <SortBySelect onChange={field.onChange} />
+                      <SortBySelect
+                        sortBy={sortBy}
+                        setSortBy={setSortBy}
+                        onChange={field.onChange}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              <LoaderButton
-                isLoading={isPending}
-                type="submit"
-                className="w-full rounded-3xl px-6 lg:w-auto"
-              >
-                Search
-              </LoaderButton>
+              <div className="flex w-full gap-4 md:flex-row">
+                <LoaderButton
+                  isLoading={isPending}
+                  disabled={!form.formState.isDirty}
+                  type="submit"
+                  className="w-full rounded-3xl px-6 lg:w-auto"
+                >
+                  Search
+                </LoaderButton>
+
+                <LoaderButton
+                  isLoading={isPending}
+                  onClick={onResetSubmit}
+                  className="w-full rounded-3xl px-6 lg:w-auto"
+                  variant="destructive"
+                >
+                  Reset
+                </LoaderButton>
+              </div>
             </div>
           </form>
         </Form>

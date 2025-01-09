@@ -1,7 +1,5 @@
 "use client"
 
-import { useQueryState } from "nuqs"
-
 import {
   Select,
   SelectContent,
@@ -10,14 +8,17 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-export function SortBySelect() {
-  const [sortBy, setSortBy] = useQueryState("sortBy", {
-    defaultValue: "newest",
-  })
+interface SortBySelectProps {
+  sortBy: string
+  setSortBy: (value: "newest" | "easiest" | "fastest") => void
+}
+
+export function SortBySelect(props: SortBySelectProps) {
+  const { sortBy, setSortBy } = props
 
   return (
     <div className="w-[180px] space-y-2">
-      <Select value={sortBy} onValueChange={(value) => setSortBy(value)}>
+      <Select value={sortBy} onValueChange={setSortBy}>
         <SelectTrigger
           id="select-17"
           className="relative rounded-2xl bg-white ps-[4.5rem] font-bold dark:bg-black"

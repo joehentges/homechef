@@ -12,13 +12,10 @@ export default async function CookbookPage() {
   const recipesList = await getUserRecipesUseCase(user.id)
 
   return (
-    <div>
-      <UserRecipeSearch
-        recipes={recipesList.recipes}
-        recipesPerPageLimit={12}
-        recipesCount={recipesList.count}
-        availableTags={availableTags}
-      />
-    </div>
+    <UserRecipeSearch
+      recipes={recipesList}
+      recipesPerPageLimit={12}
+      availableTags={availableTags}
+    />
   )
 }

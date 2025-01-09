@@ -1,8 +1,12 @@
 "use client"
 
 import { useEffect, useMemo } from "react"
-import { redirect, usePathname } from "next/navigation"
-import { useQueryStates } from "nuqs"
+import {
+  parseAsInteger,
+  parseAsString,
+  parseAsStringEnum,
+  useQueryState,
+} from "nuqs"
 
 import { RecipeWithTags } from "@/types/Recipe"
 import { Recipe } from "@/db/schemas"
@@ -14,20 +18,22 @@ import { TagSelect } from "./tag-select"
 
 interface FeaturedRecipeSearch {
   recipes: RecipeWithTags[]
+  recipesPerPageLimit: number
 }
 
 export function FeaturedRecipeSearch(props: FeaturedRecipeSearch) {
-  const { recipes } = props
+  const { recipes, recipesPerPageLimit } = props
 
-  const [searchValues] = useQueryStates({
-    search: { defaultValue: "", parse: (value) => value || "" },
-    sortBy: {
-      defaultValue: "newest",
-      parse: (value) => value.toLowerCase() || "newest",
-    },
-    tag: { defaultValue: "", parse: (value) => value || "" },
-    page: { defaultValue: "1", parse: (value) => value || "1" },
-  })
+  const [search, setSearch] = useQueryState(
+    "search",
+    parseAsString.withDefault("")
+  )
+  const [sortBy, setSortBy] = useQueryState(
+    "sortBy",
+    parseAsStringEnum(["newest", "easiest", "fastest"]).withDefault("newest")
+  )
+  const [tag, setTag] = useQueryState("tag", parseAsString.withDefault(""))
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1))
 
   function extractUniqueTags(
     recipes: RecipeWithTags[],
@@ -53,56 +59,67 @@ export function FeaturedRecipeSearch(props: FeaturedRecipeSearch) {
 
   const catalogTags = extractUniqueTags(recipes)
 
-  const itemsPerPage = 6
-  const recipePageCount = Math.ceil(recipes.length / itemsPerPage)
-  const page = (parseInt(searchValues.page) ?? 1) - 1 // want to start with 0 instead of one
+  const { catalogPageItems, totalCatalogItems } = useMemo(() => {
+    const sortByNewestFunction = (a: Recipe, b: Recipe) =>
+      b.dateUpdated.getTime() - a.dateUpdated.getTime()
+    const sortByFastestFunction = (a: Recipe, b: Recipe) =>
+      a.prepTime + a.cookTime - (b.prepTime + b.cookTime)
+    const difficultySortOrder = {
+      beginner: 0,
+      intermediate: 1,
+      advanced: 2,
+      null: 3,
+    }
+    const sortByEasiestFunction = (a: Recipe, b: Recipe) =>
+      difficultySortOrder[a.difficulty ?? "null"] -
+      difficultySortOrder[b.difficulty ?? "null"]
 
-  const sortByNewestFunction = (a: Recipe, b: Recipe) =>
-    b.dateUpdated.getTime() - a.dateUpdated.getTime()
-  const sortByFastestFunction = (a: Recipe, b: Recipe) =>
-    a.prepTime + a.cookTime - (b.prepTime + b.cookTime)
-  const difficultySortOrder = {
-    beginner: 0,
-    intermediate: 1,
-    advanced: 2,
-    null: 3,
-  }
-  const sortByEasiestFunction = (a: Recipe, b: Recipe) =>
-    difficultySortOrder[a.difficulty ?? "null"] -
-    difficultySortOrder[b.difficulty ?? "null"]
+    const catalogItems = recipes
+      .filter((recipe) => {
+        let matchesTags = true
+        if (tag) {
+          matchesTags = matchesTags = recipe.tags.some(
+            (recipeTag) => recipeTag === tag
+          )
+        }
+        let matchesTitleOrDescription = true
+        if (!!search) {
+          matchesTitleOrDescription = recipe.title
+            .toLowerCase()
+            .includes(search)
+          if (!matchesTitleOrDescription) {
+            matchesTitleOrDescription =
+              recipe.description?.toLowerCase().includes(search) ?? false
+          }
+        }
+        return matchesTags && matchesTitleOrDescription
+      })
+      .sort(
+        sortBy === "easiest"
+          ? sortByEasiestFunction
+          : sortBy === "fastest"
+            ? sortByFastestFunction
+            : sortByNewestFunction
+      )
 
-  const catalogPageItems = useMemo(
-    () =>
-      recipes
-        .filter((recipe) => {
-          let matchesTags = true
-          if (!!searchValues.tag) {
-            matchesTags = recipe.tags.some((tag) => tag === searchValues.tag)
-          }
-          let matchesTitleOrDescription = true
-          if (!!searchValues.search) {
-            matchesTitleOrDescription = recipe.title
-              .toLowerCase()
-              .includes(searchValues.search)
-            if (!matchesTitleOrDescription) {
-              matchesTitleOrDescription =
-                recipe.description
-                  ?.toLowerCase()
-                  .includes(searchValues.search) ?? false
-            }
-          }
-          return matchesTags && matchesTitleOrDescription
-        })
-        .sort(
-          searchValues.sortBy === "easiest"
-            ? sortByEasiestFunction
-            : searchValues.sortBy === "fastest"
-              ? sortByFastestFunction
-              : sortByNewestFunction
-        )
-        .slice(page * itemsPerPage, (page + 1) * itemsPerPage),
-    [recipes, searchValues, page]
-  )
+    return {
+      catalogPageItems: catalogItems.slice(
+        (page - 1) * recipesPerPageLimit,
+        page * recipesPerPageLimit
+      ),
+      totalCatalogItems: catalogItems.length,
+    }
+    // eslint-disable-next-line
+  }, [search, tag, sortBy, page])
+
+  const recipePageCount = Math.ceil(totalCatalogItems / recipesPerPageLimit)
+
+  useEffect(() => {
+    if (totalCatalogItems > 0 && catalogPageItems.length === 0) {
+      setPage(1)
+    }
+    // eslint-disable-next-line
+  }, [search, tag, sortBy, page])
 
   return (
     <div className="container" id="featured-recipe-search">
@@ -111,13 +128,17 @@ export function FeaturedRecipeSearch(props: FeaturedRecipeSearch) {
           <p className="font-header text-4xl font-bold md:w-[200px]">
             Featured Recipes
           </p>
-          <Input />
+          <Input search={search} setSearch={setSearch} />
         </div>
-        <SortBySelect />
+        <SortBySelect sortBy={sortBy} setSortBy={setSortBy} />
       </div>
 
       <div className="flex flex-col items-start gap-x-10 gap-y-6 pt-6 md:flex-row md:pt-10">
-        <TagSelect tags={catalogTags} />
+        <TagSelect
+          tags={catalogTags}
+          selectedTag={tag}
+          setSelectedTag={setTag}
+        />
         <Catalog
           items={catalogPageItems}
           pageCount={recipePageCount}

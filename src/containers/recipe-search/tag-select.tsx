@@ -4,6 +4,8 @@ import { useQueryState } from "nuqs"
 import { MultipleSelector } from "@/components/multiple-selector"
 
 interface TagSelectProps {
+  tags: string[]
+  setTags: (value: string[]) => void
   availableTags: { name: string }[]
   onChange: Dispatch<SetStateAction<string[]>>
 }
