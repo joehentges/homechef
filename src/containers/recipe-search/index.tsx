@@ -1,13 +1,16 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { DicesIcon } from "lucide-react"
 import { useQueryStates } from "nuqs"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useServerAction } from "zsa-react"
 
 import { Recipe } from "@/db/schemas"
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -15,19 +18,18 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form"
+import { Catalog } from "@/components/catalog"
 import { LoaderButton } from "@/components/loader-button"
 import { useToast } from "@/hooks/use-toast"
 
-import { searchRecipesAction, searchUserRecipesAction } from "./actions"
-import { Catalog } from "./catalog"
+import { searchRecipesAction } from "./actions"
 import { Input } from "./input"
 import { SortBySelect } from "./sort-by-select"
 import { TagSelect } from "./tag-select"
 
 interface RecipeSearchProps {
-  title: string
-  userRecipesOnly?: boolean
   recipesPerPageLimit: number
+  randomRecipe?: Recipe
   initialRecipes: Recipe[]
   initialRecipesCount: number
   availableTags: { name: string }[]
@@ -43,9 +45,8 @@ const recipeSearchFormSchema = z.object({
 
 export function RecipeSearch(props: RecipeSearchProps) {
   const {
-    title,
-    userRecipesOnly,
     recipesPerPageLimit,
+    randomRecipe,
     initialRecipes,
     initialRecipesCount,
     availableTags,
@@ -77,10 +78,7 @@ export function RecipeSearch(props: RecipeSearchProps) {
     },
   })
 
-  const serverAction = userRecipesOnly
-    ? searchUserRecipesAction
-    : searchRecipesAction
-  const { execute, isPending } = useServerAction(serverAction, {
+  const { execute, isPending } = useServerAction(searchRecipesAction, {
     onError({ err }) {
       toast({
         title: "Something went wrong",
@@ -116,7 +114,16 @@ export function RecipeSearch(props: RecipeSearchProps) {
   return (
     <div className="py-10">
       <div className="container space-y-8 rounded-3xl bg-primary/20 py-8">
-        <p className="text-4xl font-bold">{title}</p>
+        <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+          <p className="text-4xl font-bold">Recipe Search</p>
+          {randomRecipe && (
+            <Link href={`/recipes/${randomRecipe.id}`}>
+              <Button className="rounded-3xl" variant="secondary">
+                <DicesIcon /> Surprise me
+              </Button>
+            </Link>
+          )}
+        </div>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -168,7 +175,7 @@ export function RecipeSearch(props: RecipeSearchProps) {
               <LoaderButton
                 isLoading={isPending}
                 type="submit"
-                className="w-full rounded-2xl px-6 lg:w-auto"
+                className="w-full rounded-3xl px-6 lg:w-auto"
               >
                 Search
               </LoaderButton>

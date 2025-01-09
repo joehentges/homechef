@@ -11,9 +11,21 @@ import {
 } from "drizzle-orm"
 
 import { PrimaryKey } from "@/types"
-import { RecipeDifficulty } from "@/types/Recipe"
+import { RecipeDifficulty, RecipeWithTags } from "@/types/Recipe"
 import { database } from "@/db"
 import { Recipe, recipes, recipeTags, tags, userRecipes } from "@/db/schemas"
+
+function duplicateArray<T>(arr: T[], times: number): T[] {
+  if (times <= 0) {
+    return [] // Return empty array for zero or negative times
+  }
+
+  const result: T[] = []
+  for (let i = 0; i < times; i++) {
+    result.push(...arr) // Use spread syntax for efficient concatenation
+  }
+  return result
+}
 
 export async function getRecipe(
   recipeId: PrimaryKey
@@ -25,10 +37,9 @@ export async function getRecipe(
   return recipe
 }
 
-type RandomRecipe = Recipe & { tags: string[] }
 export async function getRandomRecipes(
   limit: number
-): Promise<RandomRecipe[] | undefined> {
+): Promise<RecipeWithTags[] | undefined> {
   const recipesList = await database
     .select({
       id: recipes.id,
@@ -57,12 +68,21 @@ export async function getRandomRecipes(
     .from(recipes)
     .leftJoin(recipeTags, eq(recipeTags.recipeId, recipes.id))
     .leftJoin(tags, eq(tags.id, recipeTags.tagId))
-    .where(and(eq(recipes.private, false)))
+    .where(eq(recipes.private, false))
     .groupBy(recipes.id)
     .limit(limit)
     .orderBy(sql`random()`)
 
-  return recipesList
+  return duplicateArray(recipesList, 6)
+}
+
+export async function getRandomRecipe(): Promise<Recipe | undefined> {
+  const recipe = await database.query.recipes.findFirst({
+    where: eq(recipes.private, false),
+    orderBy: sql`random()`,
+  })
+
+  return recipe
 }
 
 export async function searchRecipes(
@@ -71,7 +91,7 @@ export async function searchRecipes(
   sortBy: "newest" | "fastest" | "easiest",
   limit: number,
   offset: number
-): Promise<{ recipes: Recipe[]; count: number }> {
+): Promise<{ recipes: RecipeWithTags[]; count: number }> {
   const searchByClause = or(
     ilike(recipes.title, `%${search}%`),
     ilike(recipes.description, `%${search}%`)
@@ -184,19 +204,9 @@ export async function searchRecipes(
   }
 }
 
-export async function searchUserRecipes(
-  userId: PrimaryKey,
-  search: string,
-  searchTags: string[],
-  sortBy: "newest" | "fastest" | "easiest",
-  limit: number,
-  offset: number
-): Promise<{ recipes: Recipe[]; count: number }> {
-  const searchByClause = or(
-    ilike(recipes.title, `%${search}%`),
-    ilike(recipes.description, `%${search}%`)
-  )
-
+export async function getUserRecipes(
+  userId: PrimaryKey
+): Promise<{ recipes: RecipeWithTags[]; count: number }> {
   const recipesList = await database
     .select({
       id: recipes.id,
@@ -226,78 +236,26 @@ export async function searchUserRecipes(
     .leftJoin(userRecipes, eq(userRecipes.recipeId, recipes.id))
     .leftJoin(recipeTags, eq(recipeTags.recipeId, recipes.id))
     .leftJoin(tags, eq(tags.id, recipeTags.tagId))
-    .where(
-      and(
-        eq(userRecipes.userId, userId),
-        or(
-          searchTags.length > 0
-            ? and(
-                searchByClause,
-                exists(
-                  database
-                    .select()
-                    .from(recipeTags)
-                    .innerJoin(tags, eq(tags.id, recipeTags.tagId))
-                    .where(
-                      and(
-                        eq(recipeTags.recipeId, recipes.id),
-                        inArray(tags.name, searchTags)
-                      )
-                    )
-                )
-              )
-            : searchByClause
-        )
-      )
-    )
-    .groupBy(recipes.id) // Crucial for grouping
-    .limit(limit)
-    .offset(offset)
-    .orderBy(
-      sortBy === "fastest"
-        ? asc(sql`${recipes.prepTime} + ${recipes.cookTime}`)
-        : sortBy === "easiest"
-          ? sql`
-        CASE ${recipes.difficulty}
-          WHEN 'beginner' THEN 1
-          WHEN 'intermediate' THEN 2
-          WHEN 'advanced' THEN 3
-          ELSE 4
-        END
-      `
-          : desc(recipes.dateUpdated)
-    )
+    .where(eq(userRecipes.userId, userId))
+    .groupBy(recipes.id)
 
   const [recipeCount] = await database
     .select({ count: sql<number>`count(*)` })
     .from(recipes)
     .leftJoin(recipeTags, eq(recipeTags.recipeId, recipes.id))
     .leftJoin(tags, eq(tags.id, recipeTags.tagId))
-    .where(
-      and(
-        eq(recipes.private, false),
-        or(
-          searchTags.length > 0
-            ? and(
-                searchByClause,
-                exists(
-                  database
-                    .select()
-                    .from(recipeTags)
-                    .innerJoin(tags, eq(tags.id, recipeTags.tagId))
-                    .where(
-                      and(
-                        eq(recipeTags.recipeId, recipes.id),
-                        inArray(tags.name, searchTags)
-                      )
-                    )
-                )
-              )
-            : searchByClause
-        )
-      )
-    )
+    .where(eq(recipes.private, false))
     .groupBy(recipes.id) // Crucial for grouping
+
+  const temp = duplicateArray(recipesList, 50)
+  return {
+    recipes: temp.map((item, index) => ({
+      ...item,
+      title: `${item.title}-${index}`,
+      miscId: index,
+    })),
+    count: (recipeCount?.count ?? 0) * 50,
+  }
 
   return {
     recipes: recipesList,

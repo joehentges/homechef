@@ -19,10 +19,11 @@ import {
 
 interface CatalogPaginationProps {
   pageCount: number
+  paginationAnchor?: string
 }
 
 export function CatalogPagination(props: CatalogPaginationProps) {
-  const { pageCount } = props
+  const { pageCount, paginationAnchor } = props
 
   const [searchValues] = useQueryStates({
     search: { defaultValue: "", parse: (value) => value || "" },
@@ -40,13 +41,18 @@ export function CatalogPagination(props: CatalogPaginationProps) {
 
   const serialize = createSerializer(searchParams)
 
+  console.log(pageCount, searchValues.page)
+
   return (
     <Pagination>
       <PaginationContent>
         {searchValues.page > 1 && (
           <PaginationItem>
             <PaginationPrevious
-              href={serialize({ ...searchValues, page: searchValues.page - 1 })}
+              href={
+                serialize({ ...searchValues, page: searchValues.page - 1 }) +
+                paginationAnchor
+              }
               className="rounded-2xl"
             />
           </PaginationItem>
@@ -55,7 +61,10 @@ export function CatalogPagination(props: CatalogPaginationProps) {
         {searchValues.page - 1 === pageCount - 1 ? (
           <PaginationItem>
             <PaginationLink
-              href={serialize({ ...searchValues, page: searchValues.page - 1 })}
+              href={
+                serialize({ ...searchValues, page: searchValues.page - 1 }) +
+                paginationAnchor
+              }
               className="rounded-2xl"
             >
               {searchValues.page - 1}
@@ -71,7 +80,10 @@ export function CatalogPagination(props: CatalogPaginationProps) {
         {searchValues.page !== pageCount ? (
           <PaginationItem>
             <PaginationLink
-              href={serialize({ ...searchValues, page: searchValues.page + 1 })}
+              href={
+                serialize({ ...searchValues, page: searchValues.page + 1 }) +
+                paginationAnchor
+              }
               className="rounded-2xl"
             >
               {searchValues.page + 1}
@@ -95,7 +107,7 @@ export function CatalogPagination(props: CatalogPaginationProps) {
             <PaginationNext
               href={
                 serialize({ ...searchValues, page: searchValues.page + 1 }) +
-                "#featured-recipe-search"
+                paginationAnchor
               }
               className="rounded-2xl"
             />

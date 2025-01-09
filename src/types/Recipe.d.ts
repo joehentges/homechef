@@ -45,3 +45,5 @@ export interface FormattedRecipeDetails {
   directions: { orderNumber: number; description: string }[]
   tags?: string[]
 }
+
+export type RecipeWithTags = Recipe & { tags: string[] }

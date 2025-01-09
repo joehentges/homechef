@@ -1,19 +1,19 @@
 "use client"
 
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
+import { redirect, usePathname } from "next/navigation"
 import { useQueryStates } from "nuqs"
 
+import { RecipeWithTags } from "@/types/Recipe"
 import { Recipe } from "@/db/schemas"
+import { Catalog } from "@/components/catalog"
 
-import { Catalog } from "./catalog"
 import { Input } from "./input"
 import { SortBySelect } from "./sort-by-select"
 import { TagSelect } from "./tag-select"
 
-type FeaturedRecipe = Recipe & { tags: string[] }
-
 interface FeaturedRecipeSearch {
-  recipes: FeaturedRecipe[]
+  recipes: RecipeWithTags[]
 }
 
 export function FeaturedRecipeSearch(props: FeaturedRecipeSearch) {
@@ -30,7 +30,7 @@ export function FeaturedRecipeSearch(props: FeaturedRecipeSearch) {
   })
 
   function extractUniqueTags(
-    recipes: FeaturedRecipe[],
+    recipes: RecipeWithTags[],
     limit: number = 5
   ): string[] {
     const uniqueTags = new Set<string>()
@@ -118,7 +118,11 @@ export function FeaturedRecipeSearch(props: FeaturedRecipeSearch) {
 
       <div className="flex flex-col items-start gap-x-10 gap-y-6 pt-6 md:flex-row md:pt-10">
         <TagSelect tags={catalogTags} />
-        <Catalog items={catalogPageItems} pageCount={recipePageCount} />
+        <Catalog
+          items={catalogPageItems}
+          pageCount={recipePageCount}
+          paginationAnchor="#featured-recipe-search"
+        />
       </div>
     </div>
   )

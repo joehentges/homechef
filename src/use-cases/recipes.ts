@@ -23,10 +23,11 @@ import {
 import {
   addRecipe,
   deleteRecipe,
+  getRandomRecipe,
   getRandomRecipes,
   getRecipe,
+  getUserRecipes,
   searchRecipes,
-  searchUserRecipes,
   updateRecipe,
 } from "@/data-access/recipes"
 import {
@@ -264,13 +265,10 @@ export async function searchRecipesUseCase(
   return searchRecipes(search, searchTags, sortBy, limit, offset)
 }
 
-export async function searchUserRecipesUseCase(
-  userId: PrimaryKey,
-  search: string,
-  searchTags: string[],
-  sortBy: "newest" | "fastest" | "easiest",
-  limit: number,
-  offset: number
-) {
-  return searchUserRecipes(userId, search, searchTags, sortBy, limit, offset)
+export async function getUserRecipesUseCase(userId: PrimaryKey) {
+  return getUserRecipes(userId)
+}
+
+export async function getRandomRecipeUseCase() {
+  return getRandomRecipe()
 }

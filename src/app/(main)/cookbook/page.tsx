@@ -1,58 +1,22 @@
-import {
-  createSearchParamsCache,
-  parseAsArrayOf,
-  parseAsInteger,
-  parseAsString,
-} from "nuqs/server"
-import type { SearchParams } from "nuqs/server"
-
 import { assertAuthenticated } from "@/lib/session"
 import {
   getAvailableRecipeTagsUseCase,
-  searchUserRecipesUseCase,
+  getUserRecipesUseCase,
 } from "@/use-cases/recipes"
-import { RecipeSearch } from "@/containers/recipe-search"
+import { UserRecipeSearch } from "@/containers/coobook-search"
 
-const searchParamsCache = createSearchParamsCache({
-  search: parseAsString.withDefault(""),
-  sortBy: parseAsString.withDefault("newest"),
-  tags: parseAsArrayOf(parseAsString, ",").withDefault([]),
-  page: parseAsInteger.withDefault(1),
-})
-
-interface CookbookPageProps {
-  searchParams: Promise<SearchParams>
-}
-
-export default async function CookbookPage({
-  searchParams,
-}: CookbookPageProps) {
-  const { search, sortBy, tags, page } =
-    await searchParamsCache.parse(searchParams)
-
+export default async function CookbookPage() {
   const user = await assertAuthenticated()
 
-  const limit = 12
-  const limitLOffset = (page - 1) * limit
-
   const availableTags = await getAvailableRecipeTagsUseCase()
-  const initialRecipes = await searchUserRecipesUseCase(
-    user.id,
-    search,
-    tags,
-    sortBy.toLowerCase() as "newest" | "fastest" | "easiest",
-    limit,
-    limitLOffset
-  )
+  const recipesList = await getUserRecipesUseCase(user.id)
 
   return (
     <div>
-      <RecipeSearch
-        title="Cookbook Search"
-        userRecipesOnly
-        recipesPerPageLimit={limit}
-        initialRecipesCount={initialRecipes.count}
-        initialRecipes={initialRecipes.recipes}
+      <UserRecipeSearch
+        recipes={recipesList.recipes}
+        recipesPerPageLimit={12}
+        recipesCount={recipesList.count}
         availableTags={availableTags}
       />
     </div>

@@ -10,10 +10,11 @@ import { CatalogPagination } from "./catalog-pagination"
 export interface CatalogProps {
   items: Recipe[]
   pageCount: number
+  paginationAnchor?: string
 }
 
 export function Catalog(props: CatalogProps) {
-  const { items, pageCount } = props
+  const { items, pageCount, paginationAnchor } = props
 
   function findAndRemoveFirstWithDescription() {
     const remainingItems = [...items]
@@ -34,7 +35,7 @@ export function Catalog(props: CatalogProps) {
 
   if (!catalogFeaturedItem) {
     return (
-      <div className="flex h-[300px] w-full flex-col items-center justify-center gap-y-3 rounded-3xl bg-primary/20 p-6">
+      <div className="flex h-[450px] w-full flex-col items-center justify-center gap-y-3 p-6">
         <FrownIcon className="h-16 w-16 text-muted-foreground" />
         <p className="text-3xl">No Recipes Found</p>
         <p className="text-muted-foreground">Add or Import Some Recipes</p>
@@ -43,7 +44,7 @@ export function Catalog(props: CatalogProps) {
   }
 
   return (
-    <div className="flex w-full flex-col gap-y-4">
+    <div className="flex max-w-[1115px] flex-col gap-y-4">
       <div className="flex w-full flex-col gap-4 lg:flex-row">
         <CatalogFeaturedItem recipe={catalogFeaturedItem} />
         <div
@@ -61,18 +62,21 @@ export function Catalog(props: CatalogProps) {
           ))}
         </div>
       </div>
-      <div className="flex w-full flex-row flex-wrap justify-between gap-4">
+      <div className="flex flex-row flex-wrap gap-4">
         {remainingItems.slice(2).map((item, index) => (
           <CatalogItem
             key={`${item.title}-${index}`}
-            alternate={index === 1}
+            alternate={index % 4 === 2}
             recipe={item}
           />
         ))}
       </div>
       {pageCount > 1 && (
         <div className="py-4">
-          <CatalogPagination pageCount={4} />
+          <CatalogPagination
+            pageCount={pageCount}
+            paginationAnchor={paginationAnchor}
+          />
         </div>
       )}
     </div>

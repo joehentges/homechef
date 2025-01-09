@@ -16,7 +16,7 @@ export function CatalogFeaturedItem(props: CatalogFeaturedItemProps) {
   function getServings() {
     if (Number.isNaN(servingsNum)) {
       return (
-        <div className="gap-x-2e flex items-center gap-x-1">
+        <div className="flex items-center gap-x-1">
           <p>Uknown</p>
           <User2Icon
             className={
@@ -28,7 +28,7 @@ export function CatalogFeaturedItem(props: CatalogFeaturedItemProps) {
     }
     if (servingsNum > 5) {
       return (
-        <div className="gap-x-2e flex items-center gap-x-1">
+        <div className="flex items-center gap-x-1">
           <p>{servingsNum}</p>
           <User2Icon
             className={
@@ -52,7 +52,7 @@ export function CatalogFeaturedItem(props: CatalogFeaturedItemProps) {
   return (
     <Link
       href={`/recipes/${id}`}
-      className="group flex w-full max-w-[750px] flex-col gap-x-4 rounded-3xl bg-white dark:bg-black md:flex-row"
+      className="group flex w-full flex-col gap-x-4 rounded-3xl bg-white dark:bg-black md:flex-row lg:max-w-[720px]"
     >
       {!!photo ? (
         <div

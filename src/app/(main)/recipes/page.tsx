@@ -8,6 +8,7 @@ import type { SearchParams } from "nuqs/server"
 
 import {
   getAvailableRecipeTagsUseCase,
+  getRandomRecipeUseCase,
   searchRecipesUseCase,
 } from "@/use-cases/recipes"
 import { RecipeSearch } from "@/containers/recipe-search"
@@ -38,12 +39,13 @@ export default async function RecipesPage({ searchParams }: RecipesPageProps) {
     limit,
     limitLOffset
   )
+  const randomRecipe = await getRandomRecipeUseCase()
 
   return (
     <div>
       <RecipeSearch
-        title="Recipe Search"
         recipesPerPageLimit={limit}
+        randomRecipe={randomRecipe}
         initialRecipesCount={initialRecipes.count}
         initialRecipes={initialRecipes.recipes}
         availableTags={availableTags}

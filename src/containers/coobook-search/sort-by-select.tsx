@@ -1,6 +1,5 @@
 "use client"
 
-import { Dispatch, SetStateAction } from "react"
 import { useQueryState } from "nuqs"
 
 import {
@@ -11,25 +10,14 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-interface SortBySelectProps {
-  onChange: Dispatch<SetStateAction<string>>
-}
-
-export function SortBySelect(props: SortBySelectProps) {
-  const { onChange } = props
-
+export function SortBySelect() {
   const [sortBy, setSortBy] = useQueryState("sortBy", {
     defaultValue: "newest",
   })
 
-  function onSelectChange(value: string) {
-    onChange(value)
-    setSortBy(value)
-  }
-
   return (
     <div className="min-w-[180px] space-y-2">
-      <Select value={sortBy.toLowerCase()} onValueChange={onSelectChange}>
+      <Select value={sortBy.toLowerCase()} onValueChange={setSortBy}>
         <SelectTrigger
           id="select-17"
           className="relative rounded-3xl bg-white ps-[4.5rem] font-bold dark:bg-black"
