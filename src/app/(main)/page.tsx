@@ -61,7 +61,7 @@ export default async function HomePage() {
             New pumpkin season has started, let&apos;s cook!
           </p>
         </div>
-        <div className="xl:[15em] absolute bottom-0 right-0 hidden md:mr-[5em] md:flex lg:mr-[12em] xl:mr-[15em] 2xl:mr-[20em]">
+        <div className="absolute bottom-0 right-0 hidden md:mr-[5em] md:flex lg:mr-[6em] xl:mr-[15em] 2xl:mr-[20em]">
           <img
             src="/images/halloween-pumpkins.png"
             alt="hero"
