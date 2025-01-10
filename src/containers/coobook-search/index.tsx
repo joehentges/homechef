@@ -142,7 +142,12 @@ export function UserRecipeSearch(props: UserRecipeSearchProps) {
           </div>
         </div>
         <div className="center flex w-full justify-center">
-          <Catalog items={catalogPageItems} pageCount={recipePageCount} />
+          <Catalog
+            items={catalogPageItems}
+            pageCount={recipePageCount}
+            currentPage={page}
+            onPageClicked={setPage}
+          />
         </div>
       </div>
     </div>

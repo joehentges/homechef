@@ -15,6 +15,43 @@ import { RecipeDifficulty, RecipeWithTags } from "@/types/Recipe"
 import { database } from "@/db"
 import { Recipe, recipes, recipeTags, tags, userRecipes } from "@/db/schemas"
 
+// START - For testing only
+function duplicateArray<T>(arr: T[], times: number): T[] {
+  if (times <= 0) {
+    return [] // Return empty array for non-positive times
+  }
+
+  const duplicatedArray: T[] = []
+  for (let i = 0; i < times; i++) {
+    duplicatedArray.push(...arr) // Use spread operator for efficient copying
+  }
+  return duplicatedArray
+}
+function randomizeRecipeDetails<T>(
+  recipe: T & { title: string },
+  index: number
+): T {
+  const start = new Date(2020, 0, 1) // January 1st of startYear
+  const end = new Date(2024 + 1, 0, 1) // January 1st of (endYear + 1) to include the endYear
+
+  // Get the time difference in milliseconds
+  const startTime = start.getTime()
+  const endTime = end.getTime()
+  const diff = endTime - startTime
+
+  // Generate a random number within the time difference
+  const randomTime = Math.random() * diff
+
+  return {
+    ...recipe,
+    dateUpdated: new Date(startTime + randomTime),
+    title: `${recipe.title} - ${index}`,
+    prepTime: Math.floor(Math.random() * (500 - 1)) + 1,
+    cookTime: Math.floor(Math.random() * (500 - 1)) + 1,
+  }
+}
+// END - For testing only
+
 export async function getRecipe(
   recipeId: PrimaryKey
 ): Promise<Recipe | undefined> {

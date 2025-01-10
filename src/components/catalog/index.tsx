@@ -10,11 +10,12 @@ import { CatalogPagination } from "./catalog-pagination"
 export interface CatalogProps {
   items: Recipe[]
   pageCount: number
-  paginationAnchor?: string
+  currentPage: number
+  onPageClicked: (page: number) => void
 }
 
 export function Catalog(props: CatalogProps) {
-  const { items, pageCount, paginationAnchor } = props
+  const { items, pageCount, currentPage, onPageClicked } = props
 
   function findAndRemoveFirstWithDescription() {
     const remainingItems = [...items]
@@ -78,7 +79,8 @@ export function Catalog(props: CatalogProps) {
         <div className="py-4">
           <CatalogPagination
             pageCount={pageCount}
-            paginationAnchor={paginationAnchor}
+            currentPage={currentPage}
+            onPageClicked={onPageClicked}
           />
         </div>
       )}

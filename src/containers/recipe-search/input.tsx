@@ -7,17 +7,11 @@ import { Input as InputElement } from "@/components/ui/input"
 
 interface InputProps {
   search: string
-  setSearch: (value: string) => void
   onChange: Dispatch<SetStateAction<string>>
 }
 
 export function Input(props: InputProps) {
-  const { search, setSearch, onChange } = props
-
-  function onInputChange(newValue: string) {
-    onChange(newValue)
-    setSearch(newValue)
-  }
+  const { search, onChange } = props
 
   return (
     <div className="md:min-w-[400px]">
@@ -28,7 +22,7 @@ export function Input(props: InputProps) {
           type="search"
           placeholder="Search recipes..."
           value={search}
-          onChange={(e) => onInputChange(e.target.value)}
+          onChange={(e) => onChange(e.target.value)}
         />
         <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
           <SearchIcon size={16} strokeWidth={2} />

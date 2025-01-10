@@ -105,11 +105,26 @@ export function RecipeSearch(props: RecipeSearchProps) {
           description: `Take a look at the recipe${data.count > 1 ? "s" : ""} we found.`,
         })
       }
-
       setRecipesResult(data.recipes)
       setPageCount(Math.ceil(data.count / recipesPerPageLimit))
     },
   })
+
+  const { execute: executePageChange, isPending: isPageChangePending } =
+    useServerAction(searchRecipesAction, {
+      onError({ err }) {
+        toast({
+          title: "Something went wrong",
+          description: err.message,
+          variant: "destructive",
+        })
+      },
+      onSuccess({ data }) {
+        setPage(data.page)
+        setRecipesResult(data.recipes)
+        setPageCount(Math.ceil(data.count / recipesPerPageLimit))
+      },
+    })
 
   const form = useForm<z.infer<typeof recipeSearchFormSchema>>({
     resolver: zodResolver(recipeSearchFormSchema),
@@ -123,10 +138,14 @@ export function RecipeSearch(props: RecipeSearchProps) {
   })
 
   function onSubmit(values: z.infer<typeof recipeSearchFormSchema>) {
+    setSearch(values.search)
+    setTags(values.tags)
+    setSortBy(values.sortBy)
     execute(values)
   }
 
   function onResetSubmit() {
+    form.reset()
     setSearch("")
     setTags([])
     setSortBy("newest")
@@ -137,6 +156,16 @@ export function RecipeSearch(props: RecipeSearchProps) {
       sortBy: "newest",
       recipesPerPageLimit,
       page: 1,
+    })
+  }
+
+  function onPageChange(page: number) {
+    executePageChange({
+      search,
+      tags,
+      sortBy,
+      recipesPerPageLimit,
+      page,
     })
   }
 
@@ -164,11 +193,7 @@ export function RecipeSearch(props: RecipeSearchProps) {
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormControl>
-                    <Input
-                      search={search}
-                      setSearch={setSearch}
-                      onChange={field.onChange}
-                    />
+                    <Input search={field.value} onChange={field.onChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -182,8 +207,7 @@ export function RecipeSearch(props: RecipeSearchProps) {
                 <FormItem className="w-full">
                   <FormControl>
                     <TagSelect
-                      tags={tags}
-                      setTags={setTags}
+                      tags={field.value}
                       availableTags={availableTags}
                       onChange={field.onChange}
                     />
@@ -201,8 +225,7 @@ export function RecipeSearch(props: RecipeSearchProps) {
                   <FormItem className="w-full lg:w-auto">
                     <FormControl>
                       <SortBySelect
-                        sortBy={sortBy}
-                        setSortBy={setSortBy}
+                        sortBy={field.value}
                         onChange={field.onChange}
                       />
                     </FormControl>
@@ -213,7 +236,7 @@ export function RecipeSearch(props: RecipeSearchProps) {
 
               <div className="flex w-full gap-4 md:flex-row">
                 <LoaderButton
-                  isLoading={isPending}
+                  isLoading={isPending || isPageChangePending}
                   type="submit"
                   className="w-full rounded-3xl px-6 lg:w-auto"
                 >
@@ -225,7 +248,7 @@ export function RecipeSearch(props: RecipeSearchProps) {
                     <TooltipTrigger asChild>
                       <span>
                         <LoaderButton
-                          isLoading={isPending}
+                          isLoading={isPending || isPageChangePending}
                           onClick={onResetSubmit}
                           className="w-full rounded-full lg:w-auto"
                           variant="destructive"
@@ -245,7 +268,12 @@ export function RecipeSearch(props: RecipeSearchProps) {
           </form>
         </Form>
         <div className="center flex w-full justify-center">
-          <Catalog items={recipesResult} pageCount={pageCount} />
+          <Catalog
+            items={recipesResult}
+            pageCount={pageCount}
+            currentPage={page}
+            onPageClicked={onPageChange}
+          />
         </div>
       </div>
     </div>

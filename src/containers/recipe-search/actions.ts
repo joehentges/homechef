@@ -24,11 +24,16 @@ export const searchRecipesAction = unauthenticatedAction
       window: 10000,
     })
     const limitLOffset = (input.page - 1) * input.recipesPerPageLimit
-    return searchRecipesUseCase(
+    const recipeSearchResult = await searchRecipesUseCase(
       input.search,
       input.tags,
       input.sortBy,
       input.recipesPerPageLimit,
       limitLOffset
     )
+    return {
+      recipes: recipeSearchResult.recipes,
+      count: recipeSearchResult.count,
+      page: input.page,
+    }
   })

@@ -12,21 +12,15 @@ import {
 
 interface SortBySelectProps {
   sortBy: string
-  setSortBy: (value: "newest" | "easiest" | "fastest") => void
   onChange: Dispatch<SetStateAction<string>>
 }
 
 export function SortBySelect(props: SortBySelectProps) {
-  const { sortBy, setSortBy, onChange } = props
-
-  function onSelectChange(value: string) {
-    onChange(value)
-    setSortBy(value as "newest" | "easiest" | "fastest")
-  }
+  const { sortBy, onChange } = props
 
   return (
     <div className="min-w-[180px] space-y-2">
-      <Select value={sortBy.toLowerCase()} onValueChange={onSelectChange}>
+      <Select value={sortBy.toLowerCase()} onValueChange={onChange}>
         <SelectTrigger
           id="select-17"
           className="relative rounded-3xl bg-white ps-[4.5rem] font-bold dark:bg-black"

@@ -19,52 +19,32 @@ import {
 
 interface CatalogPaginationProps {
   pageCount: number
-  paginationAnchor?: string
+  currentPage: number
+  onPageClicked: (page: number) => void
 }
 
 export function CatalogPagination(props: CatalogPaginationProps) {
-  const { pageCount, paginationAnchor = "" } = props
-
-  const [searchValues] = useQueryStates({
-    search: { defaultValue: "", parse: (value) => value || "" },
-    sortBy: { defaultValue: "Newest", parse: (value) => value || "Newest" },
-    tag: { defaultValue: "", parse: (value) => value || "" },
-    page: { defaultValue: 1, parse: (value) => parseInt(value) || 1 },
-  })
-
-  const searchParams = {
-    search: parseAsString,
-    sortBy: parseAsString,
-    tag: parseAsString,
-    page: parseAsInteger,
-  }
-
-  const serialize = createSerializer(searchParams)
+  const { pageCount, currentPage, onPageClicked } = props
 
   return (
     <Pagination>
-      <PaginationContent>
-        {searchValues.page > 1 && (
+      <PaginationContent className="cursor-pointer select-none">
+        {currentPage > 1 && (
           <PaginationItem>
             <PaginationPrevious
-              href={
-                serialize({ ...searchValues, page: searchValues.page - 1 }) +
-                paginationAnchor
-              }
+              onClick={() => onPageClicked(currentPage - 1)}
+              className="rounded-2xl"
             />
           </PaginationItem>
         )}
 
-        {searchValues.page - 1 === pageCount - 1 ? (
+        {currentPage - 1 === pageCount - 1 ? (
           <PaginationItem>
             <PaginationLink
-              href={
-                serialize({ ...searchValues, page: searchValues.page - 1 }) +
-                paginationAnchor
-              }
+              onClick={() => onPageClicked(currentPage - 1)}
               className="rounded-2xl"
             >
-              {searchValues.page - 1}
+              {currentPage - 1}
             </PaginationLink>
           </PaginationItem>
         ) : (
@@ -73,42 +53,36 @@ export function CatalogPagination(props: CatalogPaginationProps) {
               href="#"
               className="pointer-events-none rounded-2xl bg-white dark:bg-black"
             >
-              {searchValues.page}
+              {currentPage}
             </PaginationLink>
           </PaginationItem>
         )}
-        {searchValues.page !== pageCount ? (
+        {currentPage !== pageCount ? (
           <PaginationItem>
             <PaginationLink
-              href={
-                serialize({ ...searchValues, page: searchValues.page + 1 }) +
-                paginationAnchor
-              }
+              onClick={() => onPageClicked(currentPage + 1)}
               className="rounded-2xl"
             >
-              {searchValues.page + 1}
+              {currentPage + 1}
             </PaginationLink>
           </PaginationItem>
         ) : (
           <PaginationItem>
             <PaginationLink className="pointer-events-none rounded-2xl bg-white dark:bg-black">
-              {searchValues.page}
+              {currentPage}
             </PaginationLink>
           </PaginationItem>
         )}
 
-        {searchValues.page + 1 < pageCount && (
+        {currentPage + 1 < pageCount && (
           <PaginationItem>
             <PaginationEllipsis />
           </PaginationItem>
         )}
-        {searchValues.page < pageCount && (
+        {currentPage < pageCount && (
           <PaginationItem>
             <PaginationNext
-              href={
-                serialize({ ...searchValues, page: searchValues.page + 1 }) +
-                paginationAnchor
-              }
+              onClick={() => onPageClicked(currentPage + 1)}
               className="rounded-2xl"
             />
           </PaginationItem>

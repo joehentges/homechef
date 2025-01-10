@@ -52,9 +52,7 @@ import { redis } from "@/client/redis"
 export async function getRandomRecipesUseCase(limit: number) {
   const cachedRecipes = await redis.get("featured-recipes")
   if (cachedRecipes) {
-    const temp = JSON.parse(cachedRecipes) as RecipeWithTags[]
-    console.log(temp)
-    return temp
+    return JSON.parse(cachedRecipes) as RecipeWithTags[]
   }
 
   const randomRecipes = await getRandomRecipes(limit)

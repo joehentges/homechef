@@ -1,30 +1,15 @@
 import { Dispatch, SetStateAction } from "react"
-import { useQueryState } from "nuqs"
 
 import { MultipleSelector } from "@/components/multiple-selector"
 
 interface TagSelectProps {
   tags: string[]
-  setTags: (value: string[]) => void
   availableTags: { name: string }[]
   onChange: Dispatch<SetStateAction<string[]>>
 }
 
 export function TagSelect(props: TagSelectProps) {
-  const { availableTags, onChange } = props
-  const [tags, setTags] = useQueryState("tags", {
-    defaultValue: "",
-  })
-
-  function onSelectorChange(
-    selectedOptions: {
-      value: string
-      label: string
-    }[]
-  ) {
-    onChange(selectedOptions.map((option) => option.value))
-    setTags(selectedOptions.map((option) => option.value).join(","))
-  }
+  const { tags, availableTags, onChange } = props
 
   return (
     <MultipleSelector
@@ -33,8 +18,10 @@ export function TagSelect(props: TagSelectProps) {
         value: tag.name,
         label: tag.name,
       }))}
-      onChange={onSelectorChange}
-      value={(!!tags ? tags.split(",") : []).map((tag) => ({
+      onChange={(selectedOptions) =>
+        onChange(selectedOptions.map((option) => option.value))
+      }
+      value={tags.map((tag) => ({
         value: tag,
         label: tag,
       }))}

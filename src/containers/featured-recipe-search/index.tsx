@@ -142,7 +142,8 @@ export function FeaturedRecipeSearch(props: FeaturedRecipeSearch) {
         <Catalog
           items={catalogPageItems}
           pageCount={recipePageCount}
-          paginationAnchor="#featured-recipe-search"
+          currentPage={page}
+          onPageClicked={setPage}
         />
       </div>
     </div>
