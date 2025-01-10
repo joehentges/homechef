@@ -15,8 +15,8 @@ export function SiteHeaderMobileNav() {
         "fixed inset-0 top-16 z-50 grid h-[calc(100vh-4rem)] grid-flow-row auto-rows-max overflow-auto pb-32 shadow-md md:hidden"
       )}
     >
-      <div className="relative z-20 grid gap-6 border-b bg-popover px-9 py-4 text-popover-foreground shadow-md">
-        <Link href="/" className="flex space-x-2">
+      <div className="relative z-20 grid gap-2 border-b bg-popover px-9 py-4 text-popover-foreground shadow-md">
+        <Link href="/">
           <p className="text-2xl font-bold">
             <Logo />
           </p>

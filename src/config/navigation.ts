@@ -27,6 +27,11 @@ export const navigation: Navigation = {
       disabled: true,
     },
     {
+      label: "Chefs",
+      href: "/chefs",
+      disabled: true,
+    },
+    {
       label: "My Cookbook",
       href: "/cookbook",
       authenticated: true,
