@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo } from "react"
 import Link from "next/link"
-import { DicesIcon } from "lucide-react"
+import { DicesIcon, PencilLineIcon } from "lucide-react"
 import {
   parseAsArrayOf,
   parseAsInteger,
@@ -108,17 +108,24 @@ export function UserRecipeSearch(props: UserRecipeSearchProps) {
   return (
     <div className="py-10">
       <div className="container space-y-8 rounded-3xl bg-primary/20 py-8">
-        <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+        <div className="flex flex-col items-center justify-between gap-4 text-center sm:flex-row">
           <p className="text-4xl font-bold">Cookbook Search</p>
-          {recipes.length > 0 && (
-            <Link
-              href={`/recipes/${recipes[Math.floor(Math.random() * recipes.length)].id}`}
-            >
-              <Button className="rounded-3xl" variant="secondary">
-                <DicesIcon /> Surprise Me
+          <div className="flex flex-row gap-x-4">
+            <Link href="/recipes/create">
+              <Button className="rounded-3xl">
+                <PencilLineIcon /> Create
               </Button>
             </Link>
-          )}
+            {recipes.length > 0 && (
+              <Link
+                href={`/recipes/${recipes[Math.floor(Math.random() * recipes.length)].id}`}
+              >
+                <Button className="rounded-3xl" variant="secondary">
+                  <DicesIcon /> Surprise Me
+                </Button>
+              </Link>
+            )}
+          </div>
         </div>
 
         <div className="flex flex-col items-center gap-4 lg:flex-row">

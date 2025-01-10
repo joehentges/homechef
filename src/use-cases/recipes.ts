@@ -148,17 +148,23 @@ export async function addRecipeUseCase(
 
     await addUserRecipe(newRecipe.id, user.id, trx)
 
-    const recipeIngredients = await addRecipeIngredients(
-      newRecipe.id,
-      ingredients,
-      trx
-    )
+    let recipeIngredients
+    if (ingredients.length > 0) {
+      recipeIngredients = await addRecipeIngredients(
+        newRecipe.id,
+        ingredients,
+        trx
+      )
+    }
 
-    const recipeDirections = await addRecipeDirections(
-      newRecipe.id,
-      directions,
-      trx
-    )
+    let recipeDirections
+    if (directions.length > 0) {
+      recipeDirections = await addRecipeDirections(
+        newRecipe.id,
+        directions,
+        trx
+      )
+    }
 
     let tagsList
     if (tags) {
@@ -211,19 +217,25 @@ export async function updateRecipeUseCase(
 
     await deleteRecipeIngredientsByRecipeId(updatedRecipe.id, trx)
 
-    const updatedRecipeIngredients = await addRecipeIngredients(
-      updatedRecipe.id,
-      ingredients,
-      trx
-    )
+    let updatedRecipeIngredients
+    if (ingredients.length > 0) {
+      updatedRecipeIngredients = await addRecipeIngredients(
+        updatedRecipe.id,
+        ingredients,
+        trx
+      )
+    }
 
     await deleteRecipeDirectionsByRecipeId(updatedRecipe.id, trx)
 
-    const updatedRecipeDirections = await addRecipeDirections(
-      updatedRecipe.id,
-      directions,
-      trx
-    )
+    let updatedRecipeDirections
+    if (directions.length > 0) {
+      updatedRecipeDirections = await addRecipeDirections(
+        updatedRecipe.id,
+        directions,
+        trx
+      )
+    }
 
     await deleteRecipeTagsByRecipeId(updatedRecipe.id, trx)
 

@@ -13,7 +13,7 @@ interface RecipeContainerProps {
   user?: User
   recipe?: FormattedRecipeDetails
   availableTags: { name: string }[]
-  recipeIsSaved: boolean
+  recipeIsSaved?: boolean
 }
 
 export function RecipeContainer(props: RecipeContainerProps) {

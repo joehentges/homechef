@@ -52,11 +52,11 @@ export function CatalogFeaturedItem(props: CatalogFeaturedItemProps) {
   return (
     <Link
       href={`/recipes/${id}`}
-      className="group flex w-full flex-col gap-x-4 rounded-3xl bg-white dark:bg-black md:flex-row lg:max-w-[720px]"
+      className="group flex w-full flex-col gap-x-4 rounded-3xl bg-white dark:bg-black md:flex-row lg:w-[720px]"
     >
       {!!photo ? (
         <div
-          className="h-full min-h-[200px] w-full rounded-t-3xl bg-cover bg-center bg-no-repeat md:rounded-l-3xl md:rounded-tr-none"
+          className="h-full min-h-[200px] w-full rounded-t-3xl bg-cover bg-center bg-no-repeat md:min-w-[336px] md:rounded-l-3xl md:rounded-tr-none"
           style={{
             backgroundImage: `url('${photo}')`,
           }}
@@ -64,7 +64,7 @@ export function CatalogFeaturedItem(props: CatalogFeaturedItemProps) {
           <div className="h-full w-full rounded-l-3xl bg-primary/10 opacity-0 transition-opacity group-hover:opacity-100" />
         </div>
       ) : (
-        <div className="h-full min-h-[200px] w-full rounded-t-3xl bg-white dark:bg-black md:rounded-l-3xl md:rounded-tr-none">
+        <div className="h-[200px] w-full rounded-t-3xl bg-white dark:bg-black md:h-[336px] md:min-w-[336px] md:rounded-l-3xl md:rounded-tr-none">
           <div className="relative h-full w-full rounded-t-3xl bg-primary/30 transition-colors group-hover:bg-primary/40 md:rounded-l-3xl md:rounded-tr-none">
             <CookingPotIcon className="absolute left-1/2 top-1/2 h-20 w-20 -translate-x-1/2 -translate-y-1/2 transform text-muted-foreground" />
           </div>
