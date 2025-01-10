@@ -2,6 +2,7 @@ import { PrimaryKey } from "@/types"
 import {
   FormattedRecipeDetails,
   RecipeDetails,
+  RecipeWithTags,
   UserDetails,
 } from "@/types/Recipe"
 import { User } from "@/db/schemas"
@@ -46,9 +47,25 @@ import {
 } from "@/data-access/user-recipes"
 import { getUser } from "@/data-access/users"
 import { createTransaction } from "@/data-access/utils"
+import { redis } from "@/client/redis"
 
 export async function getRandomRecipesUseCase(limit: number) {
-  return getRandomRecipes(limit)
+  const cachedRecipes = await redis.get("featured-recipes")
+  if (cachedRecipes) {
+    const temp = JSON.parse(cachedRecipes) as RecipeWithTags[]
+    console.log(temp)
+    return temp
+  }
+
+  const randomRecipes = await getRandomRecipes(limit)
+  await redis.set(
+    "featured-recipes",
+    JSON.stringify(randomRecipes),
+    "EX",
+    60 * 60 * 24
+  ) // 24 hour cache
+
+  return randomRecipes
 }
 
 export async function getRecipeByIdUseCase(

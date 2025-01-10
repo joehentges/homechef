@@ -61,7 +61,7 @@ export function FeaturedRecipeSearch(props: FeaturedRecipeSearch) {
 
   const { catalogPageItems, totalCatalogItems } = useMemo(() => {
     const sortByNewestFunction = (a: Recipe, b: Recipe) =>
-      b.dateUpdated.getTime() - a.dateUpdated.getTime()
+      new Date(b.dateUpdated).getTime() - new Date(a.dateUpdated).getTime()
     const sortByFastestFunction = (a: Recipe, b: Recipe) =>
       a.prepTime + a.cookTime - (b.prepTime + b.cookTime)
     const difficultySortOrder = {
