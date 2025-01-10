@@ -48,31 +48,33 @@ export function Catalog(props: CatalogProps) {
   }
 
   return (
-    <div className="flex max-w-[1115px] flex-col gap-y-4">
-      <div className="flex w-full flex-col gap-4 lg:flex-row">
-        <CatalogFeaturedItem recipe={catalogFeaturedItem} />
+    <div className="flex w-full max-w-[1115px] flex-col gap-y-2">
+      <div className="flex h-full w-full flex-col justify-center lg:flex-row">
+        <div className="w-full p-2 lg:w-2/3">
+          <CatalogFeaturedItem recipe={catalogFeaturedItem} />
+        </div>
+
         <div
           className={cn(
-            "flex flex-col gap-y-4",
-            items.length > 2 ? "justify-center" : ""
+            "flex w-full flex-col lg:w-1/3",
+            remainingItems.length > 1 ? "justify-center" : ""
           )}
         >
           {remainingItems.slice(0, 2).map((item, index) => (
-            <CatalogItem
-              key={`${item.title}-${index}`}
-              alternate={index === 0}
-              recipe={item}
-            />
+            <div className="p-2" key={`${item.title}-${index}`}>
+              <CatalogItem alternate={index === 0} recipe={item} />
+            </div>
           ))}
         </div>
       </div>
-      <div className="flex flex-row flex-wrap gap-4">
+      <div className="flex h-full flex-col flex-wrap lg:flex-row">
         {remainingItems.slice(2).map((item, index) => (
-          <CatalogItem
+          <div
+            className="w-full self-center p-2 lg:w-1/3"
             key={`${item.title}-${index}`}
-            alternate={index % 4 === 2}
-            recipe={item}
-          />
+          >
+            <CatalogItem alternate={index % 4 === 2} recipe={item} />
+          </div>
         ))}
       </div>
       {pageCount > 1 && (

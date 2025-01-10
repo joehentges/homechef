@@ -22,11 +22,6 @@ export const navigation: Navigation = {
       href: "/recipes",
     },
     {
-      label: "Learning",
-      href: "/learning",
-      disabled: true,
-    },
-    {
       label: "Chefs",
       href: "/chefs",
       disabled: true,

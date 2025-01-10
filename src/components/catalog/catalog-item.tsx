@@ -59,7 +59,7 @@ export function CatalogItem(props: CatalogItemProps) {
   return (
     <Link
       href={`/recipes/${id}`}
-      className="group flex w-full flex-row items-center lg:min-w-[325px] lg:max-w-[350px]"
+      className="group flex w-full flex-row items-center"
     >
       {!!photo ? (
         <div
