@@ -17,7 +17,7 @@ export function Input(props: InputProps) {
       <div className="relative">
         <InputElement
           id="featured-recipe-search-input"
-          className="peer rounded-3xl bg-white pe-9 ps-9 dark:bg-black"
+          className="peer rounded-3xl pe-9 ps-9"
           type="search"
           placeholder="Search recipes..."
           value={search}
