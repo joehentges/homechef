@@ -37,9 +37,14 @@ interface EditRecipeProps {
 
 const recipeActionFormSchema = z.object({
   recipe: z.object({
-    id: z.coerce.number().optional(),
-    title: z.string().min(2),
-    description: z.string(),
+    id: z.number().optional(),
+    title: z
+      .string()
+      .min(2, { message: "Title must be a minimum of 2 characters." })
+      .max(75, { message: "Title can be a maximum of 75 characters." }),
+    description: z
+      .string()
+      .max(300, { message: "Description can be a maximum of 300 characters." }),
     servings: z.string().refine(
       (value) => {
         const parts = value.split(" ")
@@ -72,13 +77,27 @@ const recipeActionFormSchema = z.object({
   ingredients: z.array(
     z.object({
       orderNumber: z.coerce.number(),
-      description: z.string().min(3),
+      description: z
+        .string()
+        .min(3, {
+          message: "Ingredients must be a minimum of 3 characters.",
+        })
+        .max(100, {
+          message: "Ingredients can be a maximum of 100 characters.",
+        }),
     })
   ),
   directions: z.array(
     z.object({
       orderNumber: z.coerce.number(),
-      description: z.string().min(3),
+      description: z
+        .string()
+        .min(3, {
+          message: "Directions must be a minimum of 3 characters.",
+        })
+        .max(100, {
+          message: "Directions can be a maximum of 100 characters.",
+        }),
     })
   ),
   tags: z.array(
@@ -406,7 +425,7 @@ export function EditRecipe(props: EditRecipeProps) {
                 name="directions"
                 render={({ field }) => (
                   <FormItem>
-                    {form.formState.errors.ingredients && (
+                    {form.formState.errors.directions && (
                       <p className="text-sm text-destructive">
                         Directions must be at least 3 characters
                       </p>

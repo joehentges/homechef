@@ -17,9 +17,33 @@ import {
 const recipeAddOrUpdateActionSchema = z.object({
   recipe: z.object({
     id: z.number().optional(),
-    title: z.string().min(2),
-    description: z.string(),
-    servings: z.string().min(1),
+    title: z
+      .string()
+      .min(2, { message: "Title must be a minimum of 2 characters." })
+      .max(75, { message: "Title can be a maximum of 75 characters." }),
+    description: z
+      .string()
+      .max(300, { message: "Description can be a maximum of 300 characters." }),
+    servings: z.string().refine(
+      (value) => {
+        const parts = value.split(" ")
+        if (parts.length < 2) {
+          // Changed to less than 2
+          return false
+        }
+
+        const numberPart = parts[0]
+
+        if (isNaN(Number(numberPart))) {
+          return false
+        }
+
+        return true // No need to check the string part length anymore
+      },
+      {
+        message: "Invalid format. Must be '<number> <type>'",
+      }
+    ),
     prepTime: z.coerce.number().min(0),
     cookTime: z.coerce.number().min(0),
     difficulty: z
@@ -32,13 +56,27 @@ const recipeAddOrUpdateActionSchema = z.object({
   ingredients: z.array(
     z.object({
       orderNumber: z.coerce.number(),
-      description: z.string().min(3),
+      description: z
+        .string()
+        .min(3, {
+          message: "Ingredients must be a minimum of 3 characters.",
+        })
+        .max(100, {
+          message: "Ingredients can be a maximum of 100 characters.",
+        }),
     })
   ),
   directions: z.array(
     z.object({
       orderNumber: z.coerce.number(),
-      description: z.string().min(3),
+      description: z
+        .string()
+        .min(3, {
+          message: "Directions must be a minimum of 3 characters.",
+        })
+        .max(100, {
+          message: "Directions can be a maximum of 100 characters.",
+        }),
     })
   ),
   tags: z.array(
