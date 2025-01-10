@@ -63,7 +63,7 @@ export function CatalogItem(props: CatalogItemProps) {
     >
       {!!photo ? (
         <div
-          className="z-10 h-24 w-32 rounded-full bg-cover bg-center bg-no-repeat"
+          className="z-10 h-24 w-28 rounded-full bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: `url('${photo}')`,
           }}
@@ -71,7 +71,7 @@ export function CatalogItem(props: CatalogItemProps) {
           <div className="h-full w-full rounded-full bg-primary/10 opacity-0 transition-opacity group-hover:opacity-100" />
         </div>
       ) : (
-        <div className="z-10 h-24 w-32 rounded-full bg-white dark:bg-black">
+        <div className="z-10 h-24 w-28 rounded-full bg-white dark:bg-black">
           <div className="relative h-full w-full rounded-full bg-primary/30 transition-colors group-hover:bg-primary/40">
             <CookingPotIcon className="absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 transform text-muted-foreground" />
           </div>
