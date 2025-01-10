@@ -15,6 +15,7 @@ import { RecipeDifficulty, RecipeWithTags } from "@/types/Recipe"
 import { database } from "@/db"
 import { Recipe, recipes, recipeTags, tags, userRecipes } from "@/db/schemas"
 
+/*
 // START - For testing only
 function duplicateArray<T>(arr: T[], times: number): T[] {
   if (times <= 0) {
@@ -51,6 +52,7 @@ function randomizeRecipeDetails<T>(
   }
 }
 // END - For testing only
+*/
 
 export async function getRecipe(
   recipeId: PrimaryKey

@@ -82,7 +82,7 @@ export function EditDirections(props: EditDirectionsProps) {
       ))}
       <div className="my-2 flex flex-row items-center gap-x-2">
         <p className="w-[30px] text-xl font-bold text-red-500">
-          {getNextOrderNumber() + 1}
+          {getNextOrderNumber()}
         </p>
         <AutosizeTextarea
           placeholder="Enter an direction"

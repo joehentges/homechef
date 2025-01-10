@@ -40,7 +40,26 @@ const recipeActionFormSchema = z.object({
     id: z.coerce.number().optional(),
     title: z.string().min(2),
     description: z.string(),
-    servings: z.string().min(1),
+    servings: z.string().refine(
+      (value) => {
+        const parts = value.split(" ")
+        if (parts.length < 2) {
+          // Changed to less than 2
+          return false
+        }
+
+        const numberPart = parts[0]
+
+        if (isNaN(Number(numberPart))) {
+          return false
+        }
+
+        return true // No need to check the string part length anymore
+      },
+      {
+        message: "Invalid format. Must be '<number> <type>'",
+      }
+    ),
     prepTime: z.coerce.number().min(0),
     cookTime: z.coerce.number().min(0),
     difficulty: z
@@ -236,21 +255,28 @@ export function EditRecipe(props: EditRecipeProps) {
                   render={({ field }) => (
                     <FormItem className="w-full">
                       <FormControl>
-                        <Input {...field} placeholder="Servings" type="text" />
+                        <Input
+                          {...field}
+                          placeholder="x servings"
+                          type="text"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
 
-                <div className="flex w-full flex-row gap-x-2 md:w-auto">
+                <div className="flex w-full flex-row gap-x-2 pt-2 md:w-auto md:pt-0">
                   <FormField
                     control={form.control}
                     name="recipe.prepTime"
                     render={({ field }) => (
-                      <FormItem className="w-full min-w-[100px] md:max-w-[125px]">
+                      <FormItem className="w-full min-w-[120px] md:max-w-[125px]">
                         <FormControl>
                           <div className="relative">
+                            <p className="absolute -top-2 left-[0.5px] rounded-2xl bg-white px-1 text-xs">
+                              Prep time
+                            </p>
                             <Input
                               {...field}
                               placeholder="Prep time"
@@ -269,9 +295,12 @@ export function EditRecipe(props: EditRecipeProps) {
                     control={form.control}
                     name="recipe.cookTime"
                     render={({ field }) => (
-                      <FormItem className="w-full min-w-[100px] md:max-w-[125px]">
+                      <FormItem className="w-full min-w-[120px] md:max-w-[125px]">
                         <FormControl>
                           <div className="relative">
+                            <p className="absolute -top-2 left-[0.5px] rounded-2xl bg-white px-1 text-xs">
+                              Cook time
+                            </p>
                             <Input
                               {...field}
                               placeholder="Cook time"

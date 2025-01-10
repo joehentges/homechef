@@ -17,6 +17,7 @@ export function ViewRecipeDirections(props: DirectionsProps) {
 
   return (
     <ul className="space-y-4 pt-4">
+      {directions.length < 1 && <p className="text-destructive">None</p>}
       {directions
         .sort((a, b) => a.orderNumber - b.orderNumber)
         .map((direction) => (

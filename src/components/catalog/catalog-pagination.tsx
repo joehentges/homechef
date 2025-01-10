@@ -1,13 +1,6 @@
 "use client"
 
 import {
-  createSerializer,
-  parseAsInteger,
-  parseAsString,
-  useQueryStates,
-} from "nuqs"
-
-import {
   Pagination,
   PaginationContent,
   PaginationEllipsis,

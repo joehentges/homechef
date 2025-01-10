@@ -17,6 +17,7 @@ export function ViewRecipeIngredients(props: IngredientsProps) {
 
   return (
     <ul className="space-y-4 pt-4">
+      {ingredients.length < 1 && <p className="text-destructive">None</p>}
       {ingredients
         .sort((a, b) => a.orderNumber - b.orderNumber)
         .map((ingredient) => (
