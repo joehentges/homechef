@@ -4,7 +4,7 @@ import { z } from "zod"
 
 import { rateLimitByKey } from "@/lib/limiter"
 import { unauthenticatedAction } from "@/lib/safe-action"
-import { searchRecipesUseCase } from "@/use-cases/recipes"
+import { searchRecipesByTitleDescriptionTagsAndSortByUseCase } from "@/use-cases/recipes"
 
 export const searchRecipesAction = unauthenticatedAction
   .createServerAction()
@@ -24,13 +24,14 @@ export const searchRecipesAction = unauthenticatedAction
       window: 10000,
     })
     const limitLOffset = (input.page - 1) * input.recipesPerPageLimit
-    const recipeSearchResult = await searchRecipesUseCase(
-      input.search,
-      input.tags,
-      input.sortBy,
-      input.recipesPerPageLimit,
-      limitLOffset
-    )
+    const recipeSearchResult =
+      await searchRecipesByTitleDescriptionTagsAndSortByUseCase(
+        input.search,
+        input.tags,
+        input.sortBy,
+        input.recipesPerPageLimit,
+        limitLOffset
+      )
     return {
       recipes: recipeSearchResult.recipes,
       count: recipeSearchResult.count,

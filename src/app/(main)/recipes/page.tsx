@@ -9,7 +9,7 @@ import type { SearchParams } from "nuqs/server"
 import {
   getAvailableRecipeTagsUseCase,
   getRandomRecipeUseCase,
-  searchRecipesUseCase,
+  searchRecipesByTitleDescriptionTagsAndSortByUseCase,
 } from "@/use-cases/recipes"
 import { RecipeSearch } from "@/containers/recipe-search"
 
@@ -32,13 +32,14 @@ export default async function RecipesPage({ searchParams }: RecipesPageProps) {
   const limitLOffset = (page - 1) * limit
 
   const availableTags = await getAvailableRecipeTagsUseCase()
-  const initialRecipes = await searchRecipesUseCase(
-    search,
-    tags,
-    sortBy.toLowerCase() as "newest" | "fastest" | "easiest",
-    limit,
-    limitLOffset
-  )
+  const initialRecipes =
+    await searchRecipesByTitleDescriptionTagsAndSortByUseCase(
+      search,
+      tags,
+      sortBy.toLowerCase() as "newest" | "fastest" | "easiest",
+      limit,
+      limitLOffset
+    )
   const randomRecipe = await getRandomRecipeUseCase()
 
   return (

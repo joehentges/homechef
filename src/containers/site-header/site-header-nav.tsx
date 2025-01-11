@@ -32,7 +32,7 @@ export function SiteHeaderNav(props: SiteHeaderNavProps) {
   }
 
   return (
-    <div className={cn("flex gap-4 lg:gap-12")}>
+    <div className="flex gap-4 lg:gap-12">
       <Link href="/" className="hidden items-center space-x-2 md:flex">
         <p className="hidden text-3xl font-bold sm:inline-block">
           <Logo />

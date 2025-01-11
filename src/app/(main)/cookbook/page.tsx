@@ -10,12 +10,17 @@ export default async function CookbookPage() {
 
   const availableTags = await getAvailableRecipeTagsUseCase()
   const recipesList = await getUserRecipesUseCase(user.id)
+  const randomRecipe =
+    recipesList[Math.floor(Math.random() * recipesList.length)]
 
   return (
-    <UserRecipeSearch
-      recipes={recipesList}
-      recipesPerPageLimit={12}
-      availableTags={availableTags}
-    />
+    <div className="md:py-10">
+      <UserRecipeSearch
+        randomRecipe={randomRecipe}
+        recipes={recipesList}
+        recipesPerPageLimit={12}
+        availableTags={availableTags}
+      />
+    </div>
   )
 }

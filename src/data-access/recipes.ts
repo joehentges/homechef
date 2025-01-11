@@ -112,12 +112,12 @@ export async function getRandomRecipe(): Promise<Recipe | undefined> {
   return recipe
 }
 
-export async function searchRecipes(
+export async function searchRecipesByTitleDescriptionTagsAndSortBy(
   search: string,
   searchTags: string[],
   sortBy: "newest" | "fastest" | "easiest",
   limit: number,
-  offset: number
+  offset?: number
 ): Promise<{ recipes: RecipeWithTags[]; count: number }> {
   const searchByClause = or(
     ilike(recipes.title, `%${search}%`),
@@ -178,7 +178,7 @@ export async function searchRecipes(
     )
     .groupBy(recipes.id)
     .limit(limit)
-    .offset(offset)
+    .offset(offset ?? 0)
     .orderBy(
       sortBy === "fastest"
         ? asc(sql`${recipes.prepTime} + ${recipes.cookTime}`)
@@ -358,4 +358,24 @@ export async function updateRecipe(
 
 export async function deleteRecipe(recipeId: PrimaryKey) {
   await database.delete(recipes).where(eq(recipes.id, recipeId)).returning()
+}
+
+export async function searchRecipes(
+  search: string,
+  limit: number,
+  offset?: number
+): Promise<Recipe[]> {
+  const recipesList = await database.query.recipes.findMany({
+    where: and(
+      eq(recipes.private, false),
+      or(
+        ilike(recipes.title, `%${search}%`),
+        ilike(recipes.description, `%${search}%`)
+      )
+    ),
+    limit,
+    offset,
+  })
+
+  return recipesList
 }

@@ -29,6 +29,7 @@ import {
   getRecipe,
   getUserRecipes,
   searchRecipes,
+  searchRecipesByTitleDescriptionTagsAndSortBy,
   updateRecipe,
 } from "@/data-access/recipes"
 import {
@@ -49,7 +50,7 @@ import { getUser } from "@/data-access/users"
 import { createTransaction } from "@/data-access/utils"
 import { redis } from "@/client/redis"
 
-export async function getRandomRecipesUseCase(limit: number) {
+export async function geFeaturedRecipesUseCase(limit: number) {
   const cachedRecipes = await redis.get("featured-recipes")
   if (cachedRecipes) {
     return JSON.parse(cachedRecipes) as RecipeWithTags[]
@@ -282,14 +283,20 @@ export async function unsaveRecipeUseCase(
   return deleteUserRecipeByRecipeIdAndUserId(recipeId, userId)
 }
 
-export async function searchRecipesUseCase(
+export async function searchRecipesByTitleDescriptionTagsAndSortByUseCase(
   search: string,
   searchTags: string[],
   sortBy: "newest" | "fastest" | "easiest",
   limit: number,
   offset: number
 ) {
-  return searchRecipes(search, searchTags, sortBy, limit, offset)
+  return searchRecipesByTitleDescriptionTagsAndSortBy(
+    search,
+    searchTags,
+    sortBy,
+    limit,
+    offset
+  )
 }
 
 export async function getUserRecipesUseCase(userId: PrimaryKey) {
@@ -298,4 +305,8 @@ export async function getUserRecipesUseCase(userId: PrimaryKey) {
 
 export async function getRandomRecipeUseCase() {
   return getRandomRecipe()
+}
+
+export async function searchRecipesUseCase(search: string, limit: number) {
+  return searchRecipes(search, limit)
 }

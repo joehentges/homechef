@@ -21,13 +21,14 @@ import { SortBySelect } from "./sort-by-select"
 import { TagSelect } from "./tag-select"
 
 interface UserRecipeSearchProps {
+  randomRecipe?: RecipeWithTags
   recipes: RecipeWithTags[]
   recipesPerPageLimit: number
   availableTags: { name: string }[]
 }
 
 export function UserRecipeSearch(props: UserRecipeSearchProps) {
-  const { recipes, recipesPerPageLimit, availableTags } = props
+  const { randomRecipe, recipes, recipesPerPageLimit, availableTags } = props
 
   const [search, setSearch] = useQueryState(
     "search",
@@ -106,49 +107,45 @@ export function UserRecipeSearch(props: UserRecipeSearchProps) {
   }, [search, tags, sortBy, page])
 
   return (
-    <div className="py-10">
-      <div className="container space-y-8 rounded-3xl bg-primary/20 py-8">
-        <div className="flex flex-col items-center justify-between gap-4 text-center sm:flex-row">
-          <p className="text-4xl font-bold">Cookbook Search</p>
-          <div className="flex flex-row gap-x-4">
-            <Link href="/recipes/create">
-              <Button className="rounded-3xl">
-                <PencilLineIcon /> Create
+    <div className="container space-y-8 rounded-3xl bg-primary/20 py-8">
+      <div className="flex flex-col items-center justify-between gap-4 text-center sm:flex-row">
+        <p className="text-4xl font-bold">Cookbook Search</p>
+        <div className="flex flex-row gap-x-4">
+          <Link href="/recipes/create">
+            <Button className="rounded-3xl">
+              <PencilLineIcon /> Create
+            </Button>
+          </Link>
+          {randomRecipe && (
+            <Link href={`/recipes/${randomRecipe.id}`}>
+              <Button className="rounded-3xl" variant="secondary">
+                <DicesIcon /> Surprise Me
               </Button>
             </Link>
-            {recipes.length > 0 && (
-              <Link
-                href={`/recipes/${recipes[Math.floor(Math.random() * recipes.length)].id}`}
-              >
-                <Button className="rounded-3xl" variant="secondary">
-                  <DicesIcon /> Surprise Me
-                </Button>
-              </Link>
-            )}
-          </div>
+          )}
         </div>
+      </div>
 
-        <div className="flex flex-col items-center gap-4 lg:flex-row">
-          <Input search={search} setSearch={setSearch} />
+      <div className="flex flex-col items-center gap-4 lg:flex-row">
+        <Input search={search} setSearch={setSearch} />
 
-          <div className="flex w-full flex-col gap-4 md:flex-row">
-            <TagSelect
-              availableTags={availableTags}
-              tags={tags}
-              setTags={setTags}
-            />
-
-            <SortBySelect sortBy={sortBy} setSortBy={setSortBy} />
-          </div>
-        </div>
-        <div className="center flex w-full justify-center">
-          <Catalog
-            items={catalogPageItems}
-            pageCount={recipePageCount}
-            currentPage={page}
-            onPageClicked={setPage}
+        <div className="flex w-full flex-col gap-4 md:flex-row">
+          <TagSelect
+            availableTags={availableTags}
+            tags={tags}
+            setTags={setTags}
           />
+
+          <SortBySelect sortBy={sortBy} setSortBy={setSortBy} />
         </div>
+      </div>
+      <div className="center flex w-full justify-center">
+        <Catalog
+          items={catalogPageItems}
+          pageCount={recipePageCount}
+          currentPage={page}
+          onPageClicked={setPage}
+        />
       </div>
     </div>
   )
