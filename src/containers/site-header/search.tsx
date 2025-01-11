@@ -73,8 +73,7 @@ export function Search(props: SearchProps) {
     <>
       <Button
         variant="ghost"
-        size="sm"
-        className="w-full justify-start border hover:bg-transparent hover:text-foreground/70 md:w-auto md:border-none md:text-lg"
+        className="px-2-start w-full justify-start border text-base hover:bg-transparent hover:text-foreground/70 md:w-auto md:border-none md:p-0"
         onClick={() => setOpen(true)}
         {...props}
       >

@@ -19,13 +19,11 @@ export function SiteHeader(props: SiteHeaderProps) {
       <div className="mx-[-32px] flex h-20 items-center justify-between gap-x-6 bg-background px-[32px] py-6 md:bg-transparent">
         <SiteHeaderNav authenticated={!!user} />
 
-        <nav className="flex gap-4 lg:gap-12">
-          <div className="w-full">
-            <Search
-              initialSearchRecipes={initialSearchRecipes?.slice(0, 5)}
-              initialSearchUsers={initialSearchUsers?.slice(0, 5)}
-            />
-          </div>
+        <nav className="flex w-full items-center gap-4 text-nowrap md:w-auto lg:gap-12">
+          <Search
+            initialSearchRecipes={initialSearchRecipes?.slice(0, 5)}
+            initialSearchUsers={initialSearchUsers?.slice(0, 5)}
+          />
           {user ? (
             <SiteHeaderUserAccountNav
               displayName={user.displayName}
