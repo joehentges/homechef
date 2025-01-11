@@ -11,8 +11,8 @@ import {
 } from "@/components/ui/select"
 
 interface SortBySelectProps {
-  sortBy: string
-  onChange: Dispatch<SetStateAction<string>>
+  sortBy: "newest" | "fastest" | "easiest"
+  onChange: Dispatch<SetStateAction<"newest" | "fastest" | "easiest">>
 }
 
 export function SortBySelect(props: SortBySelectProps) {
@@ -20,7 +20,12 @@ export function SortBySelect(props: SortBySelectProps) {
 
   return (
     <div className="min-w-[180px] space-y-2">
-      <Select value={sortBy.toLowerCase()} onValueChange={onChange}>
+      <Select
+        value={sortBy.toLowerCase()}
+        onValueChange={(value) =>
+          onChange(value as "newest" | "fastest" | "easiest")
+        }
+      >
         <SelectTrigger
           id="select-17"
           className="relative rounded-3xl bg-white ps-[4.5rem] font-bold dark:bg-black"

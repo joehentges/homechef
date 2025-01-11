@@ -33,7 +33,7 @@ export function SiteSearch(props: SiteSearchProps) {
   const [search, setSearch] = useState("")
   const [recipesResult, setRecipeResult] = useState<Recipe[]>(initialrecipes)
   const [usersResult, setUsersResult] = useState<User[]>([])
-  const debouncedQuery = useDebounce(search, 500)
+  const debouncedSearch = useDebounce(search, 500)
 
   const { execute, isPending } = useServerAction(searchRecipesAndUsersAction, {
     onError() {
@@ -48,18 +48,18 @@ export function SiteSearch(props: SiteSearchProps) {
 
   useEffect(() => {
     const fetchResults = async () => {
-      if (!debouncedQuery) {
+      if (!debouncedSearch) {
         // Clear results if query is empty
         setRecipeResult(initialrecipes)
         setUsersResult(initialusers)
         return
       }
-      execute({ search: debouncedQuery })
+      execute({ search: debouncedSearch })
     }
 
     fetchResults()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedQuery])
+  }, [debouncedSearch])
 
   function onOptionSelected(route: string) {
     router.push(route)

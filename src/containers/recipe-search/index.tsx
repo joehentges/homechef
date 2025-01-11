@@ -1,8 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
-import { zodResolver } from "@hookform/resolvers/zod"
 import { DicesIcon, RotateCcwIcon } from "lucide-react"
 import {
   parseAsArrayOf,
@@ -11,19 +10,10 @@ import {
   parseAsStringEnum,
   useQueryState,
 } from "nuqs"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
 import { useServerAction } from "zsa-react"
 
 import { Recipe } from "@/db/schemas"
 import { Button } from "@/components/ui/button"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form"
 import {
   Tooltip,
   TooltipContent,
@@ -32,6 +22,7 @@ import {
 } from "@/components/ui/tooltip"
 import { Catalog } from "@/components/catalog"
 import { LoaderButton } from "@/components/loader-button"
+import { useDebounce } from "@/hooks/use-debounce"
 import { useToast } from "@/hooks/use-toast"
 
 import { searchRecipesAction } from "./actions"
@@ -47,14 +38,6 @@ interface RecipeSearchProps {
   availableTags: { name: string }[]
 }
 
-const recipeSearchFormSchema = z.object({
-  search: z.string(),
-  tags: z.array(z.string()),
-  sortBy: z.enum(["newest", "easiest", "fastest"]),
-  recipesPerPageLimit: z.number(),
-  page: z.number().default(1),
-})
-
 export function RecipeSearch(props: RecipeSearchProps) {
   const {
     recipesPerPageLimit,
@@ -66,6 +49,7 @@ export function RecipeSearch(props: RecipeSearchProps) {
   const { toast } = useToast()
 
   const [recipesResult, setRecipesResult] = useState<Recipe[]>(initialRecipes)
+  const [recipesCount, setRecipesCount] = useState<number>(initialRecipesCount)
   const [pageCount, setPageCount] = useState<number>(
     Math.ceil(initialRecipesCount / recipesPerPageLimit)
   )
@@ -84,6 +68,8 @@ export function RecipeSearch(props: RecipeSearchProps) {
   )
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1))
 
+  const debouncedSearch = useDebounce(search, 500)
+
   const { execute, isPending } = useServerAction(searchRecipesAction, {
     onError({ err }) {
       toast({
@@ -99,16 +85,48 @@ export function RecipeSearch(props: RecipeSearchProps) {
           description: "Change your search to and we'll take a look again",
           variant: "destructive",
         })
-      } else {
-        toast({
-          title: `Successfully found ${data.count} recipe${data.count > 1 ? "s" : ""}`,
-          description: `Take a look at the recipe${data.count > 1 ? "s" : ""} we found.`,
-        })
       }
       setRecipesResult(data.recipes)
+      setRecipesCount(data.count)
       setPageCount(Math.ceil(data.count / recipesPerPageLimit))
     },
   })
+
+  useEffect(() => {
+    const fetchResults = async () => {
+      if (!debouncedSearch) {
+        setRecipesResult(initialRecipes)
+        setRecipesCount(initialRecipesCount)
+        setPageCount(Math.ceil(initialRecipesCount / recipesPerPageLimit))
+        return
+      }
+      execute({
+        search: debouncedSearch,
+        tags,
+        sortBy,
+        recipesPerPageLimit,
+        page,
+      })
+    }
+
+    fetchResults()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearch, tags.length, sortBy])
+
+  useEffect(() => {
+    const fetchResults = async () => {
+      execute({
+        search: debouncedSearch,
+        tags,
+        sortBy,
+        recipesPerPageLimit,
+        page,
+      })
+    }
+
+    fetchResults()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tags.length, sortBy])
 
   const { execute: executePageChange, isPending: isPageChangePending } =
     useServerAction(searchRecipesAction, {
@@ -122,30 +140,12 @@ export function RecipeSearch(props: RecipeSearchProps) {
       onSuccess({ data }) {
         setPage(data.page)
         setRecipesResult(data.recipes)
+        setRecipesCount(data.count)
         setPageCount(Math.ceil(data.count / recipesPerPageLimit))
       },
     })
 
-  const form = useForm<z.infer<typeof recipeSearchFormSchema>>({
-    resolver: zodResolver(recipeSearchFormSchema),
-    defaultValues: {
-      search: search,
-      tags: tags,
-      sortBy: sortBy,
-      recipesPerPageLimit,
-      page: page,
-    },
-  })
-
-  function onSubmit(values: z.infer<typeof recipeSearchFormSchema>) {
-    setSearch(values.search)
-    setTags(values.tags)
-    setSortBy(values.sortBy)
-    execute(values)
-  }
-
   function onResetSubmit() {
-    form.reset()
     setSearch("")
     setTags([])
     setSortBy("newest")
@@ -173,7 +173,9 @@ export function RecipeSearch(props: RecipeSearchProps) {
     <div className="py-10">
       <div className="container space-y-8 rounded-3xl bg-primary/20 py-8">
         <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-          <p className="text-4xl font-bold">Recipe Search</p>
+          <p className="text-4xl font-bold">
+            Recipe Search <span className="text-2xl">({recipesCount})</span>
+          </p>
           {randomRecipe && (
             <Link href={`/recipes/${randomRecipe.id}`}>
               <Button className="rounded-3xl" variant="secondary">
@@ -182,91 +184,48 @@ export function RecipeSearch(props: RecipeSearchProps) {
             </Link>
           )}
         </div>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col items-center gap-4 lg:flex-row"
-          >
-            <FormField
-              control={form.control}
-              name="search"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormControl>
-                    <Input search={field.value} onChange={field.onChange} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+        <div className="flex flex-col items-center gap-4 lg:flex-row">
+          <div className="w-full">
+            <Input search={search} onChange={setSearch} />
+          </div>
+
+          <div className="w-full">
+            <TagSelect
+              tags={tags}
+              availableTags={availableTags}
+              onChange={setTags}
             />
+          </div>
 
-            <FormField
-              control={form.control}
-              name="tags"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormControl>
-                    <TagSelect
-                      tags={field.value}
-                      availableTags={availableTags}
-                      onChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <div className="flex w-full flex-col gap-4 md:flex-row lg:w-auto">
-              <FormField
-                control={form.control}
-                name="sortBy"
-                render={({ field }) => (
-                  <FormItem className="w-full lg:w-auto">
-                    <FormControl>
-                      <SortBySelect
-                        sortBy={field.value}
-                        onChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="flex w-full gap-4 md:flex-row">
-                <LoaderButton
-                  isLoading={isPending || isPageChangePending}
-                  type="submit"
-                  className="w-full rounded-3xl px-6 lg:w-auto"
-                >
-                  Search
-                </LoaderButton>
-
-                <TooltipProvider>
-                  <Tooltip delayDuration={0}>
-                    <TooltipTrigger asChild>
-                      <span>
-                        <LoaderButton
-                          isLoading={isPending || isPageChangePending}
-                          onClick={onResetSubmit}
-                          className="w-full rounded-full lg:w-auto"
-                          variant="destructive"
-                          hideChildrenWhileLoading
-                        >
-                          <RotateCcwIcon />
-                        </LoaderButton>
-                      </span>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Reset your search</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
+          <div className="flex w-full flex-col gap-4 md:flex-row lg:w-auto">
+            <div className="w-full lg:w-auto">
+              <SortBySelect sortBy={sortBy} onChange={setSortBy} />
             </div>
-          </form>
-        </Form>
+
+            <div className="flex w-full gap-4 md:flex-row">
+              <TooltipProvider>
+                <Tooltip delayDuration={0}>
+                  <TooltipTrigger asChild>
+                    <span>
+                      <LoaderButton
+                        isLoading={isPending || isPageChangePending}
+                        onClick={onResetSubmit}
+                        className="w-full rounded-full lg:w-auto"
+                        variant="destructive"
+                        hideChildrenWhileLoading
+                      >
+                        <RotateCcwIcon />
+                      </LoaderButton>
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Reset your search</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          </div>
+        </div>
         <div className="center flex w-full justify-center">
           <Catalog
             items={recipesResult}

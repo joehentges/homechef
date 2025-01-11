@@ -2,7 +2,7 @@
 
 import { z } from "zod"
 
-import { rateLimitByKey } from "@/lib/limiter"
+import { rateLimitByIp, rateLimitByKey } from "@/lib/limiter"
 import { unauthenticatedAction } from "@/lib/safe-action"
 import { searchRecipesByTitleDescriptionTagsAndSortByUseCase } from "@/use-cases/recipes"
 
@@ -18,9 +18,8 @@ export const searchRecipesAction = unauthenticatedAction
     })
   )
   .handler(async ({ input }) => {
-    await rateLimitByKey({
-      key: `search-recipes-${input.search}`,
-      limit: 100,
+    await rateLimitByIp({
+      limit: 1000,
       window: 10000,
     })
     const limitLOffset = (input.page - 1) * input.recipesPerPageLimit
