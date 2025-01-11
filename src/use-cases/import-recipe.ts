@@ -66,7 +66,7 @@ async function importRecipe(url: string): Promise<object | null | undefined> {
       }
     }
     return null
-  } catch (error) {
+  } catch {
     return null
   }
 }

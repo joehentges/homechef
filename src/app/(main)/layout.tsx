@@ -17,8 +17,8 @@ export default async function MarketingLayout({
     <div className="flex min-h-screen flex-col">
       <SiteHeader
         user={user}
-        initialSearchRecipes={featuredRecipes}
-        initialSearchUsers={featuredUsers}
+        initialrecipes={featuredRecipes}
+        initialusers={featuredUsers}
       />
       <main className="flex-1 pb-4">{children}</main>
       <SiteFooter />

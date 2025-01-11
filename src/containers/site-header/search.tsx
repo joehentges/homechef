@@ -1,8 +1,9 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { ScrollIcon, SearchIcon, UserIcon } from "lucide-react"
+import { DialogDescription } from "@radix-ui/react-dialog"
+import { CookingPotIcon, SearchIcon } from "lucide-react"
 import { useServerAction } from "zsa-react"
 
 import { Recipe, User } from "@/db/schemas"
@@ -14,35 +15,32 @@ import {
   CommandList,
 } from "@/components/ui/command"
 import { DialogTitle } from "@/components/ui/dialog"
+import { UserAvatar } from "@/components/user-avatar"
 import { useDebounce } from "@/hooks/use-debounce"
 
 import { searchRecipesAndUsersAction } from "./actions"
 
-interface SearchProps {
-  initialSearchRecipes?: Recipe[]
-  initialSearchUsers?: Omit<User, "password">[]
+interface SiteSearchProps {
+  initialrecipes?: Recipe[]
+  initialusers?: User[]
 }
 
-export function Search(props: SearchProps) {
-  const { initialSearchRecipes = [], initialSearchUsers = [] } = props
+export function SiteSearch(props: SiteSearchProps) {
+  const { initialrecipes = [], initialusers = [] } = props
 
   const router = useRouter()
-
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState("")
-  const [recipesResult, setRecipeResult] =
-    useState<Recipe[]>(initialSearchRecipes)
-  const [usersResult, setUsersResult] = useState<Omit<User, "password">[]>([])
+  const [recipesResult, setRecipeResult] = useState<Recipe[]>(initialrecipes)
+  const [usersResult, setUsersResult] = useState<User[]>([])
   const debouncedQuery = useDebounce(search, 500)
 
   const { execute, isPending } = useServerAction(searchRecipesAndUsersAction, {
-    onError({ err }) {
-      console.log("err", err)
-      setRecipeResult(initialSearchRecipes)
-      setUsersResult(initialSearchUsers)
+    onError() {
+      setRecipeResult(initialrecipes)
+      setUsersResult(initialusers)
     },
     onSuccess({ data }) {
-      console.log(data)
       setRecipeResult(data.recipes)
       setUsersResult(data.users)
     },
@@ -52,17 +50,16 @@ export function Search(props: SearchProps) {
     const fetchResults = async () => {
       if (!debouncedQuery) {
         // Clear results if query is empty
-        setRecipeResult(initialSearchRecipes)
-        setUsersResult(initialSearchUsers)
+        setRecipeResult(initialrecipes)
+        setUsersResult(initialusers)
         return
       }
       execute({ search: debouncedQuery })
     }
 
     fetchResults()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedQuery])
-
-  console.log(isPending, recipesResult)
 
   function onOptionSelected(route: string) {
     router.push(route)
@@ -81,7 +78,10 @@ export function Search(props: SearchProps) {
         Search
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <DialogTitle className="hidden">Website Search</DialogTitle>
+        <DialogTitle className="hidden">Recupe and Chef Search</DialogTitle>
+        <DialogDescription className="hidden">
+          Search for recipes and users.
+        </DialogDescription>
         <CommandInput
           placeholder="Type a command or search..."
           value={search}
@@ -108,7 +108,19 @@ export function Search(props: SearchProps) {
                   className="w-full justify-start"
                   onClick={() => onOptionSelected(`/recipes/${recipe.id}`)}
                 >
-                  <ScrollIcon className="h-3 w-3" />
+                  {recipe.photo ? (
+                    <img
+                      src={recipe.photo}
+                      alt="Recipe"
+                      className="h-6 w-6 rounded-full"
+                    />
+                  ) : (
+                    <div className="z-10 h-6 w-6 rounded-full bg-white dark:bg-black">
+                      <div className="relative h-full w-full rounded-full bg-primary/30 transition-colors group-hover:bg-primary/40">
+                        <CookingPotIcon className="absolute left-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 transform text-muted-foreground" />
+                      </div>
+                    </div>
+                  )}
                   {recipe.title}
                 </Button>
               ))}
@@ -126,7 +138,11 @@ export function Search(props: SearchProps) {
                   className="w-full justify-start"
                   onClick={() => onOptionSelected(`/users/${user.id}`)}
                 >
-                  <UserIcon className="h-3 w-3" />
+                  <UserAvatar
+                    displayName={user.displayName}
+                    image={user.image}
+                    className="h-6 w-6 border-2 border-slate-800"
+                  />
                   {user.displayName}
                 </Button>
               ))}

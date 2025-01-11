@@ -1,18 +1,18 @@
 import { Recipe, User } from "@/db/schemas"
 
-import { Search } from "./search"
+import { SiteSearch } from "./search"
 import { SiteHeaderAuthNav } from "./site-header-auth-nav"
 import { SiteHeaderNav } from "./site-header-nav"
 import { SiteHeaderUserAccountNav } from "./site-header-user-account-nav"
 
 interface SiteHeaderProps {
   user?: User
-  initialSearchRecipes?: Recipe[]
-  initialSearchUsers?: Omit<User, "password">[]
+  initialrecipes?: Recipe[]
+  initialusers?: User[]
 }
 
 export function SiteHeader(props: SiteHeaderProps) {
-  const { user, initialSearchRecipes, initialSearchUsers } = props
+  const { user, initialrecipes, initialusers } = props
 
   return (
     <header className="container z-40">
@@ -20,9 +20,9 @@ export function SiteHeader(props: SiteHeaderProps) {
         <SiteHeaderNav authenticated={!!user} />
 
         <nav className="flex w-full items-center gap-4 text-nowrap md:w-auto lg:gap-12">
-          <Search
-            initialSearchRecipes={initialSearchRecipes?.slice(0, 5)}
-            initialSearchUsers={initialSearchUsers?.slice(0, 5)}
+          <SiteSearch
+            initialrecipes={initialrecipes?.slice(0, 5)}
+            initialusers={initialusers?.slice(0, 5)}
           />
           {user ? (
             <SiteHeaderUserAccountNav

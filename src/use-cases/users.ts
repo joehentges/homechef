@@ -5,7 +5,7 @@ import { redis } from "@/client/redis"
 export async function geFeaturedUsersUseCase(limit: number) {
   const cachedUsers = await redis.get("featured-users")
   if (cachedUsers) {
-    return JSON.parse(cachedUsers) as Omit<User, "password">[]
+    return JSON.parse(cachedUsers) as User[]
   }
 
   const randomUsers = await getRandomUsers(limit)

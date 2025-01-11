@@ -1,5 +1,5 @@
 import argon2 from "argon2"
-import { and, eq, ilike, or, sql } from "drizzle-orm"
+import { eq, ilike, or, sql } from "drizzle-orm"
 
 import { PrimaryKey } from "@/types"
 import { database } from "@/db"
@@ -120,17 +120,9 @@ export async function searchUsers(
   search: string,
   limit: number,
   offset?: number
-): Promise<Omit<User, "password">[]> {
+): Promise<User[]> {
   const usersList = database
-    .select({
-      id: users.id,
-      dateCreated: users.dateCreated,
-      dateUpdated: users.dateUpdated,
-      email: users.email,
-      emailVerified: users.emailVerified,
-      displayName: users.displayName,
-      image: users.image,
-    })
+    .select()
     .from(users)
     .where(
       or(
@@ -144,19 +136,9 @@ export async function searchUsers(
   return usersList
 }
 
-export async function getRandomUsers(
-  limit: number
-): Promise<Omit<User, "password">[]> {
+export async function getRandomUsers(limit: number): Promise<User[]> {
   const recipesList = await database
-    .select({
-      id: users.id,
-      dateCreated: users.dateCreated,
-      dateUpdated: users.dateUpdated,
-      email: users.email,
-      emailVerified: users.emailVerified,
-      displayName: users.displayName,
-      image: users.image,
-    })
+    .select()
     .from(users)
     .limit(limit)
     .orderBy(sql`random()`)

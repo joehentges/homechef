@@ -23,18 +23,26 @@ export function EditImage(props: EditImageProps) {
   const [pathPathError, setPhotoPathInputError] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
 
-  function isImageUrl(url: string) {
+  function isValidImageUrl(url: string): Promise<boolean> {
     return new Promise((resolve) => {
-      const img = new Image()
-      img.src = url
-
-      img.onload = () => resolve(true)
-      img.onerror = () => resolve(false)
+      try {
+        const parsedUrl = new URL(url)
+        if (!["http:", "https:"].includes(parsedUrl.protocol)) {
+          resolve(false)
+          return
+        }
+        const img = new Image()
+        img.onload = () => resolve(true)
+        img.onerror = () => resolve(false)
+        img.src = parsedUrl.href
+      } catch {
+        resolve(false)
+      }
     })
   }
 
   async function onPhotoSet() {
-    const validPhotoCheck = await isImageUrl(photoPathInput ?? "")
+    const validPhotoCheck = await isValidImageUrl(photoPathInput ?? "")
     if (validPhotoCheck) {
       setPhotoPathInputError(false)
       setPhoto(photoPathInput)

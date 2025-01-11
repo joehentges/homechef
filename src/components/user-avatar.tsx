@@ -18,7 +18,14 @@ export function UserAvatar({
 }: UserAvatarProps) {
   return (
     <Avatar {...props} className={cn(className, "bg-primary")}>
-      {image && <AvatarImage alt="Picture" src={image} />}
+      {image ? (
+        <AvatarImage alt="Avatar" src={image} />
+      ) : (
+        <AvatarImage
+          alt="Avatar"
+          src={`https://api.dicebear.com/9.x/initials/svg?seed=${displayName}`}
+        />
+      )}
       <AvatarFallback className="bg-primary">
         <span className="sr-only">{displayName}</span>
         <UserIcon className="h-4 w-4 dark:text-black" />

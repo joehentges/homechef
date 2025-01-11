@@ -89,6 +89,8 @@ export default async function HomePage() {
             recipesPerPageLimit={6}
           />
         )}
+
+        <FeaturedVideos videos={videos} />
       </div>
     </div>
   )
