@@ -205,7 +205,7 @@ const MultipleSelector = React.forwardRef<
       transToGroupOption(arrayDefaultOptions, groupBy)
     )
     const [inputValue, setInputValue] = React.useState("")
-    const debouncedSearchTerm = useDebounce(inputValue, delay || 500)
+    const debouncedSearchTerm = useDebounce(inputValue, delay ?? 500)
 
     React.useImperativeHandle(
       ref,

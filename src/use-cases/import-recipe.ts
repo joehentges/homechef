@@ -141,12 +141,10 @@ function fixMarkupCharacters(word: string) {
     .replace(/&lt;/g, "<")
     .replace(/&gt;/g, ">")
     .replace(/&quot;/g, '"')
-    .replace(/&#039;/g, "'")
+    .replace(/&#039;|&#x27;/g, "'")
     .replace(/&nbsp;/g, " ")
     .replace(/&mdash;/g, "—")
     .replace(/&ndash;/g, "-")
-    .replace(/&#x27;/g, "'")
-    .replace(/&#39;/g, "'")
 }
 
 function formatKeywords(keywords: any) {

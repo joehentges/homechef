@@ -1,3 +1,5 @@
+import { cache } from "react"
+
 import { PrimaryKey } from "@/types"
 import {
   FormattedRecipeDetails,
@@ -185,9 +187,9 @@ export async function addRecipeUseCase(
   return recipeDetails as RecipeDetails
 }
 
-export async function getAvailableRecipeTagsUseCase() {
+export const getAvailableRecipeTagsUseCase = cache(async () => {
   return getAllTags()
-}
+})
 
 export async function updateRecipeUseCase(
   formattedRecipeDetails: FormattedRecipeDetails,

@@ -2,7 +2,7 @@
 
 import { z } from "zod"
 
-import { rateLimitByIp, rateLimitByKey } from "@/lib/limiter"
+import { rateLimitByIp } from "@/lib/limiter"
 import { unauthenticatedAction } from "@/lib/safe-action"
 import { searchRecipesByTitleDescriptionTagsAndSortByUseCase } from "@/use-cases/recipes"
 

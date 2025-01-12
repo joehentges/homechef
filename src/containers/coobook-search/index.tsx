@@ -109,7 +109,10 @@ export function UserRecipeSearch(props: UserRecipeSearchProps) {
   return (
     <div className="container space-y-8 rounded-3xl bg-primary/20 py-8">
       <div className="flex flex-col items-center justify-between gap-4 text-center sm:flex-row">
-        <p className="text-4xl font-bold">Cookbook Search</p>
+        <p className="text-4xl font-bold">
+          Cookbook Search{" "}
+          <span className="text-2xl">({totalCatalogItems})</span>
+        </p>
         <div className="flex flex-row gap-x-4">
           <Link href="/recipes/create">
             <Button className="rounded-3xl">

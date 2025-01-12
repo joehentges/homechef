@@ -79,13 +79,6 @@ export function RecipeSearch(props: RecipeSearchProps) {
       })
     },
     onSuccess({ data }) {
-      if (data.recipes.length < 1) {
-        toast({
-          title: "Sorry, we couldn't find any recipes",
-          description: "Change your search to and we'll take a look again",
-          variant: "destructive",
-        })
-      }
       setRecipesResult(data.recipes)
       setRecipesCount(data.count)
       setPageCount(Math.ceil(data.count / recipesPerPageLimit))

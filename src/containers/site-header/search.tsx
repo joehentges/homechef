@@ -83,7 +83,7 @@ export function SiteSearch(props: SiteSearchProps) {
           Search for recipes and users.
         </DialogDescription>
         <CommandInput
-          placeholder="Type a command or search..."
+          placeholder="Search for a recipe or user..."
           value={search}
           onValueChange={setSearch}
         />
