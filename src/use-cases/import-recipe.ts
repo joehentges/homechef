@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 import * as cheerio from "cheerio"
+import * as he from "he"
 
 import { PrimaryKey } from "@/types"
 import { RecipeDetails, RecipeDifficulty } from "@/types/Recipe"
@@ -135,18 +136,6 @@ function formatServings(servings: any) {
   }
 }
 
-function fixMarkupCharacters(word: string) {
-  return word
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#039;|&#x27;/g, "'")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&mdash;/g, "—")
-    .replace(/&ndash;/g, "-")
-}
-
 function formatKeywords(keywords: any) {
   function removeWordBeforeColon(val: string): string {
     const colonIndex = val.indexOf(":")
@@ -173,9 +162,7 @@ function formatKeywords(keywords: any) {
       keywords
         .map((word) => {
           if (typeof word === "string") {
-            const fixedVal = fixMarkupCharacters(
-              removeWordBeforeColon(word).trim()
-            )
+            const fixedVal = he.decode(removeWordBeforeColon(word).trim())
             if (!isValidDate(fixedVal)) {
               return fixedVal.toLowerCase()
             }
@@ -190,9 +177,7 @@ function formatKeywords(keywords: any) {
       keywords
         .split(",")
         .map((word) => {
-          const fixedVal = fixMarkupCharacters(
-            removeWordBeforeColon(word).trim()
-          )
+          const fixedVal = he.decode(removeWordBeforeColon(word).trim())
           if (!isValidDate(fixedVal)) {
             return fixedVal.toLowerCase()
           }
@@ -205,9 +190,7 @@ function formatKeywords(keywords: any) {
 function formatDirections(directions: any) {
   return directions?.map((inst: any, index: number) => ({
     orderNumber: index,
-    description: fixMarkupCharacters(
-      typeof inst === "string" ? inst : inst.text
-    ),
+    description: he.decode(typeof inst === "string" ? inst : inst.text),
   }))
 }
 
@@ -293,9 +276,9 @@ function formatData(
       url,
     },
     recipe: {
-      title: fixMarkupCharacters(recipeData.name),
+      title: he.decode(recipeData.name),
       description: recipeData.description
-        ? fixMarkupCharacters(recipeData.description)
+        ? he.decode(recipeData.description)
         : undefined,
       servings: formatServings(recipeData.recipeYield) ?? `1 serving`,
       prepTime,
@@ -305,9 +288,7 @@ function formatData(
     },
     ingredients:
       recipeData.recipeIngredient.map((ing: string, index: number) => ({
-        description: fixMarkupCharacters(
-          ing.replace("((", "(").replace("))", ")")
-        ),
+        description: he.decode(ing.replace("((", "(").replace("))", ")")),
         orderNumber: index,
       })) || [],
     directions: formatDirections(recipeData.recipeInstructions) || [],
