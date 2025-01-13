@@ -12,7 +12,8 @@ import {
 } from "nuqs"
 import { useServerAction } from "zsa-react"
 
-import { SortBy } from "@/types/SortBy"
+import { PrimaryKey } from "@/types"
+import { OrderBy } from "@/types/OrderBy"
 import { Recipe } from "@/db/schemas"
 import { Button } from "@/components/ui/button"
 import {
@@ -37,6 +38,7 @@ interface RecipeSearchProps {
   initialRecipes: Recipe[]
   initialRecipesCount: number
   availableTags: { name: string }[]
+  userId?: PrimaryKey
 }
 
 export function RecipeSearch(props: RecipeSearchProps) {
@@ -46,6 +48,7 @@ export function RecipeSearch(props: RecipeSearchProps) {
     initialRecipes,
     initialRecipesCount,
     availableTags,
+    userId,
   } = props
   const { toast } = useToast()
 
@@ -59,8 +62,8 @@ export function RecipeSearch(props: RecipeSearchProps) {
     "search",
     parseAsString.withDefault("")
   )
-  const [sortBy, setSortBy] = useQueryState<SortBy>(
-    "sortBy",
+  const [orderBy, setSortBy] = useQueryState<OrderBy>(
+    "orderBy",
     parseAsStringEnum(["newest", "easiest", "fastest"]).withDefault("newest")
   )
   const [tags, setTags] = useQueryState(
@@ -97,35 +100,38 @@ export function RecipeSearch(props: RecipeSearchProps) {
       execute({
         search: debouncedSearch,
         tags,
-        sortBy,
+        orderBy,
         recipesPerPageLimit,
         page,
+        userId,
       })
     }
 
     fetchResults()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedSearch, tags.length, sortBy])
+  }, [debouncedSearch, tags.length, orderBy])
 
   function onTagsChange(newTags: string[]) {
     setTags(newTags)
     execute({
       search: debouncedSearch,
       tags: newTags,
-      sortBy,
+      orderBy,
       recipesPerPageLimit,
       page,
+      userId,
     })
   }
 
-  function onSortByChange(newSortBy: SortBy) {
+  function onSortByChange(newSortBy: OrderBy) {
     setSortBy(newSortBy)
     execute({
       search: debouncedSearch,
       tags,
-      sortBy: newSortBy,
+      orderBy: newSortBy,
       recipesPerPageLimit,
       page,
+      userId,
     })
   }
 
@@ -154,9 +160,10 @@ export function RecipeSearch(props: RecipeSearchProps) {
     execute({
       search: "",
       tags: [],
-      sortBy: "newest",
+      orderBy: "newest",
       recipesPerPageLimit,
       page: 1,
+      userId,
     })
   }
 
@@ -164,9 +171,10 @@ export function RecipeSearch(props: RecipeSearchProps) {
     executePageChange({
       search,
       tags,
-      sortBy,
+      orderBy,
       recipesPerPageLimit,
       page,
+      userId,
     })
   }
 
@@ -200,7 +208,7 @@ export function RecipeSearch(props: RecipeSearchProps) {
 
           <div className="flex w-full flex-col gap-4 md:flex-row lg:w-auto">
             <div className="w-full lg:w-auto">
-              <SortBySelect sortBy={sortBy} onChange={onSortByChange} />
+              <SortBySelect orderBy={orderBy} onChange={onSortByChange} />
             </div>
 
             <div className="flex w-full gap-4 md:flex-row">

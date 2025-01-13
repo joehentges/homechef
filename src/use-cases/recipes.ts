@@ -7,7 +7,7 @@ import {
   RecipeWithTags,
   UserDetails,
 } from "@/types/Recipe"
-import { SortBy } from "@/types/SortBy"
+import { SearchRecipeParams, SearchRecipeQuery } from "@/types/SearchRecipes"
 import { User } from "@/db/schemas"
 import {
   addRecipeDirections,
@@ -27,12 +27,9 @@ import {
 import {
   addRecipe,
   deleteRecipe,
-  getRandomRecipe,
   getRandomRecipes,
   getRecipe,
-  getUserRecipes,
   searchRecipes,
-  searchRecipesByTitleDescriptionTagsAndSortBy,
   updateRecipe,
 } from "@/data-access/recipes"
 import {
@@ -286,30 +283,16 @@ export async function unsaveRecipeUseCase(
   return deleteUserRecipeByRecipeIdAndUserId(recipeId, userId)
 }
 
-export async function searchRecipesByTitleDescriptionTagsAndSortByUseCase(
-  search: string,
-  searchTags: string[],
-  sortBy: SortBy,
-  limit: number,
-  offset: number
+export async function getRandomRecipeUseCase(
+  userId?: number
+): Promise<RecipeWithTags | undefined> {
+  const randomRecipesList = await getRandomRecipes(1, userId)
+  return randomRecipesList[0]
+}
+
+export function searchRecipesUseCase(
+  query: SearchRecipeQuery,
+  params?: SearchRecipeParams
 ) {
-  return searchRecipesByTitleDescriptionTagsAndSortBy(
-    search,
-    searchTags,
-    sortBy,
-    limit,
-    offset
-  )
-}
-
-export async function getUserRecipesUseCase(userId: PrimaryKey) {
-  return getUserRecipes(userId)
-}
-
-export async function getRandomRecipeUseCase() {
-  return getRandomRecipe()
-}
-
-export async function searchRecipesUseCase(search: string, limit: number) {
-  return searchRecipes(search, limit)
+  return searchRecipes(query, params)
 }

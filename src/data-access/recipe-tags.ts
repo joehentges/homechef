@@ -4,16 +4,6 @@ import { PrimaryKey } from "@/types"
 import { database } from "@/db"
 import { RecipeTag, recipeTags, Tag, tags } from "@/db/schemas"
 
-export async function getRecipeTag(
-  recipeTagId: PrimaryKey
-): Promise<RecipeTag | undefined> {
-  const recipeTag = await database.query.recipeTags.findFirst({
-    where: eq(recipeTags.id, recipeTagId),
-  })
-
-  return recipeTag
-}
-
 export async function getRecipeTagsByRecipeId(recipeId: PrimaryKey): Promise<
   | {
       id: number

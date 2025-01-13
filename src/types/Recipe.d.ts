@@ -1,6 +1,6 @@
 import { Recipe, RecipeDirection, RecipeIngredient, User } from "@/db/schemas"
 
-import { PrimaryKey } from "."
+import { PrimaryKey } from "./index"
 
 export type RecipeDetailsPhoto = {
   defaultPhoto: boolean

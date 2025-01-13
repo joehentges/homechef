@@ -12,48 +12,9 @@ import {
 
 import { PrimaryKey } from "@/types"
 import { RecipeDifficulty, RecipeWithTags } from "@/types/Recipe"
-import { SortBy } from "@/types/SortBy"
+import { SearchRecipeParams, SearchRecipeQuery } from "@/types/SearchRecipes"
 import { database } from "@/db"
 import { Recipe, recipes, recipeTags, tags, userRecipes } from "@/db/schemas"
-
-/*
-// START - For testing only
-function duplicateArray<T>(arr: T[], times: number): T[] {
-  if (times <= 0) {
-    return [] // Return empty array for non-positive times
-  }
-
-  const duplicatedArray: T[] = []
-  for (let i = 0; i < times; i++) {
-    duplicatedArray.push(...arr) // Use spread operator for efficient copying
-  }
-  return duplicatedArray
-}
-function randomizeRecipeDetails<T>(
-  recipe: T & { title: string },
-  index: number
-): T {
-  const start = new Date(2020, 0, 1) // January 1st of startYear
-  const end = new Date(2024 + 1, 0, 1) // January 1st of (endYear + 1) to include the endYear
-
-  // Get the time difference in milliseconds
-  const startTime = start.getTime()
-  const endTime = end.getTime()
-  const diff = endTime - startTime
-
-  // Generate a random number within the time difference
-  const randomTime = Math.random() * diff
-
-  return {
-    ...recipe,
-    dateUpdated: new Date(startTime + randomTime),
-    title: `${recipe.title} - ${index}`,
-    prepTime: Math.floor(Math.random() * (500 - 1)) + 1,
-    cookTime: Math.floor(Math.random() * (500 - 1)) + 1,
-  }
-}
-// END - For testing only
-*/
 
 export async function getRecipe(
   recipeId: PrimaryKey
@@ -65,10 +26,8 @@ export async function getRecipe(
   return recipe
 }
 
-export async function getRandomRecipes(
-  limit: number
-): Promise<RecipeWithTags[] | undefined> {
-  const recipesList = await database
+function defaultRecipeQuery() {
+  return database
     .select({
       id: recipes.id,
       dateCreated: recipes.dateCreated,
@@ -83,108 +42,74 @@ export async function getRandomRecipes(
       private: recipes.private,
       photo: recipes.photo,
       tags: sql<string[]>`
-      CASE
-          WHEN EXISTS (
-              SELECT 1
-              FROM ${recipeTags}
-              WHERE ${recipeTags.recipeId} = ${recipes.id}
-          )
-          THEN COALESCE(array_agg(${tags.name}), ARRAY[]::text[])
-          ELSE ARRAY[]::text[]
-      END`.as("tags"),
+    CASE
+        WHEN EXISTS (
+            SELECT 1
+            FROM ${recipeTags}
+            WHERE ${recipeTags.recipeId} = ${recipes.id}
+        )
+        THEN COALESCE(array_agg(${tags.name}), ARRAY[]::text[])
+        ELSE ARRAY[]::text[]
+    END`.as("tags"),
     })
     .from(recipes)
     .leftJoin(recipeTags, eq(recipeTags.recipeId, recipes.id))
     .leftJoin(tags, eq(tags.id, recipeTags.tagId))
-    .where(eq(recipes.private, false))
     .groupBy(recipes.id)
-    .limit(limit)
-    .orderBy(sql`random()`)
+}
+
+export async function getRandomRecipes(
+  limit: number,
+  userId?: PrimaryKey
+): Promise<RecipeWithTags[]> {
+  const recipesListDbQuery = defaultRecipeQuery()
+
+  if (userId) {
+    recipesListDbQuery.where(
+      or(eq(userRecipes.userId, userId), eq(recipes.private, false))
+    )
+  } else {
+    recipesListDbQuery.where(eq(recipes.private, false))
+  }
+
+  recipesListDbQuery.limit(limit).orderBy(sql`random()`)
+
+  const recipesList = await recipesListDbQuery.execute()
 
   return recipesList
 }
 
-export async function getRandomRecipe(): Promise<Recipe | undefined> {
-  const recipe = await database.query.recipes.findFirst({
-    where: eq(recipes.private, false),
-    orderBy: sql`random()`,
-  })
-
-  return recipe
-}
-
-export async function searchRecipesByTitleDescriptionTagsAndSortBy(
-  search: string,
-  searchTags: string[],
-  sortBy: SortBy,
-  limit: number,
-  offset?: number
-): Promise<{ recipes: RecipeWithTags[]; count: number }> {
+export async function searchRecipes(
+  query: SearchRecipeQuery,
+  params?: SearchRecipeParams
+) {
   const searchByClause = or(
-    ilike(recipes.title, `%${search}%`),
-    ilike(recipes.description, `%${search}%`)
+    ilike(recipes.title, `%${query.search ?? ""}%`),
+    ilike(recipes.description, `%${query.search ?? ""}%`)
   )
 
-  const recipesList = await database
-    .select({
-      id: recipes.id,
-      dateCreated: recipes.dateCreated,
-      dateUpdated: recipes.dateUpdated,
-      userId: recipes.userId,
-      title: recipes.title,
-      description: recipes.description,
-      prepTime: recipes.prepTime,
-      cookTime: recipes.cookTime,
-      difficulty: recipes.difficulty,
-      servings: recipes.servings,
-      private: recipes.private,
-      photo: recipes.photo,
-      tags: sql<string[]>`
-      CASE
-          WHEN EXISTS (
-              SELECT 1
-              FROM ${recipeTags}
-              WHERE ${recipeTags.recipeId} = ${recipes.id}
+  let searchByTagsClause
+  if (query.tags && query.tags.length > 0) {
+    searchByTagsClause = exists(
+      database
+        .select()
+        .from(recipeTags)
+        .innerJoin(tags, eq(tags.id, recipeTags.tagId))
+        .where(
+          and(
+            eq(recipeTags.recipeId, recipes.id),
+            inArray(tags.name, query.tags)
           )
-          THEN COALESCE(array_agg(${tags.name}), ARRAY[]::text[])
-          ELSE ARRAY[]::text[]
-      END`.as("tags"),
-    })
-    .from(recipes)
-    .leftJoin(recipeTags, eq(recipeTags.recipeId, recipes.id))
-    .leftJoin(tags, eq(tags.id, recipeTags.tagId))
-    .where(
-      and(
-        eq(recipes.private, false),
-        or(
-          searchTags.length > 0
-            ? and(
-                searchByClause,
-                exists(
-                  database
-                    .select()
-                    .from(recipeTags)
-                    .innerJoin(tags, eq(tags.id, recipeTags.tagId))
-                    .where(
-                      and(
-                        eq(recipeTags.recipeId, recipes.id),
-                        inArray(tags.name, searchTags)
-                      )
-                    )
-                )
-              )
-            : searchByClause
         )
-      )
     )
-    .groupBy(recipes.id)
-    .limit(limit)
-    .offset(offset ?? 0)
-    .orderBy(
-      sortBy === "fastest"
-        ? asc(sql`${recipes.prepTime} + ${recipes.cookTime}`)
-        : sortBy === "easiest"
-          ? sql`
+  }
+
+  let orderByClause
+  switch (query.orderBy) {
+    case "fastest":
+      orderByClause = asc(sql`${recipes.prepTime} + ${recipes.cookTime}`)
+    case "easiest":
+      orderByClause = sql`
         CASE ${recipes.difficulty}
           WHEN 'beginner' THEN 1
           WHEN 'intermediate' THEN 2
@@ -192,83 +117,76 @@ export async function searchRecipesByTitleDescriptionTagsAndSortBy(
           ELSE 4
         END
       `
-          : desc(recipes.dateUpdated)
-    )
+    default:
+      orderByClause = desc(recipes.dateUpdated)
+  }
 
-  const [recipeCount] = await database // Destructure directly
+  const recipesListDbQuery = defaultRecipeQuery()
+  const recipesCountDbQuery = database
     .select({
-      count: sql<number>`count(DISTINCT ${recipes.id})`, // Count distinct recipe IDs
+      count: sql<number>`count(DISTINCT ${recipes.id})`,
     })
     .from(recipes)
     .leftJoin(recipeTags, eq(recipeTags.recipeId, recipes.id))
     .leftJoin(tags, eq(tags.id, recipeTags.tagId))
-    .where(
-      and(
-        eq(recipes.private, false),
+
+  let whereQuery = and(
+    eq(recipes.private, false),
+    or(
+      searchByTagsClause
+        ? and(searchByClause, searchByTagsClause)
+        : searchByClause
+    )
+  )
+  if (params?.includeUserRecipes && params.userId) {
+    recipesListDbQuery.leftJoin(
+      userRecipes,
+      eq(userRecipes.recipeId, recipes.id)
+    )
+    recipesCountDbQuery.leftJoin(
+      userRecipes,
+      eq(userRecipes.recipeId, recipes.id)
+    )
+
+    whereQuery = and(
+      or(eq(userRecipes.userId, params.userId), eq(recipes.private, false)),
+      or(
+        searchByTagsClause
+          ? and(searchByClause, searchByTagsClause)
+          : searchByClause
+      )
+    )
+    if (params.userRecipesOnly) {
+      whereQuery = and(
+        eq(userRecipes.userId, params.userId),
         or(
-          searchTags.length > 0
-            ? and(
-                searchByClause,
-                exists(
-                  database
-                    .select()
-                    .from(recipeTags)
-                    .innerJoin(tags, eq(tags.id, recipeTags.tagId))
-                    .where(
-                      and(
-                        eq(recipeTags.recipeId, recipes.id),
-                        inArray(tags.name, searchTags)
-                      )
-                    )
-                )
-              )
+          searchByTagsClause
+            ? and(searchByClause, searchByTagsClause)
             : searchByClause
         )
       )
-    )
+    }
+  }
+  recipesListDbQuery.where(whereQuery)
+  recipesCountDbQuery.where(whereQuery)
+
+  if (query.limit) {
+    recipesListDbQuery.limit(query.limit)
+  }
+
+  if (query.offset) {
+    recipesListDbQuery.offset(query.offset)
+  }
+
+  recipesListDbQuery.orderBy(orderByClause)
+
+  const recipesList = await recipesListDbQuery.execute()
+  const [recipeCount] = await recipesCountDbQuery.execute()
 
   return {
     recipes: recipesList,
     count: recipeCount?.count ?? 0,
   }
-}
-
-export async function getUserRecipes(
-  userId: PrimaryKey
-): Promise<RecipeWithTags[]> {
-  const recipesList = await database
-    .select({
-      id: recipes.id,
-      dateCreated: recipes.dateCreated,
-      dateUpdated: recipes.dateUpdated,
-      userId: recipes.userId,
-      title: recipes.title,
-      description: recipes.description,
-      prepTime: recipes.prepTime,
-      cookTime: recipes.cookTime,
-      difficulty: recipes.difficulty,
-      servings: recipes.servings,
-      private: recipes.private,
-      photo: recipes.photo,
-      tags: sql<string[]>`
-      CASE
-          WHEN EXISTS (
-              SELECT 1
-              FROM ${recipeTags}
-              WHERE ${recipeTags.recipeId} = ${recipes.id}
-          )
-          THEN COALESCE(array_agg(${tags.name}), ARRAY[]::text[])
-          ELSE ARRAY[]::text[]
-      END`.as("tags"),
-    })
-    .from(recipes)
-    .leftJoin(userRecipes, eq(userRecipes.recipeId, recipes.id))
-    .leftJoin(recipeTags, eq(recipeTags.recipeId, recipes.id))
-    .leftJoin(tags, eq(tags.id, recipeTags.tagId))
-    .where(eq(userRecipes.userId, userId))
-    .groupBy(recipes.id)
-
-  return recipesList
 }
 
 export async function addRecipe(
@@ -359,24 +277,4 @@ export async function updateRecipe(
 
 export async function deleteRecipe(recipeId: PrimaryKey) {
   await database.delete(recipes).where(eq(recipes.id, recipeId)).returning()
-}
-
-export async function searchRecipes(
-  search: string,
-  limit: number,
-  offset?: number
-): Promise<Recipe[]> {
-  const recipesList = await database.query.recipes.findMany({
-    where: and(
-      eq(recipes.private, false),
-      or(
-        ilike(recipes.title, `%${search}%`),
-        ilike(recipes.description, `%${search}%`)
-      )
-    ),
-    limit,
-    offset,
-  })
-
-  return recipesList
 }

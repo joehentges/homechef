@@ -28,10 +28,13 @@ export const searchRecipesAndUsersAction = unauthenticatedAction
   )
   .handler(async ({ input }) => {
     await rateLimitByIp({ limit: 1000, window: 10000 })
-    const recipes = await searchRecipesUseCase(input.search, input.limit)
+    const recipes = await searchRecipesUseCase({
+      search: input.search,
+      limit: input.limit,
+    })
     const users = await searchUsersUseCase(input.search, input.limit)
     return {
-      recipes,
+      recipes: recipes.recipes,
       users,
     }
   })

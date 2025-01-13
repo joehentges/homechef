@@ -6,17 +6,18 @@ import {
 } from "nuqs/server"
 import type { SearchParams } from "nuqs/server"
 
-import { SortBy } from "@/types/SortBy"
+import { OrderBy } from "@/types/OrderBy"
+import { getCurrentUser } from "@/lib/session"
 import {
   getAvailableRecipeTagsUseCase,
   getRandomRecipeUseCase,
-  searchRecipesByTitleDescriptionTagsAndSortByUseCase,
+  searchRecipesUseCase,
 } from "@/use-cases/recipes"
 import { RecipeSearch } from "@/containers/recipe-search"
 
 const searchParamsCache = createSearchParamsCache({
   search: parseAsString.withDefault(""),
-  sortBy: parseAsString.withDefault("newest"),
+  orderBy: parseAsString.withDefault("newest"),
   tags: parseAsArrayOf(parseAsString, ",").withDefault([]),
   page: parseAsInteger.withDefault(1),
 })
@@ -26,21 +27,28 @@ interface RecipesPageProps {
 }
 
 export default async function RecipesPage({ searchParams }: RecipesPageProps) {
-  const { search, sortBy, tags, page } =
+  const { search, orderBy, tags, page } =
     await searchParamsCache.parse(searchParams)
+
+  const user = await getCurrentUser()
 
   const limit = 12
   const limitLOffset = (page - 1) * limit
 
   const availableTags = await getAvailableRecipeTagsUseCase()
-  const initialRecipes =
-    await searchRecipesByTitleDescriptionTagsAndSortByUseCase(
+  const initialRecipes = await searchRecipesUseCase(
+    {
       search,
       tags,
-      sortBy.toLowerCase() as SortBy,
+      orderBy: orderBy.toLowerCase() as OrderBy,
       limit,
-      limitLOffset
-    )
+      offset: limitLOffset,
+    },
+    {
+      userId: user?.id,
+      includeUserRecipes: !!user,
+    }
+  )
   const randomRecipe = await getRandomRecipeUseCase()
 
   return (
@@ -51,6 +59,7 @@ export default async function RecipesPage({ searchParams }: RecipesPageProps) {
         initialRecipesCount={initialRecipes.count}
         initialRecipes={initialRecipes.recipes}
         availableTags={availableTags}
+        userId={user?.id}
       />
     </div>
   )

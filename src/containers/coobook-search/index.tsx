@@ -11,8 +11,8 @@ import {
   useQueryState,
 } from "nuqs"
 
+import { OrderBy } from "@/types/OrderBy"
 import { RecipeWithTags } from "@/types/Recipe"
-import { SortBy } from "@/types/SortBy"
 import { Recipe } from "@/db/schemas"
 import { Button } from "@/components/ui/button"
 import { Catalog } from "@/components/catalog"
@@ -35,8 +35,8 @@ export function UserRecipeSearch(props: UserRecipeSearchProps) {
     "search",
     parseAsString.withDefault("")
   )
-  const [sortBy, setSortBy] = useQueryState<SortBy>(
-    "sortBy",
+  const [orderBy, setSortBy] = useQueryState<OrderBy>(
+    "orderBy",
     parseAsStringEnum(["newest", "easiest", "fastest"]).withDefault("newest")
   )
   const [tags, setTags] = useQueryState(
@@ -81,9 +81,9 @@ export function UserRecipeSearch(props: UserRecipeSearchProps) {
         return matchesTags && matchesTitleOrDescription
       })
       .sort(
-        sortBy === "easiest"
+        orderBy === "easiest"
           ? sortByEasiestFunction
-          : sortBy === "fastest"
+          : orderBy === "fastest"
             ? sortByFastestFunction
             : sortByNewestFunction
       )
@@ -96,7 +96,7 @@ export function UserRecipeSearch(props: UserRecipeSearchProps) {
       totalCatalogItems: catalogItems.length,
     }
     // eslint-disable-next-line
-  }, [search, tags, sortBy, page])
+  }, [search, tags, orderBy, page])
 
   const recipePageCount = Math.ceil(totalCatalogItems / recipesPerPageLimit)
 
@@ -105,7 +105,7 @@ export function UserRecipeSearch(props: UserRecipeSearchProps) {
       setPage(1)
     }
     // eslint-disable-next-line
-  }, [search, tags, sortBy, page])
+  }, [search, tags, orderBy, page])
 
   return (
     <div className="container space-y-8 rounded-3xl bg-primary/20 py-8">
@@ -140,7 +140,7 @@ export function UserRecipeSearch(props: UserRecipeSearchProps) {
             setTags={setTags}
           />
 
-          <SortBySelect sortBy={sortBy} setSortBy={setSortBy} />
+          <SortBySelect orderBy={orderBy} setSortBy={setSortBy} />
         </div>
       </div>
       <div className="center flex w-full justify-center">

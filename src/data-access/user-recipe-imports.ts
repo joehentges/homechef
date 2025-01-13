@@ -5,16 +5,6 @@ import { UserDetails } from "@/types/Recipe"
 import { database } from "@/db"
 import { UserRecipeImport, userRecipeImports, users } from "@/db/schemas"
 
-export async function getUserRecipeImportById(
-  userRecipeImportId: PrimaryKey
-): Promise<UserRecipeImport | undefined> {
-  const userRecipeImport = await database.query.userRecipeImports.findFirst({
-    where: eq(userRecipeImports.id, userRecipeImportId),
-  })
-
-  return userRecipeImport
-}
-
 export async function getUserRecipeImportsByIdAndUserId(
   recipeImportDetailsId: PrimaryKey,
   userId: PrimaryKey
@@ -26,18 +16,6 @@ export async function getUserRecipeImportsByIdAndUserId(
         eq(userRecipeImports.userId, userId)
       ),
     })
-
-  return userRecipeImportsList
-}
-
-export async function getUserRecipeImportsByUserId(
-  userId: PrimaryKey
-): Promise<UserRecipeImport[] | undefined> {
-  const userRecipeImportsList = await database.query.userRecipeImports.findMany(
-    {
-      where: eq(userRecipeImports.userId, userId),
-    }
-  )
 
   return userRecipeImportsList
 }

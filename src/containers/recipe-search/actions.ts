@@ -4,7 +4,7 @@ import { z } from "zod"
 
 import { rateLimitByIp } from "@/lib/limiter"
 import { unauthenticatedAction } from "@/lib/safe-action"
-import { searchRecipesByTitleDescriptionTagsAndSortByUseCase } from "@/use-cases/recipes"
+import { searchRecipesUseCase } from "@/use-cases/recipes"
 
 export const searchRecipesAction = unauthenticatedAction
   .createServerAction()
@@ -12,9 +12,10 @@ export const searchRecipesAction = unauthenticatedAction
     z.object({
       search: z.string(),
       tags: z.array(z.string()),
-      sortBy: z.enum(["newest", "easiest", "fastest"]),
+      orderBy: z.enum(["newest", "easiest", "fastest"]),
       recipesPerPageLimit: z.number(),
       page: z.number().default(1),
+      userId: z.number().optional(),
     })
   )
   .handler(async ({ input }) => {
@@ -23,14 +24,19 @@ export const searchRecipesAction = unauthenticatedAction
       window: 10000,
     })
     const limitLOffset = (input.page - 1) * input.recipesPerPageLimit
-    const recipeSearchResult =
-      await searchRecipesByTitleDescriptionTagsAndSortByUseCase(
-        input.search,
-        input.tags,
-        input.sortBy,
-        input.recipesPerPageLimit,
-        limitLOffset
-      )
+    const recipeSearchResult = await searchRecipesUseCase(
+      {
+        search: input.search,
+        tags: input.tags,
+        orderBy: input.orderBy,
+        limit: input.recipesPerPageLimit,
+        offset: limitLOffset,
+      },
+      {
+        userId: input.userId,
+        includeUserRecipes: !!input.userId,
+      }
+    )
     return {
       recipes: recipeSearchResult.recipes,
       count: recipeSearchResult.count,

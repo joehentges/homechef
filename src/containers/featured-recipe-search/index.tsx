@@ -8,8 +8,8 @@ import {
   useQueryState,
 } from "nuqs"
 
+import { OrderBy } from "@/types/OrderBy"
 import { RecipeWithTags } from "@/types/Recipe"
-import { SortBy } from "@/types/SortBy"
 import { Recipe } from "@/db/schemas"
 import { Catalog } from "@/components/catalog"
 
@@ -29,8 +29,8 @@ export function FeaturedRecipeSearch(props: FeaturedRecipeSearch) {
     "search",
     parseAsString.withDefault("")
   )
-  const [sortBy, setSortBy] = useQueryState<SortBy>(
-    "sortBy",
+  const [orderBy, setSortBy] = useQueryState<OrderBy>(
+    "orderBy",
     parseAsStringEnum(["newest", "easiest", "fastest"]).withDefault("newest")
   )
   const [tag, setTag] = useQueryState("tag", parseAsString.withDefault(""))
@@ -96,9 +96,9 @@ export function FeaturedRecipeSearch(props: FeaturedRecipeSearch) {
         return matchesTags && matchesTitleOrDescription
       })
       .sort(
-        sortBy === "easiest"
+        orderBy === "easiest"
           ? sortByEasiestFunction
-          : sortBy === "fastest"
+          : orderBy === "fastest"
             ? sortByFastestFunction
             : sortByNewestFunction
       )
@@ -111,7 +111,7 @@ export function FeaturedRecipeSearch(props: FeaturedRecipeSearch) {
       totalCatalogItems: catalogItems.length,
     }
     // eslint-disable-next-line
-  }, [search, tag, sortBy, page])
+  }, [search, tag, orderBy, page])
 
   const recipePageCount = Math.ceil(totalCatalogItems / recipesPerPageLimit)
 
@@ -120,7 +120,7 @@ export function FeaturedRecipeSearch(props: FeaturedRecipeSearch) {
       setPage(1)
     }
     // eslint-disable-next-line
-  }, [search, tag, sortBy, page])
+  }, [search, tag, orderBy, page])
 
   return (
     <div className="container" id="featured-recipe-search">
@@ -131,7 +131,7 @@ export function FeaturedRecipeSearch(props: FeaturedRecipeSearch) {
           </p>
           <Input search={search} setSearch={setSearch} />
         </div>
-        <SortBySelect sortBy={sortBy} setSortBy={setSortBy} />
+        <SortBySelect orderBy={orderBy} setSortBy={setSortBy} />
       </div>
 
       <div className="flex flex-col items-start gap-x-10 gap-y-6 pt-6 md:flex-row md:pt-10">
