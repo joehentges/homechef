@@ -1,7 +1,5 @@
 "use client"
 
-import { Dispatch, SetStateAction } from "react"
-
 import {
   Select,
   SelectContent,
@@ -12,7 +10,7 @@ import {
 
 interface SortBySelectProps {
   sortBy: "newest" | "fastest" | "easiest"
-  onChange: Dispatch<SetStateAction<"newest" | "fastest" | "easiest">>
+  onChange: (value: "newest" | "fastest" | "easiest") => void
 }
 
 export function SortBySelect(props: SortBySelectProps) {

@@ -106,20 +106,27 @@ export function RecipeSearch(props: RecipeSearchProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearch, tags.length, sortBy])
 
-  useEffect(() => {
-    const fetchResults = async () => {
-      execute({
-        search: debouncedSearch,
-        tags,
-        sortBy,
-        recipesPerPageLimit,
-        page,
-      })
-    }
+  function onTagsChange(newTags: string[]) {
+    setTags(newTags)
+    execute({
+      search: debouncedSearch,
+      tags: newTags,
+      sortBy,
+      recipesPerPageLimit,
+      page,
+    })
+  }
 
-    fetchResults()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tags.length, sortBy])
+  function onSortByChange(newSortBy: "newest" | "easiest" | "fastest") {
+    setSortBy(newSortBy)
+    execute({
+      search: debouncedSearch,
+      tags,
+      sortBy: newSortBy,
+      recipesPerPageLimit,
+      page,
+    })
+  }
 
   const { execute: executePageChange, isPending: isPageChangePending } =
     useServerAction(searchRecipesAction, {
@@ -186,13 +193,13 @@ export function RecipeSearch(props: RecipeSearchProps) {
             <TagSelect
               tags={tags}
               availableTags={availableTags}
-              onChange={setTags}
+              onChange={onTagsChange}
             />
           </div>
 
           <div className="flex w-full flex-col gap-4 md:flex-row lg:w-auto">
             <div className="w-full lg:w-auto">
-              <SortBySelect sortBy={sortBy} onChange={setSortBy} />
+              <SortBySelect sortBy={sortBy} onChange={onSortByChange} />
             </div>
 
             <div className="flex w-full gap-4 md:flex-row">

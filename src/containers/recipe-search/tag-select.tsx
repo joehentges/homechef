@@ -1,11 +1,9 @@
-import { Dispatch, SetStateAction } from "react"
-
 import { MultipleSelector } from "@/components/multiple-selector"
 
 interface TagSelectProps {
   tags: string[]
   availableTags: { name: string }[]
-  onChange: Dispatch<SetStateAction<string[]>>
+  onChange: (value: string[]) => void
 }
 
 export function TagSelect(props: TagSelectProps) {
