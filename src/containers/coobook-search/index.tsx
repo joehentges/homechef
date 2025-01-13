@@ -12,6 +12,7 @@ import {
 } from "nuqs"
 
 import { RecipeWithTags } from "@/types/Recipe"
+import { SortBy } from "@/types/SortBy"
 import { Recipe } from "@/db/schemas"
 import { Button } from "@/components/ui/button"
 import { Catalog } from "@/components/catalog"
@@ -34,7 +35,7 @@ export function UserRecipeSearch(props: UserRecipeSearchProps) {
     "search",
     parseAsString.withDefault("")
   )
-  const [sortBy, setSortBy] = useQueryState(
+  const [sortBy, setSortBy] = useQueryState<SortBy>(
     "sortBy",
     parseAsStringEnum(["newest", "easiest", "fastest"]).withDefault("newest")
   )

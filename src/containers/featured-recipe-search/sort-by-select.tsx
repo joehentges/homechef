@@ -1,5 +1,6 @@
 "use client"
 
+import { SortBy } from "@/types/SortBy"
 import {
   Select,
   SelectContent,
@@ -10,7 +11,7 @@ import {
 
 interface SortBySelectProps {
   sortBy: string
-  setSortBy: (value: "newest" | "easiest" | "fastest") => void
+  setSortBy: (value: SortBy) => void
 }
 
 export function SortBySelect(props: SortBySelectProps) {

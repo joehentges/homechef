@@ -12,6 +12,7 @@ import {
 } from "nuqs"
 import { useServerAction } from "zsa-react"
 
+import { SortBy } from "@/types/SortBy"
 import { Recipe } from "@/db/schemas"
 import { Button } from "@/components/ui/button"
 import {
@@ -58,7 +59,7 @@ export function RecipeSearch(props: RecipeSearchProps) {
     "search",
     parseAsString.withDefault("")
   )
-  const [sortBy, setSortBy] = useQueryState(
+  const [sortBy, setSortBy] = useQueryState<SortBy>(
     "sortBy",
     parseAsStringEnum(["newest", "easiest", "fastest"]).withDefault("newest")
   )
@@ -117,7 +118,7 @@ export function RecipeSearch(props: RecipeSearchProps) {
     })
   }
 
-  function onSortByChange(newSortBy: "newest" | "easiest" | "fastest") {
+  function onSortByChange(newSortBy: SortBy) {
     setSortBy(newSortBy)
     execute({
       search: debouncedSearch,

@@ -1,5 +1,6 @@
 "use client"
 
+import { SortBy } from "@/types/SortBy"
 import {
   Select,
   SelectContent,
@@ -9,8 +10,8 @@ import {
 } from "@/components/ui/select"
 
 interface SortBySelectProps {
-  sortBy: "newest" | "fastest" | "easiest"
-  onChange: (value: "newest" | "fastest" | "easiest") => void
+  sortBy: SortBy
+  onChange: (value: SortBy) => void
 }
 
 export function SortBySelect(props: SortBySelectProps) {
@@ -20,9 +21,7 @@ export function SortBySelect(props: SortBySelectProps) {
     <div className="min-w-[180px] space-y-2">
       <Select
         value={sortBy.toLowerCase()}
-        onValueChange={(value) =>
-          onChange(value as "newest" | "fastest" | "easiest")
-        }
+        onValueChange={(value) => onChange(value as SortBy)}
       >
         <SelectTrigger
           id="select-17"

@@ -12,6 +12,7 @@ import {
 
 import { PrimaryKey } from "@/types"
 import { RecipeDifficulty, RecipeWithTags } from "@/types/Recipe"
+import { SortBy } from "@/types/SortBy"
 import { database } from "@/db"
 import { Recipe, recipes, recipeTags, tags, userRecipes } from "@/db/schemas"
 
@@ -115,7 +116,7 @@ export async function getRandomRecipe(): Promise<Recipe | undefined> {
 export async function searchRecipesByTitleDescriptionTagsAndSortBy(
   search: string,
   searchTags: string[],
-  sortBy: "newest" | "fastest" | "easiest",
+  sortBy: SortBy,
   limit: number,
   offset?: number
 ): Promise<{ recipes: RecipeWithTags[]; count: number }> {

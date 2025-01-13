@@ -7,6 +7,7 @@ import {
   RecipeWithTags,
   UserDetails,
 } from "@/types/Recipe"
+import { SortBy } from "@/types/SortBy"
 import { User } from "@/db/schemas"
 import {
   addRecipeDirections,
@@ -288,7 +289,7 @@ export async function unsaveRecipeUseCase(
 export async function searchRecipesByTitleDescriptionTagsAndSortByUseCase(
   search: string,
   searchTags: string[],
-  sortBy: "newest" | "fastest" | "easiest",
+  sortBy: SortBy,
   limit: number,
   offset: number
 ) {

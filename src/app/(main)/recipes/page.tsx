@@ -6,6 +6,7 @@ import {
 } from "nuqs/server"
 import type { SearchParams } from "nuqs/server"
 
+import { SortBy } from "@/types/SortBy"
 import {
   getAvailableRecipeTagsUseCase,
   getRandomRecipeUseCase,
@@ -36,7 +37,7 @@ export default async function RecipesPage({ searchParams }: RecipesPageProps) {
     await searchRecipesByTitleDescriptionTagsAndSortByUseCase(
       search,
       tags,
-      sortBy.toLowerCase() as "newest" | "fastest" | "easiest",
+      sortBy.toLowerCase() as SortBy,
       limit,
       limitLOffset
     )
