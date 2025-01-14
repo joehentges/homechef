@@ -1,9 +1,8 @@
 import { and, asc, eq } from "drizzle-orm"
 
 import { PrimaryKey } from "@/types"
-import { UserDetails } from "@/types/Recipe"
 import { database } from "@/db"
-import { UserRecipeImport, userRecipeImports, users } from "@/db/schemas"
+import { User, UserRecipeImport, userRecipeImports, users } from "@/db/schemas"
 
 export async function getUserRecipeImportsByIdAndUserId(
   recipeImportDetailsId: PrimaryKey,
@@ -23,11 +22,17 @@ export async function getUserRecipeImportsByIdAndUserId(
 // get the user who first imported the recipe
 export async function getFirstUserImportedById(
   recipeImportDetailsId: PrimaryKey
-): Promise<UserDetails | undefined> {
+): Promise<User | undefined> {
   const [user] = await database
     .select({
       id: users.id,
+      dateCreated: users.dateCreated,
+      dateUpdated: users.dateUpdated,
+      email: users.email,
+      emailVerified: users.emailVerified,
+      password: users.password,
       displayName: users.displayName,
+      image: users.image,
     })
     .from(userRecipeImports)
     .where(eq(userRecipeImports.recipeImportDetailsId, recipeImportDetailsId))

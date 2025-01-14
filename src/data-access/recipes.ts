@@ -14,17 +14,7 @@ import { PrimaryKey } from "@/types"
 import { RecipeDifficulty, RecipeWithTags } from "@/types/Recipe"
 import { SearchRecipeParams, SearchRecipeQuery } from "@/types/SearchRecipes"
 import { database } from "@/db"
-import { Recipe, recipes, recipeTags, tags, userRecipes } from "@/db/schemas"
-
-export async function getRecipe(
-  recipeId: PrimaryKey
-): Promise<Recipe | undefined> {
-  const recipe = await database.query.recipes.findFirst({
-    where: eq(recipes.id, recipeId),
-  })
-
-  return recipe
-}
+import { recipes, recipeTags, tags, userRecipes } from "@/db/schemas"
 
 function defaultRecipeQuery() {
   return database
@@ -56,6 +46,16 @@ function defaultRecipeQuery() {
     .leftJoin(recipeTags, eq(recipeTags.recipeId, recipes.id))
     .leftJoin(tags, eq(tags.id, recipeTags.tagId))
     .groupBy(recipes.id)
+}
+
+export async function getRecipe(
+  recipeId: PrimaryKey
+): Promise<RecipeWithTags | undefined> {
+  const [recipe] = await defaultRecipeQuery()
+    .where(eq(recipes.id, recipeId))
+    .limit(1)
+
+  return recipe
 }
 
 export async function getRandomRecipes(

@@ -11,8 +11,8 @@ import {
   useQueryState,
 } from "nuqs"
 
-import { OrderBy } from "@/types/OrderBy"
 import { RecipeWithTags } from "@/types/Recipe"
+import { OrderBy } from "@/types/SearchRecipes"
 import { Recipe } from "@/db/schemas"
 import { Button } from "@/components/ui/button"
 import { Catalog } from "@/components/catalog"
@@ -35,7 +35,7 @@ export function UserRecipeSearch(props: UserRecipeSearchProps) {
     "search",
     parseAsString.withDefault("")
   )
-  const [orderBy, setSortBy] = useQueryState<OrderBy>(
+  const [orderBy, setOrderBy] = useQueryState<OrderBy>(
     "orderBy",
     parseAsStringEnum(["newest", "easiest", "fastest"]).withDefault("newest")
   )
@@ -140,7 +140,7 @@ export function UserRecipeSearch(props: UserRecipeSearchProps) {
             setTags={setTags}
           />
 
-          <SortBySelect orderBy={orderBy} setSortBy={setSortBy} />
+          <SortBySelect orderBy={orderBy} setOrderBy={setOrderBy} />
         </div>
       </div>
       <div className="center flex w-full justify-center">

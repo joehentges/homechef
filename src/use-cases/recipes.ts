@@ -2,10 +2,9 @@ import { cache } from "react"
 
 import { PrimaryKey } from "@/types"
 import {
-  FormattedRecipeDetails,
+  IngredientOrDirection,
   RecipeDetails,
   RecipeWithTags,
-  UserDetails,
 } from "@/types/Recipe"
 import { SearchRecipeParams, SearchRecipeQuery } from "@/types/SearchRecipes"
 import { User } from "@/db/schemas"
@@ -22,7 +21,6 @@ import {
 import {
   addRecipeTags,
   deleteRecipeTagsByRecipeId,
-  getRecipeTagsByRecipeId,
 } from "@/data-access/recipe-tags"
 import {
   addRecipe,
@@ -83,25 +81,22 @@ export async function getRecipeByIdUseCase(
 
   const recipeImportDetails = await getRecipeImportDetailsByRecipeId(recipeId)
 
-  let firstToImportRecipe: UserDetails | undefined
+  let importedBy: User | undefined
   if (recipeImportDetails) {
-    firstToImportRecipe = await getFirstUserImportedById(recipeImportDetails.id)
+    importedBy = await getFirstUserImportedById(recipeImportDetails.id)
   }
 
   const recipeIngredients = await getRecipeIngredientsByRecipeId(recipeId)
 
   const recipeDirections = await getRecipeDirectionsByRecipeId(recipeId)
 
-  const recipeTags = await getRecipeTagsByRecipeId(recipeId)
-
   return {
     author: user,
     importDetails: recipeImportDetails,
-    firstToImportRecipe,
+    importedBy,
     recipe,
     ingredients: recipeIngredients ?? [],
     directions: recipeDirections ?? [],
-    tags: recipeTags?.map((tag) => tag.name) ?? [],
   }
 }
 
@@ -124,11 +119,11 @@ export async function getRecipeImportDetailsByUrlUseCase(
 }
 
 export async function addRecipeUseCase(
-  formattedRecipeDetails: FormattedRecipeDetails,
+  recipe: Omit<RecipeWithTags, "id" | "dateCreated" | "dateUpdated" | "userId">,
+  ingredients: IngredientOrDirection[],
+  directions: IngredientOrDirection[],
   user: User
 ): Promise<RecipeDetails> {
-  const { recipe, ingredients, directions, tags } = formattedRecipeDetails
-
   const recipeDetails = await createTransaction(async (trx) => {
     const newRecipe = await addRecipe(
       {
@@ -165,12 +160,9 @@ export async function addRecipeUseCase(
       )
     }
 
-    let tagsList
-    if (tags) {
-      tagsList = await getTagsByName(tags)
-      if (tagsList.length > 1) {
-        await addRecipeTags(newRecipe.id, tagsList, trx)
-      }
+    const tagsList = await getTagsByName(recipe.tags)
+    if (tagsList.length > 1) {
+      await addRecipeTags(newRecipe.id, tagsList, trx)
     }
 
     return {
@@ -190,15 +182,12 @@ export const getAvailableRecipeTagsUseCase = cache(async () => {
 })
 
 export async function updateRecipeUseCase(
-  formattedRecipeDetails: FormattedRecipeDetails,
+  recipe: Omit<RecipeWithTags, "dateCreated" | "dateUpdated" | "userId">,
+  ingredients: IngredientOrDirection[],
+  directions: IngredientOrDirection[],
   user: User
 ) {
-  const { recipe, ingredients, directions, tags } = formattedRecipeDetails
-
   const updatedRecipeDetails = await createTransaction(async (trx) => {
-    if (!recipe.id) {
-      throw new Error()
-    }
     const updatedRecipe = await updateRecipe(
       recipe.id,
       {
@@ -238,12 +227,9 @@ export async function updateRecipeUseCase(
 
     await deleteRecipeTagsByRecipeId(updatedRecipe.id, trx)
 
-    let updatedTagsList
-    if (tags) {
-      updatedTagsList = await getTagsByName(tags)
-      if (updatedTagsList.length > 1) {
-        await addRecipeTags(updatedRecipe.id, updatedTagsList, trx)
-      }
+    const updatedTagsList = await getTagsByName(recipe.tags)
+    if (updatedTagsList.length > 1) {
+      await addRecipeTags(updatedRecipe.id, updatedTagsList, trx)
     }
 
     return {

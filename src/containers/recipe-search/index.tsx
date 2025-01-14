@@ -13,7 +13,7 @@ import {
 import { useServerAction } from "zsa-react"
 
 import { PrimaryKey } from "@/types"
-import { OrderBy } from "@/types/OrderBy"
+import { OrderBy } from "@/types/SearchRecipes"
 import { Recipe } from "@/db/schemas"
 import { Button } from "@/components/ui/button"
 import {
@@ -62,7 +62,7 @@ export function RecipeSearch(props: RecipeSearchProps) {
     "search",
     parseAsString.withDefault("")
   )
-  const [orderBy, setSortBy] = useQueryState<OrderBy>(
+  const [orderBy, setOrderBy] = useQueryState<OrderBy>(
     "orderBy",
     parseAsStringEnum(["newest", "easiest", "fastest"]).withDefault("newest")
   )
@@ -124,7 +124,7 @@ export function RecipeSearch(props: RecipeSearchProps) {
   }
 
   function onSortByChange(newSortBy: OrderBy) {
-    setSortBy(newSortBy)
+    setOrderBy(newSortBy)
     execute({
       search: debouncedSearch,
       tags,
@@ -155,7 +155,7 @@ export function RecipeSearch(props: RecipeSearchProps) {
   function onResetSubmit() {
     setSearch("")
     setTags([])
-    setSortBy("newest")
+    setOrderBy("newest")
     setPage(1)
     execute({
       search: "",

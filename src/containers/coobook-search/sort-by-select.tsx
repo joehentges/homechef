@@ -1,6 +1,6 @@
 "use client"
 
-import { OrderBy } from "@/types/OrderBy"
+import { OrderBy } from "@/types/SearchRecipes"
 import {
   Select,
   SelectContent,
@@ -11,15 +11,15 @@ import {
 
 interface SortBySelectProps {
   orderBy: string
-  setSortBy: (value: OrderBy) => void
+  setOrderBy: (value: OrderBy) => void
 }
 
 export function SortBySelect(props: SortBySelectProps) {
-  const { orderBy, setSortBy } = props
+  const { orderBy, setOrderBy } = props
 
   return (
     <div className="min-w-[180px] space-y-2">
-      <Select value={orderBy.toLowerCase()} onValueChange={setSortBy}>
+      <Select value={orderBy.toLowerCase()} onValueChange={setOrderBy}>
         <SelectTrigger
           id="select-17"
           className="relative rounded-3xl bg-white ps-[4.5rem] font-bold dark:bg-black"

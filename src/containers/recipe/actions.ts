@@ -74,8 +74,8 @@ const recipeAddOrUpdateActionSchema = z.object({
         .min(3, {
           message: "Directions must be a minimum of 3 characters.",
         })
-        .max(100, {
-          message: "Directions can be a maximum of 100 characters.",
+        .max(500, {
+          message: "Directions can be a maximum of 500 characters.",
         }),
     })
   ),
@@ -98,20 +98,24 @@ export const addRecipeAction = authenticatedAction
     })
     const recipe = await addRecipeUseCase(
       {
-        recipe: {
-          ...input.recipe,
-          difficulty: input.recipe.difficulty ?? null,
-        },
-        ingredients: input.ingredients.map((ingredient, index) => ({
-          description: ingredient.description,
-          orderNumber: index,
-        })),
-        directions: input.directions.map((directions, index) => ({
-          description: directions.description,
-          orderNumber: index,
-        })),
+        title: input.recipe.title,
+        description: input.recipe.description,
+        servings: input.recipe.servings,
+        prepTime: input.recipe.prepTime,
+        cookTime: input.recipe.cookTime,
+        private: input.recipe.private,
+        photo: input.recipe.photo,
+        difficulty: input.recipe.difficulty ?? null,
         tags: input.tags.map((tag) => tag.value),
       },
+      input.ingredients.map((ingredient, index) => ({
+        description: ingredient.description,
+        orderNumber: index,
+      })),
+      input.directions.map((directions, index) => ({
+        description: directions.description,
+        orderNumber: index,
+      })),
       user
     )
 
@@ -132,20 +136,25 @@ export const updateRecipeAction = authenticatedAction
     }
     const recipe = await updateRecipeUseCase(
       {
-        recipe: {
-          ...input.recipe,
-          difficulty: input.recipe.difficulty ?? null,
-        },
-        ingredients: input.ingredients.map((ingredient, index) => ({
-          description: ingredient.description,
-          orderNumber: index,
-        })),
-        directions: input.directions.map((directions, index) => ({
-          description: directions.description,
-          orderNumber: index,
-        })),
+        id: input.recipe.id,
+        title: input.recipe.title,
+        description: input.recipe.description,
+        servings: input.recipe.servings,
+        prepTime: input.recipe.prepTime,
+        cookTime: input.recipe.cookTime,
+        private: input.recipe.private,
+        photo: input.recipe.photo,
+        difficulty: input.recipe.difficulty ?? null,
         tags: input.tags.map((tag) => tag.value),
       },
+      input.ingredients.map((ingredient, index) => ({
+        description: ingredient.description,
+        orderNumber: index,
+      })),
+      input.directions.map((directions, index) => ({
+        description: directions.description,
+        orderNumber: index,
+      })),
       user
     )
     revalidatePath(`/recipes/${recipe.recipe.id}`)

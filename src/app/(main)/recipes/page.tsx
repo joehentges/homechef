@@ -6,7 +6,7 @@ import {
 } from "nuqs/server"
 import type { SearchParams } from "nuqs/server"
 
-import { OrderBy } from "@/types/OrderBy"
+import { OrderBy } from "@/types/SearchRecipes"
 import { getCurrentUser } from "@/lib/session"
 import {
   getAvailableRecipeTagsUseCase,

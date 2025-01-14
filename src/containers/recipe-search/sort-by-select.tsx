@@ -1,6 +1,6 @@
 "use client"
 
-import { OrderBy } from "@/types/OrderBy"
+import { OrderBy } from "@/types/SearchRecipes"
 import {
   Select,
   SelectContent,

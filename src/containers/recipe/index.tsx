@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 
-import { FormattedRecipeDetails } from "@/types/Recipe"
+import { RecipeDetails } from "@/types/Recipe"
 import { User } from "@/db/schemas"
 
 import { EditRecipe } from "./edit-recipe"
@@ -11,7 +11,7 @@ import { ViewRecipe } from "./view-recipe"
 interface RecipeContainerProps {
   importedRecipe?: boolean
   user?: User
-  recipe?: FormattedRecipeDetails
+  recipe?: RecipeDetails
   availableTags: { name: string }[]
   recipeIsSaved?: boolean
 }
@@ -42,11 +42,11 @@ export function RecipeContainer(props: RecipeContainerProps) {
             difficulty: null,
             servings: "",
             private: false,
+            tags: [],
+            photo: null,
           },
-          author: user,
           ingredients: [],
           directions: [],
-          tags: [],
         }}
         availableTags={availableTags}
       />
@@ -76,7 +76,7 @@ export function RecipeContainer(props: RecipeContainerProps) {
 
   return (
     <ViewRecipe
-      isRecipeOwner={!!user && recipe.author?.id === user?.id}
+      isRecipeOwner={recipe.author?.id === user?.id}
       recipeIsSaved={recipeIsSaved}
       user={user}
       recipe={recipe}

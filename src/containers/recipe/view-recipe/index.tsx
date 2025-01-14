@@ -5,7 +5,7 @@ import Link from "next/link"
 import { PrinterIcon, Share2Icon } from "lucide-react"
 import { useReactToPrint } from "react-to-print"
 
-import { FormattedRecipeDetails } from "@/types/Recipe"
+import { RecipeDetails } from "@/types/Recipe"
 import { User } from "@/db/schemas"
 
 import { RecipeCookTime } from "./cook-time"
@@ -25,7 +25,7 @@ interface ViewRecipeProps {
   isRecipeOwner: boolean
   recipeIsSaved: boolean
   user?: User
-  recipe: FormattedRecipeDetails
+  recipe: RecipeDetails
   onEditRecipeClicked: () => void
 }
 
@@ -37,7 +37,7 @@ export function ViewRecipe(props: ViewRecipeProps) {
     recipe: recipeDetails,
     onEditRecipeClicked,
   } = props
-  const { author, importDetails, recipe, ingredients, directions, tags } =
+  const { author, importedBy, importDetails, recipe, ingredients, directions } =
     recipeDetails
   const isAuthenticated = !!user
 
@@ -80,7 +80,7 @@ export function ViewRecipe(props: ViewRecipeProps) {
                 )}
                 {!author && importDetails && (
                   <ImportDetails
-                    importedBy={importDetails.importedBy}
+                    importedBy={importedBy}
                     url={importDetails.url}
                   />
                 )}
@@ -129,7 +129,7 @@ export function ViewRecipe(props: ViewRecipeProps) {
                 prepTime={recipe.prepTime}
                 cookTime={recipe.cookTime}
               />
-              <RecipeTags tags={tags} />
+              <RecipeTags tags={recipe.tags} />
               <RecipeDifficulty difficulty={recipe.difficulty} />
             </div>
           </div>

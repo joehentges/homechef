@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useServerAction } from "zsa-react"
 
-import { FormattedRecipeDetails } from "@/types/Recipe"
+import { IngredientOrDirection, RecipeDifficulty } from "@/types/Recipe"
 import {
   Form,
   FormControl,
@@ -27,10 +27,27 @@ import { EditImage } from "./edit-image"
 import { EditIngredients } from "./edit-ingredients"
 import { SaveRecipe } from "./save-recipe"
 
+type EditRecipeRecipeDetails = {
+  recipe: {
+    id?: number
+    title: string
+    description: string | null
+    prepTime: number
+    cookTime: number
+    difficulty: RecipeDifficulty
+    servings: string
+    private: boolean
+    tags: string[]
+    photo: string | null
+  }
+  ingredients: IngredientOrDirection[]
+  directions: IngredientOrDirection[]
+}
+
 interface EditRecipeProps {
   newRecipe?: boolean
   isRecipeOwner: boolean
-  startRecipe: FormattedRecipeDetails
+  startRecipe: EditRecipeRecipeDetails
   availableTags: { name: string }[]
   onDisableEditView?: () => void
 }
@@ -95,8 +112,8 @@ const recipeActionFormSchema = z.object({
         .min(3, {
           message: "Directions must be a minimum of 3 characters.",
         })
-        .max(100, {
-          message: "Directions can be a maximum of 100 characters.",
+        .max(500, {
+          message: "Directions can be a maximum of 500 characters.",
         }),
     })
   ),
@@ -157,7 +174,7 @@ export function EditRecipe(props: EditRecipeProps) {
       ingredients: startRecipe.ingredients,
       directions: startRecipe.directions,
       tags:
-        startRecipe.tags?.map((tag) => ({
+        startRecipe.recipe.tags?.map((tag) => ({
           value: tag,
           label: tag,
         })) ?? [],
@@ -404,7 +421,7 @@ export function EditRecipe(props: EditRecipeProps) {
                   <FormItem>
                     {form.formState.errors.ingredients && (
                       <p className="text-sm text-destructive">
-                        Ingredients must be at least 3 characters
+                        Ingredients must be between 3 and 100 characters
                       </p>
                     )}
                     <FormControl>
@@ -427,7 +444,7 @@ export function EditRecipe(props: EditRecipeProps) {
                   <FormItem>
                     {form.formState.errors.directions && (
                       <p className="text-sm text-destructive">
-                        Directions must be at least 3 characters
+                        Ingredients must be between 3 and 100 characters
                       </p>
                     )}
                     <FormControl>

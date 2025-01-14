@@ -1,6 +1,6 @@
 "use client"
 
-import { FormattedRecipeDetails } from "@/types/Recipe"
+import { RecipeDetails } from "@/types/Recipe"
 import { getDomain } from "@/lib/get-domain"
 
 import { RecipeCookTime } from "./cook-time"
@@ -8,7 +8,7 @@ import { RecipeDifficulty } from "./difficulty"
 
 interface RecipePrintVersionProps {
   ref: React.Ref<HTMLDivElement>
-  recipe: FormattedRecipeDetails
+  recipe: RecipeDetails
 }
 
 export function RecipePrintVersion(props: RecipePrintVersionProps) {

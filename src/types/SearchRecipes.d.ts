@@ -1,4 +1,4 @@
-import { OrderBy } from "./OrderBy"
+export type OrderBy = "newest" | "easiest" | "fastest"
 
 export type SearchRecipeQuery = {
   search?: string
