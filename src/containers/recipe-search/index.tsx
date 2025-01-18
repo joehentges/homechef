@@ -206,12 +206,12 @@ export function RecipeSearch(props: RecipeSearchProps) {
             />
           </div>
 
-          <div className="flex w-full flex-col gap-4 md:flex-row lg:w-auto">
+          <div className="flex w-full flex-row gap-4 lg:w-auto">
             <div className="w-full lg:w-auto">
               <SortBySelect orderBy={orderBy} onChange={onSortByChange} />
             </div>
 
-            <div className="flex w-full gap-4 md:flex-row">
+            <div className="flex gap-4 md:flex-row">
               <TooltipProvider>
                 <Tooltip delayDuration={0}>
                   <TooltipTrigger asChild>

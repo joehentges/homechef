@@ -1,3 +1,4 @@
+import { FeaturedUser } from "@/types/FeaturedUser"
 import { Recipe, User } from "@/db/schemas"
 
 import { SiteSearch } from "./search"
@@ -8,7 +9,7 @@ import { SiteHeaderUserAccountNav } from "./site-header-user-account-nav"
 interface SiteHeaderProps {
   user?: User
   initialrecipes?: Recipe[]
-  initialusers?: User[]
+  initialusers?: FeaturedUser[]
 }
 
 export function SiteHeader(props: SiteHeaderProps) {

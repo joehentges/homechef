@@ -2,8 +2,9 @@ import argon2 from "argon2"
 import { eq, ilike, or, sql } from "drizzle-orm"
 
 import { PrimaryKey } from "@/types"
+import { FeaturedUser } from "@/types/FeaturedUser"
 import { database } from "@/db"
-import { User, users } from "@/db/schemas"
+import { User, userRecipeImports, userRecipes, users } from "@/db/schemas"
 
 export async function hashPassword(password: string): Promise<string> {
   return argon2.hash(password)
@@ -136,12 +137,21 @@ export async function searchUsers(
   return usersList
 }
 
-export async function getRandomUsers(limit: number): Promise<User[]> {
-  const recipesList = await database
-    .select()
+export async function getFeaturedUsers(limit: number): Promise<FeaturedUser[]> {
+  const usersList = database
+    .select({
+      id: users.id,
+      displayName: users.displayName,
+      image: users.image,
+      userRecipeCount: sql<number>`count(DISTINCT ${userRecipes.id})`,
+      userRecipeImportsCount: sql<number>`count(DISTINCT ${userRecipeImports.id})`,
+    })
     .from(users)
+    .leftJoin(userRecipes, eq(userRecipes.userId, users.id))
+    .leftJoin(userRecipeImports, eq(userRecipeImports.userId, users.id))
+    .groupBy(users.id)
     .limit(limit)
     .orderBy(sql`random()`)
 
-  return recipesList
+  return usersList
 }

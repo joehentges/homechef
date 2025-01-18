@@ -1,14 +1,14 @@
-import { User } from "@/db/schemas"
-import { getRandomUsers, searchUsers } from "@/data-access/users"
+import { FeaturedUser } from "@/types/FeaturedUser"
+import { getFeaturedUsers, searchUsers } from "@/data-access/users"
 import { redis } from "@/client/redis"
 
-export async function geFeaturedUsersUseCase(limit: number) {
+export async function getFeaturedUsersUseCase(limit: number) {
   const cachedUsers = await redis.get("featured-users")
   if (cachedUsers) {
-    return JSON.parse(cachedUsers) as User[]
+    return JSON.parse(cachedUsers) as FeaturedUser[]
   }
 
-  const randomUsers = await getRandomUsers(limit)
+  const randomUsers = await getFeaturedUsers(limit)
   await redis.set(
     "featured-users",
     JSON.stringify(randomUsers),

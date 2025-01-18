@@ -6,7 +6,7 @@ import { DialogDescription } from "@radix-ui/react-dialog"
 import { CookingPotIcon, SearchIcon } from "lucide-react"
 import { useServerAction } from "zsa-react"
 
-import { Recipe, User } from "@/db/schemas"
+import { Recipe } from "@/db/schemas"
 import { Button } from "@/components/ui/button"
 import {
   CommandDialog,
@@ -19,10 +19,11 @@ import { UserAvatar } from "@/components/user-avatar"
 import { useDebounce } from "@/hooks/use-debounce"
 
 import { searchRecipesAndUsersAction } from "./actions"
+import { SiteSearchUser } from "./site-header.types"
 
 interface SiteSearchProps {
   initialrecipes?: Recipe[]
-  initialusers?: User[]
+  initialusers?: SiteSearchUser[]
 }
 
 export function SiteSearch(props: SiteSearchProps) {
@@ -32,7 +33,7 @@ export function SiteSearch(props: SiteSearchProps) {
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState("")
   const [recipesResult, setRecipeResult] = useState<Recipe[]>(initialrecipes)
-  const [usersResult, setUsersResult] = useState<User[]>([])
+  const [usersResult, setUsersResult] = useState<SiteSearchUser[]>([])
   const debouncedSearch = useDebounce(search, 500)
 
   const { execute, isPending } = useServerAction(searchRecipesAndUsersAction, {
