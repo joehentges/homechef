@@ -4,11 +4,13 @@ import { CookingPotIcon, User2Icon } from "lucide-react"
 import { Recipe } from "@/db/schemas"
 import { formatTime } from "@/lib/format-time"
 
-interface CatalogFeaturedItemProps {
+interface RecipeCatalogFeaturedItemProps {
   recipe: Recipe
 }
 
-export function CatalogFeaturedItem(props: CatalogFeaturedItemProps) {
+export function RecipeCatalogFeaturedItem(
+  props: RecipeCatalogFeaturedItemProps
+) {
   const { recipe } = props
   const { id, photo, title, description, servings, cookTime, prepTime } = recipe
   const servingsNum = parseInt(servings)

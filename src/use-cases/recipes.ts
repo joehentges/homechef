@@ -48,7 +48,7 @@ import { getUser } from "@/data-access/users"
 import { createTransaction } from "@/data-access/utils"
 import { redis } from "@/client/redis"
 
-export async function geFeaturedRecipesUseCase(limit: number) {
+export async function getFeaturedRecipesUseCase(limit: number = 24) {
   const cachedRecipes = await redis.get("featured-recipes")
   if (cachedRecipes) {
     return JSON.parse(cachedRecipes) as RecipeWithTags[]

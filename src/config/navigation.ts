@@ -24,7 +24,6 @@ export const navigation: Navigation = {
     {
       label: "Chefs",
       href: "/chefs",
-      disabled: true,
     },
     {
       label: "My Cookbook",

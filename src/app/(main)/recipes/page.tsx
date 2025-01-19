@@ -6,7 +6,7 @@ import {
 } from "nuqs/server"
 import type { SearchParams } from "nuqs/server"
 
-import { OrderBy } from "@/types/SearchRecipes"
+import { RecipesOrderBy } from "@/types/SearchRecipes"
 import { getCurrentUser } from "@/lib/session"
 import {
   getAvailableRecipeTagsUseCase,
@@ -40,7 +40,7 @@ export default async function RecipesPage({ searchParams }: RecipesPageProps) {
     {
       search,
       tags,
-      orderBy: orderBy.toLowerCase() as OrderBy,
+      orderBy: orderBy.toLowerCase() as RecipesOrderBy,
       limit,
       offset: limitLOffset,
     },

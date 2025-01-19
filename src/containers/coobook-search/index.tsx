@@ -12,10 +12,10 @@ import {
 } from "nuqs"
 
 import { RecipeWithTags } from "@/types/Recipe"
-import { OrderBy } from "@/types/SearchRecipes"
+import { RecipesOrderBy } from "@/types/SearchRecipes"
 import { Recipe } from "@/db/schemas"
 import { Button } from "@/components/ui/button"
-import { Catalog } from "@/components/catalog"
+import { RecipeCatalog } from "@/components/recipe-catalog"
 
 import { Input } from "./input"
 import { SortBySelect } from "./sort-by-select"
@@ -35,7 +35,7 @@ export function UserRecipeSearch(props: UserRecipeSearchProps) {
     "search",
     parseAsString.withDefault("")
   )
-  const [orderBy, setOrderBy] = useQueryState<OrderBy>(
+  const [orderBy, setOrderBy] = useQueryState<RecipesOrderBy>(
     "orderBy",
     parseAsStringEnum(["newest", "easiest", "fastest"]).withDefault("newest")
   )
@@ -144,7 +144,7 @@ export function UserRecipeSearch(props: UserRecipeSearchProps) {
         </div>
       </div>
       <div className="center flex w-full justify-center">
-        <Catalog
+        <RecipeCatalog
           items={catalogPageItems}
           pageCount={recipePageCount}
           currentPage={page}

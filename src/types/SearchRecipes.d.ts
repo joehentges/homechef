@@ -1,9 +1,9 @@
-export type OrderBy = "newest" | "easiest" | "fastest"
+export type RecipesOrderBy = "newest" | "easiest" | "fastest"
 
 export type SearchRecipeQuery = {
   search?: string
   tags?: string[]
-  orderBy?: OrderBy
+  orderBy?: RecipesOrderBy
   limit?: number
   offset?: number
 }

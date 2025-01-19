@@ -1,15 +1,15 @@
 import { HeartIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import { geFeaturedRecipesUseCase } from "@/use-cases/recipes"
+import { getFeaturedRecipesUseCase } from "@/use-cases/recipes"
 import { getFeaturedUsersUseCase } from "@/use-cases/users"
 import { FeaturedChefs } from "@/containers/featured-chefs"
 import { FeaturedRecipeSearch } from "@/containers/featured-recipe-search"
 import { ImportRecipe } from "@/containers/import-recipe"
 
 export default async function HomePage() {
-  const featuredRecipes = await geFeaturedRecipesUseCase(24)
-  const featuredChefs = await getFeaturedUsersUseCase(5)
+  const featuredRecipes = await getFeaturedRecipesUseCase()
+  const featuredChefs = await getFeaturedUsersUseCase()
 
   return (
     <div>
@@ -56,7 +56,7 @@ export default async function HomePage() {
           />
         )}
 
-        <FeaturedChefs chefs={featuredChefs} />
+        <FeaturedChefs chefs={featuredChefs.slice(0, 5)} />
       </div>
     </div>
   )

@@ -5,12 +5,12 @@ import { Recipe } from "@/db/schemas"
 import { formatTime } from "@/lib/format-time"
 import { cn } from "@/lib/utils"
 
-interface CatalogItemProps {
+interface RecipeCatalogItemProps {
   recipe: Recipe
   alternate?: boolean
 }
 
-export function CatalogItem(props: CatalogItemProps) {
+export function RecipeCatalogItem(props: RecipeCatalogItemProps) {
   const { recipe, alternate } = props
   const { id, photo, title, servings, cookTime, prepTime } = recipe
   const servingsNum = parseInt(servings)

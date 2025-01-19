@@ -1,6 +1,6 @@
 "use client"
 
-import { OrderBy } from "@/types/SearchRecipes"
+import { RecipesOrderBy } from "@/types/SearchRecipes"
 import {
   Select,
   SelectContent,
@@ -11,7 +11,7 @@ import {
 
 interface SortBySelectProps {
   orderBy: string
-  setOrderBy: (value: OrderBy) => void
+  setOrderBy: (value: RecipesOrderBy) => void
 }
 
 export function SortBySelect(props: SortBySelectProps) {

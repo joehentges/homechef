@@ -1,4 +1,4 @@
-import { FeaturedUser } from "@/types/FeaturedUser"
+import { UserDetails } from "@/types/UserDetails"
 import { Recipe, User } from "@/db/schemas"
 
 import { SiteSearch } from "./search"
@@ -9,7 +9,7 @@ import { SiteHeaderUserAccountNav } from "./site-header-user-account-nav"
 interface SiteHeaderProps {
   user?: User
   initialrecipes?: Recipe[]
-  initialusers?: FeaturedUser[]
+  initialusers?: UserDetails[]
 }
 
 export function SiteHeader(props: SiteHeaderProps) {
@@ -22,8 +22,8 @@ export function SiteHeader(props: SiteHeaderProps) {
 
         <nav className="flex w-full items-center gap-4 text-nowrap md:w-auto lg:gap-12">
           <SiteSearch
-            initialrecipes={initialrecipes?.slice(0, 5)}
-            initialusers={initialusers?.slice(0, 5)}
+            initialrecipes={initialrecipes}
+            initialusers={initialusers}
           />
           {user ? (
             <SiteHeaderUserAccountNav

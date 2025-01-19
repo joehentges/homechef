@@ -1,6 +1,6 @@
 import { PrimaryKey } from "./index"
 
-export type FeaturedUser = {
+export type UserDetails = {
   id: PrimaryKey
   displayName: string
   image: string | null

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Link from "next/link"
 import { DicesIcon, RotateCcwIcon } from "lucide-react"
 import {
@@ -13,7 +13,7 @@ import {
 import { useServerAction } from "zsa-react"
 
 import { PrimaryKey } from "@/types"
-import { OrderBy } from "@/types/SearchRecipes"
+import { RecipesOrderBy } from "@/types/SearchRecipes"
 import { Recipe } from "@/db/schemas"
 import { Button } from "@/components/ui/button"
 import {
@@ -22,8 +22,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { Catalog } from "@/components/catalog"
 import { LoaderButton } from "@/components/loader-button"
+import { RecipeCatalog } from "@/components/recipe-catalog"
 import { useDebounce } from "@/hooks/use-debounce"
 import { useToast } from "@/hooks/use-toast"
 
@@ -62,7 +62,7 @@ export function RecipeSearch(props: RecipeSearchProps) {
     "search",
     parseAsString.withDefault("")
   )
-  const [orderBy, setOrderBy] = useQueryState<OrderBy>(
+  const [orderBy, setOrderBy] = useQueryState<RecipesOrderBy>(
     "orderBy",
     parseAsStringEnum(["newest", "easiest", "fastest"]).withDefault("newest")
   )
@@ -71,8 +71,6 @@ export function RecipeSearch(props: RecipeSearchProps) {
     parseAsArrayOf(parseAsString, ",").withDefault([])
   )
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1))
-
-  const debouncedSearch = useDebounce(search, 500)
 
   const { execute, isPending } = useServerAction(searchRecipesAction, {
     onError({ err }) {
@@ -89,32 +87,28 @@ export function RecipeSearch(props: RecipeSearchProps) {
     },
   })
 
-  useEffect(() => {
-    const fetchResults = async () => {
-      if (!debouncedSearch) {
-        setRecipesResult(initialRecipes)
-        setRecipesCount(initialRecipesCount)
-        setPageCount(Math.ceil(initialRecipesCount / recipesPerPageLimit))
-        return
-      }
+  const debouncedSearch = useDebounce(
+    (search) =>
       execute({
-        search: debouncedSearch,
+        search,
         tags,
         orderBy,
         recipesPerPageLimit,
         page,
         userId,
-      })
-    }
+      }),
+    500
+  )
 
-    fetchResults()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedSearch, tags.length, orderBy])
+  function onSearchChange(value: string) {
+    setSearch(value)
+    debouncedSearch(value)
+  }
 
   function onTagsChange(newTags: string[]) {
     setTags(newTags)
     execute({
-      search: debouncedSearch,
+      search,
       tags: newTags,
       orderBy,
       recipesPerPageLimit,
@@ -123,10 +117,10 @@ export function RecipeSearch(props: RecipeSearchProps) {
     })
   }
 
-  function onSortByChange(newSortBy: OrderBy) {
+  function onSortByChange(newSortBy: RecipesOrderBy) {
     setOrderBy(newSortBy)
     execute({
-      search: debouncedSearch,
+      search,
       tags,
       orderBy: newSortBy,
       recipesPerPageLimit,
@@ -195,7 +189,7 @@ export function RecipeSearch(props: RecipeSearchProps) {
         </div>
         <div className="flex flex-col items-center gap-4 lg:flex-row">
           <div className="w-full">
-            <Input search={search} onChange={setSearch} />
+            <Input search={search} onChange={onSearchChange} />
           </div>
 
           <div className="w-full">
@@ -236,7 +230,7 @@ export function RecipeSearch(props: RecipeSearchProps) {
           </div>
         </div>
         <div className="center flex w-full justify-center">
-          <Catalog
+          <RecipeCatalog
             items={recipesResult}
             pageCount={pageCount}
             currentPage={page}

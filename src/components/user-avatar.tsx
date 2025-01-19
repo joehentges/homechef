@@ -1,6 +1,7 @@
 import { AvatarProps } from "@radix-ui/react-avatar"
 import { UserIcon } from "lucide-react"
 
+import { getAvatarImageUrl } from "@/lib/get-avatar-image-url"
 import { cn } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
@@ -21,10 +22,7 @@ export function UserAvatar({
       {image ? (
         <AvatarImage alt="Avatar" src={image} />
       ) : (
-        <AvatarImage
-          alt="Avatar"
-          src={`https://api.dicebear.com/9.x/initials/svg?seed=${displayName}`}
-        />
+        <AvatarImage alt="Avatar" src={getAvatarImageUrl(displayName)} />
       )}
       <AvatarFallback className="bg-primary">
         <span className="sr-only">{displayName}</span>

@@ -1,6 +1,6 @@
 "use client"
 
-import { RecipesOrderBy } from "@/types/SearchRecipes"
+import { UsersOrderBy } from "@/types/SearchUsers"
 import {
   Select,
   SelectContent,
@@ -9,19 +9,19 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-interface SortBySelectProps {
-  orderBy: RecipesOrderBy
-  onChange: (value: RecipesOrderBy) => void
+interface OrderBySelectProps {
+  orderBy: UsersOrderBy
+  onChange: (value: UsersOrderBy) => void
 }
 
-export function SortBySelect(props: SortBySelectProps) {
+export function OrderBySelect(props: OrderBySelectProps) {
   const { orderBy, onChange } = props
 
   return (
-    <div className="min-w-[180px] space-y-2">
+    <div className="min-w-[225px] space-y-2">
       <Select
         value={orderBy.toLowerCase()}
-        onValueChange={(value) => onChange(value as RecipesOrderBy)}
+        onValueChange={(value) => onChange(value as UsersOrderBy)}
       >
         <SelectTrigger
           id="select-17"
@@ -33,9 +33,9 @@ export function SortBySelect(props: SortBySelectProps) {
           <SelectValue placeholder="" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="newest">Newest</SelectItem>
-          <SelectItem value="fastest">Fastest</SelectItem>
-          <SelectItem value="easiest">Easiest</SelectItem>
+          <SelectItem value="alphabetically">Alphabetically</SelectItem>
+          <SelectItem value="importedcount">Imported Count</SelectItem>
+          <SelectItem value="createdcount">Created Count</SelectItem>
         </SelectContent>
       </Select>
     </div>

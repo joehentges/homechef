@@ -13,13 +13,13 @@ export function Input(props: InputProps) {
   const { search, onChange } = props
 
   return (
-    <div className="md:min-w-[400px]">
+    <div className="w-full md:min-w-[400px]">
       <div className="relative">
         <InputElement
           id="featured-recipe-search-input"
           className="peer rounded-3xl pe-9 ps-9"
           type="search"
-          placeholder="Search recipes..."
+          placeholder="Search chefs..."
           value={search}
           onChange={(e) => onChange(e.target.value)}
         />

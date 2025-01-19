@@ -32,9 +32,12 @@ export const searchRecipesAndUsersAction = unauthenticatedAction
       search: input.search,
       limit: input.limit,
     })
-    const users = await searchUsersUseCase(input.search, input.limit)
+    const users = await searchUsersUseCase({
+      search: input.search,
+      limit: input.limit,
+    })
     return {
       recipes: recipes.recipes,
-      users,
+      users: users.users,
     }
   })

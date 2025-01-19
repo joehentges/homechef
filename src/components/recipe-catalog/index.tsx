@@ -3,18 +3,18 @@ import { FrownIcon } from "lucide-react"
 import { Recipe } from "@/db/schemas"
 import { cn } from "@/lib/utils"
 
-import { CatalogFeaturedItem } from "./catalog-featured-item"
-import { CatalogItem } from "./catalog-item"
-import { CatalogPagination } from "./catalog-pagination"
+import { CatalogPagination } from "../catalog-pagination"
+import { RecipeCatalogFeaturedItem } from "./recipe-catalog-featured-item"
+import { RecipeCatalogItem } from "./recipe-catalog-item"
 
-export interface CatalogProps {
+export interface RecipeCatalogProps {
   items: Recipe[]
   pageCount: number
   currentPage: number
   onPageClicked: (page: number) => void
 }
 
-export function Catalog(props: CatalogProps) {
+export function RecipeCatalog(props: RecipeCatalogProps) {
   const { items, pageCount, currentPage, onPageClicked } = props
 
   function findAndRemoveFirstWithDescription() {
@@ -51,7 +51,7 @@ export function Catalog(props: CatalogProps) {
     <div className="flex w-full max-w-[1115px] flex-col gap-y-2">
       <div className="flex h-full w-full flex-col justify-center lg:flex-row">
         <div className="w-full p-2 lg:w-2/3">
-          <CatalogFeaturedItem recipe={catalogFeaturedItem} />
+          <RecipeCatalogFeaturedItem recipe={catalogFeaturedItem} />
         </div>
 
         <div
@@ -62,7 +62,7 @@ export function Catalog(props: CatalogProps) {
         >
           {remainingItems.slice(0, 2).map((item, index) => (
             <div className="p-2" key={`${item.title}-${index}`}>
-              <CatalogItem alternate={index === 0} recipe={item} />
+              <RecipeCatalogItem alternate={index === 0} recipe={item} />
             </div>
           ))}
         </div>
@@ -73,7 +73,7 @@ export function Catalog(props: CatalogProps) {
             className="w-full self-center p-2 lg:w-1/3"
             key={`${item.title}-${index}`}
           >
-            <CatalogItem alternate={index % 4 === 2} recipe={item} />
+            <RecipeCatalogItem alternate={index % 4 === 2} recipe={item} />
           </div>
         ))}
       </div>

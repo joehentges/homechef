@@ -1,8 +1,9 @@
 import argon2 from "argon2"
-import { eq, ilike, or, sql } from "drizzle-orm"
+import { and, asc, desc, eq, ilike, ne, or, sql } from "drizzle-orm"
 
 import { PrimaryKey } from "@/types"
-import { FeaturedUser } from "@/types/FeaturedUser"
+import { SearchUsersQuery } from "@/types/SearchUsers"
+import { UserDetails } from "@/types/UserDetails"
 import { database } from "@/db"
 import { User, userRecipeImports, userRecipes, users } from "@/db/schemas"
 
@@ -117,28 +118,102 @@ export async function createMagicUser(
   return user
 }
 
-export async function searchUsers(
-  search: string,
-  limit: number,
-  offset?: number
-): Promise<User[]> {
-  const usersList = database
-    .select()
+export async function searchUsers(query: SearchUsersQuery): Promise<{
+  users: UserDetails[]
+  count: number
+}> {
+  const userRecipeCount = sql<number>`count(DISTINCT ${userRecipes.id})`.as(
+    "userRecipeCount"
+  )
+  const userRecipeImportsCount =
+    sql<number>`count(DISTINCT ${userRecipeImports.id})`.as(
+      "userRecipeImportsCount"
+    )
+
+  const searchUsersDbQuery = database
+    .select({
+      id: users.id,
+      displayName: users.displayName,
+      image: users.image,
+      userRecipeCount,
+      userRecipeImportsCount,
+    })
     .from(users)
-    .where(
+    .leftJoin(userRecipes, eq(userRecipes.userId, users.id))
+    .leftJoin(userRecipeImports, eq(userRecipeImports.userId, users.id))
+    .groupBy(users.id)
+    .orderBy(
+      query.orderBy === "createdcount"
+        ? desc(userRecipeCount)
+        : query.orderBy === "importedcount"
+          ? desc(userRecipeImportsCount)
+          : asc(users.displayName)
+    )
+
+  const usersCountDbQuery = database
+    .select({
+      count: sql<number>`count(DISTINCT ${users.id})`,
+    })
+    .from(users)
+
+  if (query.userId) {
+    if (query.search) {
+      searchUsersDbQuery.where(
+        and(
+          ne(users.id, query.userId),
+          or(
+            ilike(users.email, `%${query.search ?? ""}%`),
+            ilike(users.displayName, `%${query.search ?? ""}%`)
+          )
+        )
+      )
+      usersCountDbQuery.where(
+        and(
+          ne(users.id, query.userId),
+          or(
+            ilike(users.email, `%${query.search ?? ""}%`),
+            ilike(users.displayName, `%${query.search ?? ""}%`)
+          )
+        )
+      )
+    } else {
+      searchUsersDbQuery.where(ne(users.id, query.userId))
+      usersCountDbQuery.where(ne(users.id, query.userId))
+    }
+  } else if (query.search) {
+    searchUsersDbQuery.where(
       or(
-        ilike(users.email, `%${search}%`),
-        ilike(users.displayName, `%${search}%`)
+        ilike(users.email, `%${query.search ?? ""}%`),
+        ilike(users.displayName, `%${query.search ?? ""}%`)
       )
     )
-    .limit(limit)
-    .offset(offset ?? 0)
+    usersCountDbQuery.where(
+      or(
+        ilike(users.email, `%${query.search ?? ""}%`),
+        ilike(users.displayName, `%${query.search ?? ""}%`)
+      )
+    )
+  }
 
-  return usersList
+  if (query.limit) {
+    searchUsersDbQuery.limit(query.limit)
+  }
+
+  if (query.offset) {
+    searchUsersDbQuery.offset(query.offset)
+  }
+
+  const usersList = await searchUsersDbQuery.execute()
+  const [usersCount] = await usersCountDbQuery.execute()
+
+  return {
+    users: usersList,
+    count: usersCount?.count ?? 0,
+  }
 }
 
-export async function getFeaturedUsers(limit: number): Promise<FeaturedUser[]> {
-  const usersList = database
+export async function getFeaturedUsers(limit: number): Promise<UserDetails[]> {
+  const usersList = await database
     .select({
       id: users.id,
       displayName: users.displayName,

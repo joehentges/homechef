@@ -1,11 +1,12 @@
-import { FeaturedUser } from "@/types/FeaturedUser"
+import { SearchUsersQuery } from "@/types/SearchUsers"
+import { UserDetails } from "@/types/UserDetails"
 import { getFeaturedUsers, searchUsers } from "@/data-access/users"
 import { redis } from "@/client/redis"
 
-export async function getFeaturedUsersUseCase(limit: number) {
+export async function getFeaturedUsersUseCase(limit: number = 10) {
   const cachedUsers = await redis.get("featured-users")
   if (cachedUsers) {
-    return JSON.parse(cachedUsers) as FeaturedUser[]
+    return JSON.parse(cachedUsers) as UserDetails[]
   }
 
   const randomUsers = await getFeaturedUsers(limit)
@@ -19,6 +20,6 @@ export async function getFeaturedUsersUseCase(limit: number) {
   return randomUsers
 }
 
-export async function searchUsersUseCase(search: string, limit: number) {
-  return searchUsers(search, limit)
+export async function searchUsersUseCase(query: SearchUsersQuery) {
+  return searchUsers(query)
 }

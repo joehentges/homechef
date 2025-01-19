@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { DialogDescription } from "@radix-ui/react-dialog"
 import { CookingPotIcon, SearchIcon } from "lucide-react"
@@ -34,7 +34,10 @@ export function SiteSearch(props: SiteSearchProps) {
   const [search, setSearch] = useState("")
   const [recipesResult, setRecipeResult] = useState<Recipe[]>(initialrecipes)
   const [usersResult, setUsersResult] = useState<SiteSearchUser[]>([])
-  const debouncedSearch = useDebounce(search, 500)
+
+  const debouncedSearch = useDebounce((search) => {
+    execute({ search })
+  }, 500)
 
   const { execute, isPending } = useServerAction(searchRecipesAndUsersAction, {
     onError() {
@@ -47,20 +50,10 @@ export function SiteSearch(props: SiteSearchProps) {
     },
   })
 
-  useEffect(() => {
-    const fetchResults = async () => {
-      if (!debouncedSearch) {
-        // Clear results if query is empty
-        setRecipeResult(initialrecipes)
-        setUsersResult(initialusers)
-        return
-      }
-      execute({ search: debouncedSearch })
-    }
-
-    fetchResults()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedSearch])
+  function onInputChange(value: string) {
+    setSearch(value)
+    debouncedSearch(value)
+  }
 
   function onOptionSelected(route: string) {
     router.push(route)
@@ -86,7 +79,7 @@ export function SiteSearch(props: SiteSearchProps) {
         <CommandInput
           placeholder="Search for a recipe or user..."
           value={search}
-          onValueChange={setSearch}
+          onValueChange={onInputChange}
         />
         <CommandList className="p-1">
           {!isPending && recipesResult.length < 1 && usersResult.length < 1 && (
