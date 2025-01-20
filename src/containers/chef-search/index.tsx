@@ -61,7 +61,6 @@ export function ChefSearch(props: ChefSearchProps) {
       })
     },
     onSuccess({ data }) {
-      console.log(data)
       setChefsResult(data.users)
       setChefsCount(data.count)
       setPageCount(Math.ceil(data.count / chefsPerPageLimit))

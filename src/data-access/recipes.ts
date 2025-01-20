@@ -149,7 +149,12 @@ export async function searchRecipes(
     )
 
     whereQuery = and(
-      or(eq(userRecipes.userId, params.userId), eq(recipes.private, false)),
+      or(
+        eq(userRecipes.userId, params.userId),
+        params.includePrivateRecipes
+          ? or(eq(recipes.private, true), eq(recipes.private, false))
+          : eq(recipes.private, false)
+      ),
       or(
         searchByTagsClause
           ? and(searchByClause, searchByTagsClause)
@@ -158,6 +163,9 @@ export async function searchRecipes(
     )
     if (params.userRecipesOnly) {
       whereQuery = and(
+        params.includePrivateRecipes
+          ? or(eq(recipes.private, true), eq(recipes.private, false))
+          : eq(recipes.private, false),
         eq(userRecipes.userId, params.userId),
         or(
           searchByTagsClause

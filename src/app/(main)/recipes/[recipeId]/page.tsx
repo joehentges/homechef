@@ -6,25 +6,19 @@ import {
 } from "@/use-cases/recipes"
 import { RecipeContainer } from "@/containers/recipe"
 
-interface ImportRecipePageProps {
+interface RecipePageProps {
   params: Promise<{
-    recipeId: string
+    recipeId: number
   }>
 }
 
-export default async function ImportRecipePage(props: ImportRecipePageProps) {
+export default async function RecipePage(props: RecipePageProps) {
   const { params } = props
   const { recipeId } = await params
 
-  const recipeIdNum = parseInt(recipeId)
-
-  if (!recipeIdNum) {
-    throw new Error("Recipe not found")
-  }
-
   const user = await getCurrentUser()
 
-  const recipeDetails = await getRecipeByIdUseCase(recipeIdNum)
+  const recipeDetails = await getRecipeByIdUseCase(recipeId)
 
   if (recipeDetails.recipe.private && !user) {
     throw new Error("Recipe not found")

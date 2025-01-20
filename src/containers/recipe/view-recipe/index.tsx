@@ -71,7 +71,7 @@ export function ViewRecipe(props: ViewRecipeProps) {
                 </p>
                 {author && (
                   <Link
-                    href={`/profile/${author.id}`}
+                    href={`/chefs/${author.id}`}
                     target="_blank"
                     className="text-muted-foreground transition-colors hover:text-foreground"
                   >

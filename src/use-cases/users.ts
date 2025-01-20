@@ -1,6 +1,7 @@
+import { PrimaryKey } from "@/types"
 import { SearchUsersQuery } from "@/types/SearchUsers"
 import { UserDetails } from "@/types/UserDetails"
-import { getFeaturedUsers, searchUsers } from "@/data-access/users"
+import { getFeaturedUsers, getUser, searchUsers } from "@/data-access/users"
 import { redis } from "@/client/redis"
 
 export async function getFeaturedUsersUseCase(limit: number = 10) {
@@ -22,4 +23,8 @@ export async function getFeaturedUsersUseCase(limit: number = 10) {
 
 export async function searchUsersUseCase(query: SearchUsersQuery) {
   return searchUsers(query)
+}
+
+export async function getUserUseCase(userId: PrimaryKey) {
+  return getUser(userId)
 }

@@ -9,6 +9,7 @@ export type SearchRecipeQuery = {
 }
 
 export type SearchRecipeParams = {
+  includePrivateRecipes?: boolean
   includeUserRecipes?: boolean
   userRecipesOnly?: boolean
   userId?: PrimaryKey

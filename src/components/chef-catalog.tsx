@@ -43,7 +43,7 @@ export function ChefCatalog(props: ChefCatalogProps) {
                 style={{
                   backgroundImage: `url('${chef.image ? chef.image : getAvatarImageUrl(chef.displayName)}')`,
                 }}
-              ></div>
+              />
               <div className="justify-items-center space-y-3 p-4 text-sm md:text-base">
                 <p className="text-base font-bold md:text-xl">
                   {chef.displayName}

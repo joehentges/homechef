@@ -13,6 +13,7 @@ export const users = pgTable("users", {
   password: text("password"),
   displayName: text("display_name").notNull(),
   image: text("image"),
+  summary: text("summary"),
 })
 
 export type User = typeof users.$inferSelect

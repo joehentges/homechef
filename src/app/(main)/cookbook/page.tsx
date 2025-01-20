@@ -15,6 +15,7 @@ export default async function CookbookPage() {
       userId: user.id,
       userRecipesOnly: true,
       includeUserRecipes: true,
+      includePrivateRecipes: true,
     }
   )
   const randomRecipe =

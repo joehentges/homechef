@@ -36,7 +36,7 @@ export function ImportDetails(props: ImportDetailsProps) {
             <p>
               Imported by:{" "}
               <Link
-                href={`/profile/${importedBy.id}`}
+                href={`/chefs/${importedBy.id}`}
                 className="transition-colors hover:text-muted-foreground"
               >
                 {importedBy.displayName}
