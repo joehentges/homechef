@@ -33,7 +33,7 @@ export function SiteSearch(props: SiteSearchProps) {
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState("")
   const [recipesResult, setRecipeResult] = useState<Recipe[]>(initialrecipes)
-  const [usersResult, setUsersResult] = useState<SiteSearchUser[]>([])
+  const [usersResult, setUsersResult] = useState<SiteSearchUser[]>(initialusers)
 
   const debouncedSearch = useDebounce((search) => {
     execute({ search })
@@ -130,7 +130,7 @@ export function SiteSearch(props: SiteSearchProps) {
                   key={user.id}
                   variant="ghost"
                   className="w-full justify-start"
-                  onClick={() => onOptionSelected(`/users/${user.id}`)}
+                  onClick={() => onOptionSelected(`/chefs/${user.id}`)}
                 >
                   <UserAvatar
                     displayName={user.displayName}

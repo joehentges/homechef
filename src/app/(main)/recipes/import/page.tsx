@@ -5,7 +5,7 @@ import {
 } from "@/use-cases/import-recipe"
 import {
   getAvailableRecipeTagsUseCase,
-  getRecipeByIdUseCase,
+  getRecipeDetailsUseCase,
   getRecipeImportDetailsByUrlUseCase,
   isRecipeSavedUseCase,
 } from "@/use-cases/recipes"
@@ -33,7 +33,7 @@ export default async function ImportRecipePage(props: ImportRecipePageProps) {
     await getRecipeImportDetailsByUrlUseCase(url, user?.id)
   let recipeDetails
   if (recipeImportDetails) {
-    recipeDetails = await getRecipeByIdUseCase(recipeImportDetails.recipeId)
+    recipeDetails = await getRecipeDetailsUseCase(recipeImportDetails.recipeId)
     if (user && !userRecipeImport) {
       await addUserRecipeImportUseCase(recipeImportDetails.id, user.id)
     }

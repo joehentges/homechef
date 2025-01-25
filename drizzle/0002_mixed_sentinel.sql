@@ -1,0 +1,1 @@
+ALTER TABLE "users" ADD COLUMN "featured_recipe_id" integer;

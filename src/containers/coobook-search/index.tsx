@@ -22,14 +22,23 @@ import { SortBySelect } from "./sort-by-select"
 import { TagSelect } from "./tag-select"
 
 interface UserRecipeSearchProps {
+  title?: string
   randomRecipe?: RecipeWithTags
   recipes: RecipeWithTags[]
   recipesPerPageLimit: number
   availableTags: { name: string }[]
+  showCreateRecipeButton?: boolean
 }
 
 export function UserRecipeSearch(props: UserRecipeSearchProps) {
-  const { randomRecipe, recipes, recipesPerPageLimit, availableTags } = props
+  const {
+    title,
+    randomRecipe,
+    recipes,
+    recipesPerPageLimit,
+    availableTags,
+    showCreateRecipeButton,
+  } = props
 
   const [search, setSearch] = useQueryState(
     "search",
@@ -111,15 +120,17 @@ export function UserRecipeSearch(props: UserRecipeSearchProps) {
     <div className="container space-y-8 rounded-3xl bg-primary/20 py-8">
       <div className="flex flex-col items-center justify-between gap-4 text-center sm:flex-row">
         <p className="text-4xl font-bold">
-          Cookbook Search{" "}
+          {title ? title : "Cookbook Search"}{" "}
           <span className="text-2xl">({totalCatalogItems})</span>
         </p>
         <div className="flex flex-row gap-x-4">
-          <Link href="/recipes/create">
-            <Button className="rounded-3xl">
-              <PencilLineIcon /> Create
-            </Button>
-          </Link>
+          {showCreateRecipeButton && (
+            <Link href="/recipes/create">
+              <Button className="rounded-3xl">
+                <PencilLineIcon /> Create
+              </Button>
+            </Link>
+          )}
           {randomRecipe && (
             <Link href={`/recipes/${randomRecipe.id}`}>
               <Button className="rounded-3xl" variant="secondary">

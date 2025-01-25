@@ -72,7 +72,6 @@ export function ViewRecipe(props: ViewRecipeProps) {
                 {author && (
                   <Link
                     href={`/chefs/${author.id}`}
-                    target="_blank"
                     className="text-muted-foreground transition-colors hover:text-foreground"
                   >
                     <p>From: {author.displayName}</p>

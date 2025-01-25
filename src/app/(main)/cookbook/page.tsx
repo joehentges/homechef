@@ -28,6 +28,7 @@ export default async function CookbookPage() {
         recipes={recipesList.recipes}
         recipesPerPageLimit={12}
         availableTags={availableTags}
+        showCreateRecipeButton
       />
     </div>
   )

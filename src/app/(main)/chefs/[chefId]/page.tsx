@@ -1,5 +1,5 @@
 import { getCurrentUser } from "@/lib/session"
-import { searchRecipesUseCase } from "@/use-cases/recipes"
+import { getRecipeUseCase, searchRecipesUseCase } from "@/use-cases/recipes"
 import { getUserUseCase } from "@/use-cases/users"
 import { Profile } from "@/containers/profile"
 
@@ -20,8 +20,16 @@ export default async function ChefPage(props: ChefPageProps) {
     throw new Error("Chef not found")
   }
 
-  const recipes = await searchRecipesUseCase(
-    {},
+  let featuredRecipe
+  if (user.featuredRecipeId) {
+    featuredRecipe = await getRecipeUseCase(user.featuredRecipeId)
+  }
+
+  const latestRecipes = await searchRecipesUseCase(
+    {
+      limit: 3,
+      orderBy: "newest",
+    },
     {
       userId: user.id,
       includeUserRecipes: true,
@@ -35,6 +43,8 @@ export default async function ChefPage(props: ChefPageProps) {
       <Profile
         user={user}
         canEdit={currentUser && currentUser.id === user.id}
+        featuredRecipe={featuredRecipe}
+        latestRecipes={latestRecipes.recipes}
       />
     </div>
   )

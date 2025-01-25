@@ -15,6 +15,13 @@
       "when": 1737352453924,
       "tag": "0001_curved_sister_grimm",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1737781093137,
+      "tag": "0002_mixed_sentinel",
+      "breakpoints": true
     }
   ]
 }

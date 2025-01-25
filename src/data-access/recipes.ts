@@ -14,7 +14,7 @@ import { PrimaryKey } from "@/types"
 import { RecipeDifficulty, RecipeWithTags } from "@/types/Recipe"
 import { SearchRecipeParams, SearchRecipeQuery } from "@/types/SearchRecipes"
 import { database } from "@/db"
-import { recipes, recipeTags, tags, userRecipes } from "@/db/schemas"
+import { recipes, recipeTags, tags, userRecipes, users } from "@/db/schemas"
 
 function defaultRecipeQuery() {
   return database
@@ -45,6 +45,7 @@ function defaultRecipeQuery() {
     .from(recipes)
     .leftJoin(recipeTags, eq(recipeTags.recipeId, recipes.id))
     .leftJoin(tags, eq(tags.id, recipeTags.tagId))
+    .leftJoin(users, eq(users.id, recipes.userId))
     .groupBy(recipes.id)
 }
 

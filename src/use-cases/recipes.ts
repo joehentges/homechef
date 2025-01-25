@@ -48,6 +48,10 @@ import { getUser } from "@/data-access/users"
 import { createTransaction } from "@/data-access/utils"
 import { redis } from "@/client/redis"
 
+export async function getRecipeUseCase(recipeId: PrimaryKey) {
+  return getRecipe(recipeId)
+}
+
 export async function getFeaturedRecipesUseCase(limit: number = 24) {
   const cachedRecipes = await redis.get("featured-recipes")
   if (cachedRecipes) {
@@ -65,7 +69,7 @@ export async function getFeaturedRecipesUseCase(limit: number = 24) {
   return randomRecipes
 }
 
-export async function getRecipeByIdUseCase(
+export async function getRecipeDetailsUseCase(
   recipeId: PrimaryKey
 ): Promise<RecipeDetails> {
   const recipe = await getRecipe(recipeId)

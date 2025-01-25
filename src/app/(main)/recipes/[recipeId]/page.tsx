@@ -1,7 +1,7 @@
 import { getCurrentUser } from "@/lib/session"
 import {
   getAvailableRecipeTagsUseCase,
-  getRecipeByIdUseCase,
+  getRecipeDetailsUseCase,
   isRecipeSavedUseCase,
 } from "@/use-cases/recipes"
 import { RecipeContainer } from "@/containers/recipe"
@@ -18,7 +18,7 @@ export default async function RecipePage(props: RecipePageProps) {
 
   const user = await getCurrentUser()
 
-  const recipeDetails = await getRecipeByIdUseCase(recipeId)
+  const recipeDetails = await getRecipeDetailsUseCase(recipeId)
 
   if (recipeDetails.recipe.private && !user) {
     throw new Error("Recipe not found")

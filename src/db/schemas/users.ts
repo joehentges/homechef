@@ -1,4 +1,4 @@
-import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core"
+import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core"
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -14,6 +14,7 @@ export const users = pgTable("users", {
   displayName: text("display_name").notNull(),
   image: text("image"),
   summary: text("summary"),
+  featuredRecipeId: integer("featured_recipe_id"), // can't reference due to already references user.id in recipes schema
 })
 
 export type User = typeof users.$inferSelect

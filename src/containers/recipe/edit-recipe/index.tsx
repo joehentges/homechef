@@ -310,7 +310,7 @@ export function EditRecipe(props: EditRecipeProps) {
                       <FormItem className="w-full min-w-[120px] md:max-w-[125px]">
                         <FormControl>
                           <div className="relative">
-                            <p className="absolute -top-2 left-[0.5px] rounded-2xl bg-white px-1 text-xs">
+                            <p className="absolute -top-3 left-[1px] rounded-t-md bg-white px-1 pt-1 text-xs dark:bg-black">
                               Prep time
                             </p>
                             <Input
@@ -334,7 +334,7 @@ export function EditRecipe(props: EditRecipeProps) {
                       <FormItem className="w-full min-w-[120px] md:max-w-[125px]">
                         <FormControl>
                           <div className="relative">
-                            <p className="absolute -top-2 left-[0.5px] rounded-2xl bg-white px-1 text-xs">
+                            <p className="absolute -top-3 left-[1px] rounded-t-md bg-white px-1 pt-1 text-xs dark:bg-black">
                               Cook time
                             </p>
                             <Input

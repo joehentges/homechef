@@ -1,19 +1,26 @@
-import { User } from "@/db/schemas"
+import Link from "next/link"
+import { MoveRightIcon } from "lucide-react"
+
+import { Recipe, User } from "@/db/schemas"
 import { getAvatarImageUrl } from "@/lib/get-avatar-image-url"
 
 import { EnableEditView } from "./enable-edit-view"
+import { FeaturedRecipe } from "./featured-recipe"
+import { LatestRecipe } from "./latest-recipe"
 
 interface ViewProfileProps {
   user: User
   canEdit?: boolean
   enableEditView: () => void
+  featuredRecipe?: Recipe
+  latestRecipes: Recipe[]
 }
 
 export function ViewProfile(props: ViewProfileProps) {
-  const { user, canEdit, enableEditView } = props
+  const { user, canEdit, enableEditView, featuredRecipe, latestRecipes } = props
 
   return (
-    <div className="container relative max-w-[1000px] rounded-3xl bg-primary/20 py-8">
+    <div className="container relative max-w-[1000px] space-y-6 rounded-3xl bg-primary/20 py-8">
       {canEdit && (
         <div className="absolute right-10 hidden md:block">
           <EnableEditView enableEditView={enableEditView} />
@@ -40,6 +47,53 @@ export function ViewProfile(props: ViewProfileProps) {
         </div>
       </div>
       <p className="block text-center md:hidden">{user.summary}</p>
+
+      {featuredRecipe && (
+        <div className="space-y-2">
+          <p className="text-center text-xl font-bold md:text-2xl">
+            Featured Recipe
+          </p>
+          <FeaturedRecipe
+            id={featuredRecipe.id}
+            photo={featuredRecipe.photo}
+            title={featuredRecipe.title}
+            description={featuredRecipe.description}
+          />
+        </div>
+      )}
+
+      {latestRecipes.length > 0 && (
+        <>
+          <div className="space-y-2">
+            <p className="text-center text-xl font-bold md:text-2xl">
+              Latest Recipes
+            </p>
+            <div className="flex flex-row flex-wrap justify-center">
+              {latestRecipes.map((recipe) => (
+                <LatestRecipe
+                  key={recipe.id}
+                  id={recipe.id}
+                  photo={recipe.photo}
+                  title={recipe.title}
+                  description={recipe.description}
+                />
+              ))}
+            </div>
+          </div>
+
+          <Link
+            href={canEdit ? "/cookbook" : `/chefs/${user.id}/cookbook`}
+            className="group flex items-center gap-x-2 justify-self-center transition-colors hover:text-foreground/70"
+          >
+            <p className="text-center md:text-xl">
+              {canEdit
+                ? "View your cookbook"
+                : `View ${user.displayName}${user.displayName.slice(-1) === "s" ? "'" : "'s"} cookbook`}
+            </p>
+            <MoveRightIcon className="hidden md:block" />
+          </Link>
+        </>
+      )}
     </div>
   )
 }
