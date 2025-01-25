@@ -15,8 +15,7 @@
     "db:studio": "drizzle-kit studio",
     "db:clear": "tsx ./src/db/clear.ts",
     "db:seed": "tsx ./src/db/seed.ts",
-    "db:reset": "npm run db:clear && npm run db:migrate && npm run db:seed",
-    "temp": "tsx temp2.ts"
+    "db:reset": "npm run db:clear && npm run db:migrate && npm run db:seed"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -67,6 +66,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
+    "@tailwindcss/postcss": "^4.0.0",
     "@types/he": "^1.2.3",
     "@types/node": "^22",
     "@types/pg": "^8.11.10",
@@ -78,8 +78,8 @@
     "eslint-config-next": "15.1.2",
     "postcss": "^8",
     "prettier": "^3.4.2",
-    "prettier-plugin-tailwindcss": "^0.6.9",
-    "tailwindcss": "^3.4.17",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "tailwindcss": "^4.0.0",
     "tsx": "^4.19.2",
     "typescript": "^5"
   }
