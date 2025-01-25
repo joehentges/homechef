@@ -33,6 +33,8 @@ export async function getFirstUserImportedById(
       password: users.password,
       displayName: users.displayName,
       image: users.image,
+      summary: users.summary,
+      featuredRecipeId: users.featuredRecipeId,
     })
     .from(userRecipeImports)
     .where(eq(userRecipeImports.recipeImportDetailsId, recipeImportDetailsId))

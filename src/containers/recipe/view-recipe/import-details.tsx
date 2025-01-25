@@ -23,11 +23,11 @@ export function ImportDetails(props: ImportDetailsProps) {
     return (
       <TooltipProvider>
         <Tooltip delayDuration={0}>
-          <TooltipTrigger className="transition-colors hover:text-foreground">
+          <TooltipTrigger className="hover:text-foreground transition-colors">
             <Link
               href={url}
               target="_blank"
-              className="text-muted-foreground transition-colors hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground transition-colors"
             >
               <p>From: {getDomain(url)}</p>
             </Link>
@@ -37,7 +37,7 @@ export function ImportDetails(props: ImportDetailsProps) {
               Imported by:{" "}
               <Link
                 href={`/chefs/${importedBy.id}`}
-                className="transition-colors hover:text-muted-foreground"
+                className="hover:text-muted-foreground transition-colors"
               >
                 {importedBy.displayName}
               </Link>
@@ -52,7 +52,7 @@ export function ImportDetails(props: ImportDetailsProps) {
     <Link
       href={url}
       target="_blank"
-      className="text-muted-foreground transition-colors hover:text-foreground"
+      className="text-muted-foreground hover:text-foreground transition-colors"
     >
       <p>From: {getDomain(url)}</p>
     </Link>

@@ -174,7 +174,7 @@ export function RecipeSearch(props: RecipeSearchProps) {
 
   return (
     <div className="py-10">
-      <div className="container space-y-8 rounded-3xl bg-primary/20 py-8">
+      <div className="bg-primary/20 container space-y-8 rounded-3xl py-8">
         <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
           <p className="text-4xl font-bold">
             Recipe Search <span className="text-2xl">({recipesCount})</span>

@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useServerAction } from "zsa-react"
 
-import { User } from "@/db/schemas"
+import { Recipe, User } from "@/db/schemas"
 import {
   Form,
   FormControl,
@@ -21,10 +21,13 @@ import { useToast } from "@/hooks/use-toast"
 
 import { updateProfileAction } from "../actions"
 import { EditImage } from "./edit-image"
+import { FeaturedRecipeSearch } from "./featured-recipe-search"
 
 interface EditProfileProps {
   currentUser: User
   onBackButtonClicked: () => void
+  currentFeaturedRecipe?: Recipe
+  initialFeaturedRecipesOptions: Recipe[]
 }
 
 const updateProfileActionSchema = z.object({
@@ -35,7 +38,12 @@ const updateProfileActionSchema = z.object({
 })
 
 export function EditProfile(props: EditProfileProps) {
-  const { currentUser, onBackButtonClicked } = props
+  const {
+    currentUser,
+    onBackButtonClicked,
+    currentFeaturedRecipe,
+    initialFeaturedRecipesOptions,
+  } = props
   const { toast } = useToast()
 
   const { execute, isPending } = useServerAction(updateProfileAction, {
@@ -76,7 +84,7 @@ export function EditProfile(props: EditProfileProps) {
           <div className="flex flex-row items-center gap-x-4">
             <button
               onClick={onBackButtonClicked}
-              className="text-muted-foreground transition-colors hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground transition-colors"
             >
               <MoveLeftIcon />
             </button>
@@ -91,7 +99,7 @@ export function EditProfile(props: EditProfileProps) {
           </LoaderButton>
         </div>
 
-        <div className="container max-w-[1000px] space-y-6 rounded-3xl bg-primary/20 p-4 md:p-8">
+        <div className="bg-primary/20 container max-w-[1000px] space-y-6 rounded-3xl p-4 md:p-8">
           <div className="flex flex-col items-center gap-x-6 gap-y-4 md:flex-row md:items-start">
             <FormField
               control={form.control}
@@ -148,9 +156,27 @@ export function EditProfile(props: EditProfileProps) {
               />
             </div>
           </div>
+
+          <FormField
+            control={form.control}
+            name="featuredRecipeId"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <FeaturedRecipeSearch
+                    onFeaturedRecipeChange={field.onChange}
+                    currentFeaturedRecipe={currentFeaturedRecipe}
+                    initialFeaturedRecipesOptions={
+                      initialFeaturedRecipesOptions
+                    }
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
       </form>
     </Form>
   )
-  return <p>edit</p>
 }

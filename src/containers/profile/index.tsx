@@ -24,6 +24,10 @@ export function Profile(props: ProfileProps) {
       <EditProfile
         currentUser={user}
         onBackButtonClicked={() => setEditViewEnabled(false)}
+        currentFeaturedRecipe={featuredRecipe}
+        initialFeaturedRecipesOptions={latestRecipes.filter(
+          (recipe) => !recipe.private && recipe.id !== featuredRecipe?.id
+        )}
       />
     )
   }

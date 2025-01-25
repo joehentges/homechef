@@ -27,7 +27,7 @@ export default async function ChefPage(props: ChefPageProps) {
 
   const latestRecipes = await searchRecipesUseCase(
     {
-      limit: 3,
+      limit: 4,
       orderBy: "newest",
     },
     {

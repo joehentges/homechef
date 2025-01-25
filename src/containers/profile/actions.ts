@@ -5,6 +5,7 @@ import { z } from "zod"
 
 import { rateLimitByIp } from "@/lib/limiter"
 import { authenticatedAction } from "@/lib/safe-action"
+import { searchRecipesUseCase } from "@/use-cases/recipes"
 import { updateUserUseCase } from "@/use-cases/users"
 
 const updateProfileActionSchema = z.object({
@@ -25,4 +26,33 @@ export const updateProfileAction = authenticatedAction
     await updateUserUseCase(user.id, input)
     revalidatePath(`/chefs/${user.id}`)
     revalidatePath("/profile")
+  })
+
+export const featuredRecipeSearchAction = authenticatedAction
+  .createServerAction()
+  .input(
+    z.object({
+      search: z.string(),
+    })
+  )
+  .handler(async ({ input, ctx: { user } }) => {
+    await rateLimitByIp({
+      limit: 1000,
+      window: 10000,
+    })
+    const recipeSearchResult = await searchRecipesUseCase(
+      {
+        search: input.search,
+        limit: 5,
+      },
+      {
+        userId: user.id,
+        includeUserRecipes: true,
+        userRecipesOnly: true,
+      }
+    )
+    return {
+      recipes: recipeSearchResult.recipes,
+      count: recipeSearchResult.count,
+    }
   })

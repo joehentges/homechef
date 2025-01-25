@@ -22,7 +22,7 @@ export function RecipeCatalogItem(props: RecipeCatalogItemProps) {
           <p>Uknown</p>
           <User2Icon
             className={cn(
-              "h-4 w-4 transition-colors group-hover:text-foreground/80",
+              "group-hover:text-foreground/80 h-4 w-4 transition-colors",
               alternate && "group-hover:text-background/80"
             )}
           />
@@ -35,7 +35,7 @@ export function RecipeCatalogItem(props: RecipeCatalogItemProps) {
           <p>{servingsNum}</p>
           <User2Icon
             className={cn(
-              "h-4 w-4 transition-colors group-hover:text-foreground/80",
+              "group-hover:text-foreground/80 h-4 w-4 transition-colors",
               alternate && "group-hover:text-background/80"
             )}
           />
@@ -49,7 +49,7 @@ export function RecipeCatalogItem(props: RecipeCatalogItemProps) {
         <User2Icon
           key={index}
           className={cn(
-            "h-4 w-4 transition-colors group-hover:text-foreground/80",
+            "group-hover:text-foreground/80 h-4 w-4 transition-colors",
             alternate && "group-hover:text-background/80"
           )}
         />
@@ -68,27 +68,27 @@ export function RecipeCatalogItem(props: RecipeCatalogItemProps) {
             backgroundImage: `url('${photo}')`,
           }}
         >
-          <div className="h-full w-full rounded-full bg-primary/10 opacity-0 transition-opacity group-hover:opacity-100" />
+          <div className="bg-primary/10 h-full w-full rounded-full opacity-0 transition-opacity group-hover:opacity-100" />
         </div>
       ) : (
         <div className="z-10 h-24 w-28 rounded-full bg-white dark:bg-black">
-          <div className="relative h-full w-full rounded-full bg-primary/30 transition-colors group-hover:bg-primary/40">
-            <CookingPotIcon className="absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 transform text-muted-foreground" />
+          <div className="bg-primary/30 group-hover:bg-primary/40 relative h-full w-full rounded-full transition-colors">
+            <CookingPotIcon className="text-muted-foreground absolute top-1/2 left-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 transform" />
           </div>
         </div>
       )}
 
       <div
         className={cn(
-          "-ml-12 w-full space-y-2 rounded-3xl py-4 pl-16 pr-4",
+          "-ml-12 w-full space-y-2 rounded-3xl py-4 pr-4 pl-16",
           alternate
-            ? "bg-black text-background dark:bg-white"
+            ? "text-background bg-black dark:bg-white"
             : "bg-white dark:bg-black"
         )}
       >
         <p
           className={cn(
-            "text-base font-bold transition-colors group-hover:text-foreground/80 md:text-xl",
+            "group-hover:text-foreground/80 text-base font-bold transition-colors md:text-xl",
             alternate && "group-hover:text-background/80"
           )}
         >
@@ -103,7 +103,7 @@ export function RecipeCatalogItem(props: RecipeCatalogItemProps) {
             <p>Cook Time</p>
             <p
               className={cn(
-                "font-bold transition-colors group-hover:text-foreground/80",
+                "group-hover:text-foreground/80 font-bold transition-colors",
                 alternate && "group-hover:text-background/80"
               )}
             >

@@ -15,12 +15,12 @@ export function ChefCatalog(props: ChefCatalogProps) {
     return (
       <div className="flex h-[450px] w-full flex-col items-center justify-center gap-y-3 p-6">
         <div className="relative">
-          <FrownIcon className="h-16 w-16 text-muted-foreground" />
-          <ChefHatIcon className="absolute -top-9 left-[0.5em] h-12 w-12 text-muted-foreground" />
+          <FrownIcon className="text-muted-foreground h-16 w-16" />
+          <ChefHatIcon className="text-muted-foreground absolute -top-9 left-[0.5em] h-12 w-12" />
         </div>
 
         <p className="text-3xl">No Chefs Found</p>
-        <p className="max-w-[400px] text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-[400px] text-center">
           Tell your friends and family to join. We&apos;ll keep track of all
           their recipes, and make them easy to share.
         </p>
@@ -37,9 +37,9 @@ export function ChefCatalog(props: ChefCatalogProps) {
         >
           <Link href={`/chefs/${chef.id}`}>
             <div className="relative rounded-2xl bg-white dark:bg-black">
-              <div className="absolute h-full w-full bg-primary/5 opacity-0 transition-opacity group-hover:opacity-100" />
+              <div className="bg-primary/5 absolute h-full w-full opacity-0 transition-opacity group-hover:opacity-100" />
               <div
-                className="h-[150px] w-full rounded-t-2xl bg-primary bg-cover bg-center bg-no-repeat md:h-[200px]"
+                className="bg-primary h-[150px] w-full rounded-t-2xl bg-cover bg-center bg-no-repeat md:h-[200px]"
                 style={{
                   backgroundImage: `url('${chef.image ? chef.image : getAvatarImageUrl(chef.displayName)}')`,
                 }}

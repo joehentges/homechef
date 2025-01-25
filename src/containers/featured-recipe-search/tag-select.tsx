@@ -55,7 +55,7 @@ export function TagSelect(props: TagSelectProps) {
   return (
     <div className="flex min-w-[150px] flex-row flex-wrap justify-center gap-2 md:min-w-[200px] md:flex-col md:gap-y-4">
       {tags.length < 1 && (
-        <p className="text-lg text-muted-foreground">No tags available</p>
+        <p className="text-muted-foreground text-lg">No tags available</p>
       )}
       {tags.map((tag) => {
         const IconElement = Icons[tag as Icon] ?? Icons.default
@@ -64,7 +64,7 @@ export function TagSelect(props: TagSelectProps) {
           <button
             key={tag}
             className={cn(
-              "flex w-[150px] items-center gap-x-2 rounded-3xl border px-3 py-2 capitalize transition-colors hover:bg-primary/30 md:w-[200px]",
+              "hover:bg-primary/30 flex w-[150px] items-center gap-x-2 rounded-3xl border px-3 py-2 capitalize transition-colors md:w-[200px]",
               selected && "bg-primary/80 hover:bg-primary/60 dark:bg-primary/20"
             )}
             onClick={() => onTagSelected(tag)}

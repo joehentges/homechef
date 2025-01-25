@@ -37,9 +37,9 @@ export function RecipeCatalog(props: RecipeCatalogProps) {
   if (!catalogFeaturedItem) {
     return (
       <div className="flex h-[450px] w-full flex-col items-center justify-center gap-y-3 p-6">
-        <FrownIcon className="h-16 w-16 text-muted-foreground" />
+        <FrownIcon className="text-muted-foreground h-16 w-16" />
         <p className="text-3xl">No Recipes Found</p>
-        <p className="max-w-[350px] text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-[350px] text-center">
           Change your search, or add or import some recipes. We&apos;ll keep
           track of them for you.
         </p>

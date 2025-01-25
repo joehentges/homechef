@@ -120,7 +120,7 @@ export function ChefSearch(props: ChefSearchProps) {
   }
 
   return (
-    <div className="container space-y-4 rounded-3xl bg-primary/20 py-8 md:space-y-8">
+    <div className="bg-primary/20 container space-y-4 rounded-3xl py-8 md:space-y-8">
       <p className="text-4xl font-bold">
         Chef Search <span className="text-2xl">({chefsCount})</span>
       </p>

@@ -15,10 +15,10 @@ export default async function HomePage() {
     <div>
       <div
         className={cn(
-          "relative -mt-20 h-[450px] overflow-hidden rounded-b-[2rem] bg-primary/20 md:h-[600px] md:rounded-b-[4rem]"
+          "bg-primary/20 relative -mt-20 h-[450px] overflow-hidden rounded-b-[2rem] md:h-[600px] md:rounded-b-[4rem]"
         )}
       >
-        <div className="absolute left-[15%] top-[80%] flex max-w-[250px] gap-x-3 md:left-[35%] md:top-[28%]">
+        <div className="absolute top-[80%] left-[15%] flex max-w-[250px] gap-x-3 md:top-[28%] md:left-[35%]">
           <HeartIcon
             fill="white"
             className="h-4 -rotate-45 text-white md:h-8"
@@ -27,7 +27,7 @@ export default async function HomePage() {
             New pumpkin season has started, let&apos;s cook!
           </p>
         </div>
-        <div className="absolute bottom-0 right-0 hidden md:mr-[5em] md:flex lg:mr-[6em] xl:mr-[15em] 2xl:mr-[20em]">
+        <div className="absolute right-0 bottom-0 hidden md:mr-[5em] md:flex lg:mr-[6em] xl:mr-[15em] 2xl:mr-[20em]">
           <img
             src="/images/halloween-pumpkins.png"
             alt="hero"
@@ -37,7 +37,7 @@ export default async function HomePage() {
 
         <div
           className={cn(
-            "container flex h-[100%] flex-col items-center justify-center font-header text-6xl font-bold md:items-start md:text-7xl lg:text-8xl xl:text-9xl"
+            "font-header container flex h-[100%] flex-col items-center justify-center text-6xl font-bold md:items-start md:text-7xl lg:text-8xl xl:text-9xl"
           )}
         >
           <p>Chef</p>

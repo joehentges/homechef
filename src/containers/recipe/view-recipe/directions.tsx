@@ -40,7 +40,7 @@ function DirectionItem({ direction }: { direction: Direction }) {
     >
       <div>
         {checked ? (
-          <CheckIcon className="h-6 w-6 text-foreground" />
+          <CheckIcon className="text-foreground h-6 w-6" />
         ) : (
           <p className="w-6 text-xl font-bold text-red-500">
             {direction.orderNumber + 1}

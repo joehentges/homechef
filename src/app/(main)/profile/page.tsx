@@ -11,7 +11,7 @@ export default async function ProfilePage() {
   }
   const latestRecipes = await searchRecipesUseCase(
     {
-      limit: 3,
+      limit: 4,
       orderBy: "newest",
     },
     {

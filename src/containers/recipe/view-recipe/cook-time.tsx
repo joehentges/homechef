@@ -24,10 +24,10 @@ export function RecipeCookTime(props: RecipeCookTimeProps) {
         <div className="flex flex-row items-center gap-x-2 px-2 py-1 md:hidden">
           <ClockIcon className="h-4 w-4" />
           <p>Prep: {formatTime(prepTime ?? 0)}</p>
-          <div className="h-[1em] border-l border-l-muted-foreground" />
+          <div className="border-l-muted-foreground h-[1em] border-l" />
           <p>Cook: {formatTime(cookTime)}</p>
         </div>
-        <TooltipTrigger className="hidden flex-row items-center gap-x-1 rounded-3xl px-4 py-2 transition-colors hover:bg-primary/20 md:flex">
+        <TooltipTrigger className="hover:bg-primary/20 hidden flex-row items-center gap-x-1 rounded-3xl px-4 py-2 transition-colors md:flex">
           <ClockIcon className="h-4 w-4" />
           <p>{formatTime((prepTime ?? 0) + cookTime)}</p>
         </TooltipTrigger>

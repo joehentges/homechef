@@ -17,7 +17,7 @@ export function DisplayStatus(props: DisplayStatusProps) {
   return (
     <TooltipProvider>
       <Tooltip delayDuration={0}>
-        <TooltipTrigger className="transition-colors hover:text-foreground">
+        <TooltipTrigger className="hover:text-foreground transition-colors">
           {isPrivate ? (
             <LockIcon className="h-5 w-5" />
           ) : (
