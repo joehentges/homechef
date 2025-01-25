@@ -20,7 +20,12 @@ export function Profile(props: ProfileProps) {
   const [editViewEnabled, setEditViewEnabled] = useState<boolean>(false)
 
   if (editViewEnabled) {
-    return <EditProfile onBackButtonClicked={() => setEditViewEnabled(false)} />
+    return (
+      <EditProfile
+        currentUser={user}
+        onBackButtonClicked={() => setEditViewEnabled(false)}
+      />
+    )
   }
 
   return (

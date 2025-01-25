@@ -57,7 +57,13 @@ export async function updateUser(
   userId: PrimaryKey,
   updatedUser: Partial<User>
 ): Promise<void> {
-  await database.update(users).set(updatedUser).where(eq(users.id, userId))
+  await database
+    .update(users)
+    .set({
+      ...updatedUser,
+      dateUpdated: new Date(),
+    })
+    .where(eq(users.id, userId))
 }
 
 export async function updatePassword(
