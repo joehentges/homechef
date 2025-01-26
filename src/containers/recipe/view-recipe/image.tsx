@@ -32,7 +32,11 @@ export function RecipeImage(props: RecipeImageProps) {
           <DialogTitle className="text-muted-foreground">
             {getDomain(photo)}
           </DialogTitle>
-          <img src={photo} alt="highlight" className="rounded-xl" />
+          <img
+            src={photo}
+            alt="recipe"
+            className="max-h-[75vh] w-full rounded-xl"
+          />
         </DialogContent>
       </Dialog>
     )

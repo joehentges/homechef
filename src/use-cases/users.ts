@@ -12,7 +12,10 @@ import { redis } from "@/client/redis"
 export async function getFeaturedUsersUseCase(limit: number = 10) {
   const cachedUsers = await redis.get("featured-users")
   if (cachedUsers) {
-    return JSON.parse(cachedUsers) as UserDetails[]
+    const parsedUsers = JSON.parse(cachedUsers) as UserDetails[]
+    if (parsedUsers.length > 0) {
+      return parsedUsers
+    }
   }
 
   const randomUsers = await getFeaturedUsers(limit)

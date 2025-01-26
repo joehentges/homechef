@@ -1,5 +1,5 @@
 {
-  "name": "home-chef",
+  "name": "homechef",
   "version": "0.1.0",
   "private": true,
   "license": "GPL-3.0-only",
@@ -65,6 +65,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@faker-js/faker": "^9.4.0",
     "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
     "@tailwindcss/postcss": "^4.0.0",
     "@types/he": "^1.2.3",

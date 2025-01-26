@@ -3,7 +3,7 @@ import { redirect } from "next/navigation"
 import { WandSparkles } from "lucide-react"
 
 import { afterSignInUrl } from "@/config"
-import { pathIsUrl } from "@/lib/path-is-url"
+import { pathIsValid } from "@/lib/path-is-valid"
 import { getCurrentUser } from "@/lib/session"
 import { SignInForm } from "@/containers/sign-in-form"
 import { Button } from "@/components/ui/button"
@@ -21,7 +21,7 @@ export default async function SignInPage(props: SignInPageProps) {
   }
 
   const { from } = await props.searchParams
-  const fromIsNotUrl = !pathIsUrl(from || "")
+  const fromIsValidPath = pathIsValid(from || "")
 
   return (
     <div className="flex h-full flex-col justify-between space-y-8 px-4 py-8">
@@ -39,7 +39,7 @@ export default async function SignInPage(props: SignInPageProps) {
             Enter your email and password to access your account
           </p>
         </div>
-        <SignInForm from={fromIsNotUrl ? from : undefined} />
+        <SignInForm from={fromIsValidPath ? from : undefined} />
       </div>
 
       <div className="relative">
@@ -53,7 +53,7 @@ export default async function SignInPage(props: SignInPageProps) {
         </div>
       </div>
       <div className="flex flex-col space-y-4">
-        <Link href={`/sign-in/magic${fromIsNotUrl ? `?from=${from}` : ""}`}>
+        <Link href={`/sign-in/magic${fromIsValidPath ? `?from=${from}` : ""}`}>
           <Button variant="outline" className="w-full" type="submit" size="sm">
             <WandSparkles className="mr-2 h-4 w-4" /> Magic Link
           </Button>
@@ -64,7 +64,7 @@ export default async function SignInPage(props: SignInPageProps) {
         <p className="text-center">
           Don&apos;t have an account?{" "}
           <Link
-            href={`/sign-up${fromIsNotUrl ? `?from=${from}` : ""}`}
+            href={`/sign-up${fromIsValidPath ? `?from=${from}` : ""}`}
             className="text-primary hover:underline"
           >
             Sign Up

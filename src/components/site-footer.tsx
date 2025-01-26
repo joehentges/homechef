@@ -18,7 +18,7 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
     <footer className={cn(className)}>
       <div className="container flex flex-col items-center justify-between gap-4 py-8 text-sm md:flex-row md:py-5">
         <p className="leading-loose md:text-left">
-          {new Date().getFullYear()} {siteConfig.name} {siteConfig.version}
+          2025 {siteConfig.name} {siteConfig.version}
         </p>
         <div className="flex flex-col items-center gap-4 md:flex-row">
           {navigation.siteFooter.map((item) => (

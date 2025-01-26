@@ -1,6 +1,6 @@
 import { afterSignInUrl } from "@/config"
 import { rateLimitByIp } from "@/lib/limiter"
-import { pathIsUrl } from "@/lib/path-is-url"
+import { pathIsValid } from "@/lib/path-is-valid"
 import { setSession } from "@/lib/session"
 import { signInWithMagicLinkUseCase } from "@/use-cases/auth"
 
@@ -23,7 +23,7 @@ export async function GET(request: Request): Promise<Response> {
     }
 
     // verify the from param is not a url - only want paths
-    const fromIsNotUrl = !pathIsUrl(from || "")
+    const fromIsValidPath = pathIsValid(from || "")
 
     const user = await signInWithMagicLinkUseCase(token)
 
@@ -32,7 +32,7 @@ export async function GET(request: Request): Promise<Response> {
     return new Response(null, {
       status: 302,
       headers: {
-        Location: fromIsNotUrl && from ? from : afterSignInUrl,
+        Location: fromIsValidPath && from ? from : afterSignInUrl,
       },
     })
     // eslint-disable-next-line  @typescript-eslint/no-explicit-any

@@ -1,40 +1,6 @@
-import {
-  AppleIcon,
-  BananaIcon,
-  BeefIcon,
-  CakeSliceIcon,
-  CookieIcon,
-  FishIcon,
-  IceCreamConeIcon,
-  MartiniIcon,
-  PizzaIcon,
-  SaladIcon,
-  SandwichIcon,
-  SoupIcon,
-  TagIcon,
-} from "lucide-react"
+import { TagIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-
-const Icons = {
-  default: TagIcon,
-  //
-  apple: AppleIcon,
-  banana: BananaIcon,
-  beef: BeefIcon,
-  cake: CakeSliceIcon,
-  desert: CakeSliceIcon,
-  drink: MartiniIcon,
-  fish: FishIcon,
-  "ice-cream": IceCreamConeIcon,
-  pizza: PizzaIcon,
-  salad: SaladIcon,
-  sandwich: SandwichIcon,
-  soup: SoupIcon,
-  cookie: CookieIcon,
-} as const
-
-type Icon = keyof typeof Icons
 
 interface TagSelectProps {
   selectedTag: string
@@ -58,7 +24,6 @@ export function TagSelect(props: TagSelectProps) {
         <p className="text-muted-foreground text-lg">No tags available</p>
       )}
       {tags.map((tag) => {
-        const IconElement = Icons[tag as Icon] ?? Icons.default
         const selected = tag === selectedTag
         return (
           <button
@@ -75,7 +40,7 @@ export function TagSelect(props: TagSelectProps) {
                 selected && "bg-background"
               )}
             >
-              <IconElement className="h-5 w-5" />
+              <TagIcon className="h-5 w-5" />
             </span>
             {tag}
           </button>

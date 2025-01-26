@@ -105,23 +105,6 @@ export async function searchRecipes(
     )
   }
 
-  let orderByClause
-  switch (query.orderBy) {
-    case "fastest":
-      orderByClause = asc(sql`${recipes.prepTime} + ${recipes.cookTime}`)
-    case "easiest":
-      orderByClause = sql`
-        CASE ${recipes.difficulty}
-          WHEN 'beginner' THEN 1
-          WHEN 'intermediate' THEN 2
-          WHEN 'advanced' THEN 3
-          ELSE 4
-        END
-      `
-    default:
-      orderByClause = desc(recipes.dateUpdated)
-  }
-
   const recipesListDbQuery = defaultRecipeQuery()
   const recipesCountDbQuery = database
     .select({
@@ -187,7 +170,22 @@ export async function searchRecipes(
     recipesListDbQuery.offset(query.offset)
   }
 
-  recipesListDbQuery.orderBy(orderByClause)
+  if (query.orderBy === "fastest") {
+    recipesListDbQuery.orderBy(
+      asc(sql`${recipes.prepTime} + ${recipes.cookTime}`)
+    )
+  } else if (query.orderBy === "easiest") {
+    recipesListDbQuery.orderBy(sql`
+      CASE ${recipes.difficulty}
+        WHEN 'beginner' THEN 1
+        WHEN 'intermediate' THEN 2
+        WHEN 'advanced' THEN 3
+        ELSE 4
+      END
+    `)
+  } else {
+    recipesListDbQuery.orderBy(desc(recipes.dateUpdated))
+  }
 
   const recipesList = await recipesListDbQuery.execute()
   const [recipeCount] = await recipesCountDbQuery.execute()

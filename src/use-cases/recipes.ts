@@ -55,7 +55,10 @@ export async function getRecipeUseCase(recipeId: PrimaryKey) {
 export async function getFeaturedRecipesUseCase(limit: number = 24) {
   const cachedRecipes = await redis.get("featured-recipes")
   if (cachedRecipes) {
-    return JSON.parse(cachedRecipes) as RecipeWithTags[]
+    const parsedRecipes = JSON.parse(cachedRecipes) as RecipeWithTags[]
+    if (parsedRecipes.length > 0) {
+      return parsedRecipes
+    }
   }
 
   const randomRecipes = await getRandomRecipes(limit)
