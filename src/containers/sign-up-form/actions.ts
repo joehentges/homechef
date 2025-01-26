@@ -4,7 +4,7 @@ import { redirect } from "next/navigation"
 import { z } from "zod"
 
 import { afterSignInUrl } from "@/config"
-import { rateLimitByKey } from "@/lib/limiter"
+import { rateLimitByIp } from "@/lib/limiter"
 import { unauthenticatedAction } from "@/lib/safe-action"
 import { setSession } from "@/lib/session"
 import { signUpUseCase } from "@/use-cases/auth"
@@ -19,8 +19,8 @@ export const signUpAction = unauthenticatedAction
     })
   )
   .handler(async ({ input }) => {
-    await rateLimitByKey({
-      key: `${input.email}-sign-up`,
+    await rateLimitByIp({
+      key: "sign-up",
       limit: 3,
       window: 10000,
     })

@@ -2,7 +2,7 @@
 
 import { z } from "zod"
 
-import { rateLimitByKey } from "@/lib/limiter"
+import { rateLimitByIp } from "@/lib/limiter"
 import { unauthenticatedAction } from "@/lib/safe-action"
 import { sendMagicLinkUseCase } from "@/use-cases/auth"
 
@@ -15,8 +15,8 @@ export const sendMagicLinkAction = unauthenticatedAction
     })
   )
   .handler(async ({ input }) => {
-    await rateLimitByKey({
-      key: `${input.email}-send-magic-link`,
+    await rateLimitByIp({
+      key: "send-magic-link",
       limit: 3,
       window: 10000,
     })

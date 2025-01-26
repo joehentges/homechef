@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { z } from "zod"
 
-import { rateLimitByKey } from "@/lib/limiter"
+import { rateLimitByIp } from "@/lib/limiter"
 import { authenticatedAction } from "@/lib/safe-action"
 import {
   addRecipeUseCase,
@@ -91,8 +91,8 @@ export const addRecipeAction = authenticatedAction
   .createServerAction()
   .input(recipeAddOrUpdateActionSchema)
   .handler(async ({ input, ctx: { user } }) => {
-    await rateLimitByKey({
-      key: `add-recipe-${user.id}`,
+    await rateLimitByIp({
+      key: "add-recipe",
       limit: 3,
       window: 10000,
     })
@@ -126,8 +126,8 @@ export const updateRecipeAction = authenticatedAction
   .createServerAction()
   .input(recipeAddOrUpdateActionSchema)
   .handler(async ({ input, ctx: { user } }) => {
-    await rateLimitByKey({
-      key: `update-recipe-${user.id}`,
+    await rateLimitByIp({
+      key: "update-recipe",
       limit: 3,
       window: 10000,
     })
@@ -174,9 +174,9 @@ export const deleteRecipeAction = authenticatedAction
         path: ["input"],
       })
   )
-  .handler(async ({ input, ctx: { user } }) => {
-    await rateLimitByKey({
-      key: `delete-recipe-${user.id}`,
+  .handler(async ({ input }) => {
+    await rateLimitByIp({
+      key: "delete-recipe",
       limit: 3,
       window: 10000,
     })
@@ -192,8 +192,8 @@ export const saveRecipeAction = authenticatedAction
     })
   )
   .handler(async ({ input, ctx: { user } }) => {
-    await rateLimitByKey({
-      key: `save-recipe-${user.id}`,
+    await rateLimitByIp({
+      key: "save-recipe",
       limit: 3,
       window: 10000,
     })
@@ -209,8 +209,8 @@ export const unsaveRecipeAction = authenticatedAction
     })
   )
   .handler(async ({ input, ctx: { user } }) => {
-    await rateLimitByKey({
-      key: `save-recipe-${user.id}`,
+    await rateLimitByIp({
+      key: "unsave-recipe",
       limit: 3,
       window: 10000,
     })

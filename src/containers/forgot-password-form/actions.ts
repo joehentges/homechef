@@ -2,7 +2,7 @@
 
 import { z } from "zod"
 
-import { rateLimitByKey } from "@/lib/limiter"
+import { rateLimitByIp } from "@/lib/limiter"
 import { unauthenticatedAction } from "@/lib/safe-action"
 import { sendForgotPasswordUseCase } from "@/use-cases/auth"
 
@@ -14,8 +14,8 @@ export const sendForgotPasswordAction = unauthenticatedAction
     })
   )
   .handler(async ({ input }) => {
-    await rateLimitByKey({
-      key: `${input.email}-send-forgot-password`,
+    await rateLimitByIp({
+      key: "send-forgot-password",
       limit: 3,
       window: 10000,
     })
