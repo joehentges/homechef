@@ -1,5 +1,6 @@
 import { animals, colors, uniqueNamesGenerator } from "unique-names-generator"
 
+import { PrimaryKey } from "@/types"
 import { CustomError, LoginError } from "@/errors"
 import {
   createMagicLinkToken,
@@ -134,7 +135,10 @@ export async function sendForgotPasswordUseCase(email: string) {
   await sendResetPasswordEmail(email, token)
 }
 
-export async function changePasswordUseCase(token: string, password: string) {
+export async function changePasswordWithTokenUseCase(
+  token: string,
+  password: string
+) {
   const passwordResetInfo = await getPasswordResetToken(token)
 
   if (!passwordResetInfo) {
@@ -151,4 +155,11 @@ export async function changePasswordUseCase(token: string, password: string) {
     await deletePasswordResetToken(token, trx)
     await updatePassword(userId, password, trx)
   })
+}
+
+export async function changePasswordUseCase(
+  userId: PrimaryKey,
+  password: string
+) {
+  await updatePassword(userId, password)
 }

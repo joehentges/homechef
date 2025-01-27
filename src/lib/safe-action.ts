@@ -2,7 +2,6 @@ import { createServerActionProcedure } from "zsa"
 
 import { env } from "@/env"
 import { CustomError } from "@/errors"
-import { rateLimitByKey } from "@/lib/limiter"
 
 import { assertAuthenticated } from "./session"
 
@@ -31,20 +30,9 @@ export const authenticatedAction = createServerActionProcedure()
   .experimental_shapeError(shapeErrors)
   .handler(async () => {
     const user = await assertAuthenticated()
-    await rateLimitByKey({
-      key: `${user.id}-global`,
-      limit: 10,
-      window: 10000,
-    })
     return { user }
   })
 
 export const unauthenticatedAction = createServerActionProcedure()
   .experimental_shapeError(shapeErrors)
-  .handler(async () => {
-    await rateLimitByKey({
-      key: `unauthenticated-global`,
-      limit: 10,
-      window: 10000,
-    })
-  })
+  .handler(async () => {})
