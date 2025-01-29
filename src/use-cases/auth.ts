@@ -2,6 +2,7 @@ import { animals, colors, uniqueNamesGenerator } from "unique-names-generator"
 
 import { PrimaryKey } from "@/types"
 import { CustomError, LoginError } from "@/errors"
+import { User } from "@/db/schemas"
 import {
   createMagicLinkToken,
   deleteMagicToken,
@@ -162,4 +163,23 @@ export async function changePasswordUseCase(
   password: string
 ) {
   await updatePassword(userId, password)
+}
+
+export async function updateEmailUseCase(
+  userId: User["id"],
+  email: User["email"]
+) {
+  await createTransaction(async (trx) => {
+    await updateUser(userId, { email, emailVerified: null }, trx)
+    const token = await createVerifyEmailToken(userId, trx)
+    await sendVerifyEmail(email, token)
+  })
+}
+
+export async function sendVerifyEmailUseCase(
+  userId: User["id"],
+  email: User["email"]
+) {
+  const token = await createVerifyEmailToken(userId)
+  await sendVerifyEmail(email, token)
 }

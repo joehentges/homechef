@@ -6,7 +6,7 @@ import { z } from "zod"
 import { rateLimitByIp } from "@/lib/limiter"
 import { authenticatedAction } from "@/lib/safe-action"
 import { searchRecipesUseCase } from "@/use-cases/recipes"
-import { updateUserUseCase } from "@/use-cases/users"
+import { updateProfileUseCase } from "@/use-cases/users"
 
 const updateProfileActionSchema = z.object({
   displayName: z.string().min(3).max(25),
@@ -23,7 +23,7 @@ export const updateProfileAction = authenticatedAction
       limit: 3,
       window: 10000,
     })
-    await updateUserUseCase(user.id, input)
+    await updateProfileUseCase(user.id, input)
     revalidatePath(`/chefs/${user.id}`)
     revalidatePath("/profile")
   })

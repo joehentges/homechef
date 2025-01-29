@@ -1,6 +1,6 @@
-import { PrimaryKey } from "@/types"
 import { SearchUsersQuery } from "@/types/SearchUsers"
 import { UserDetails } from "@/types/UserDetails"
+import { User } from "@/db/schemas"
 import {
   getFeaturedUsers,
   getUser,
@@ -33,17 +33,17 @@ export async function searchUsersUseCase(query: SearchUsersQuery) {
   return searchUsers(query)
 }
 
-export async function getUserUseCase(userId: PrimaryKey) {
+export async function getUserUseCase(userId: User["id"]) {
   return getUser(userId)
 }
 
-export async function updateUserUseCase(
-  userId: PrimaryKey,
+export async function updateProfileUseCase(
+  userId: User["id"],
   updatedUser: {
-    displayName: string
-    image: string | null
-    summary: string | null
-    featuredRecipeId: PrimaryKey | null
+    displayName: User["displayName"]
+    image: User["image"]
+    summary: User["summary"]
+    featuredRecipeId: User["featuredRecipeId"]
   }
 ) {
   return updateUser(userId, updatedUser)

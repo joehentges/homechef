@@ -55,9 +55,10 @@ export async function verifyPassword(
 
 export async function updateUser(
   userId: PrimaryKey,
-  updatedUser: Partial<User>
+  updatedUser: Partial<User>,
+  trx = database
 ): Promise<void> {
-  await database
+  await trx
     .update(users)
     .set({
       ...updatedUser,

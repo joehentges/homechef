@@ -8,12 +8,13 @@ import { VerifyEmailToken, verifyEmailTokens } from "@/db/schemas"
 import { generateRandomToken } from "./utils"
 
 export async function createVerifyEmailToken(
-  userId: PrimaryKey
+  userId: PrimaryKey,
+  trx = database
 ): Promise<string> {
   const token = await generateRandomToken(TOKEN_LENGTH)
   const tokenExpiresAt = new Date(Date.now() + VERIFY_EMAIL_TTL)
 
-  await database
+  await trx
     .insert(verifyEmailTokens)
     .values({
       userId,
