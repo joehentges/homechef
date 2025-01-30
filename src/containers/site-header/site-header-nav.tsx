@@ -46,7 +46,7 @@ export function SiteHeaderNav(props: SiteHeaderNavProps) {
                 key={index}
                 href={item.disabled ? "#" : item.href}
                 className={cn(
-                  "hover:text-foreground/70 flex items-center text-lg font-medium transition-colors sm:text-base",
+                  "flex items-center text-lg font-medium transition-colors hover:text-foreground/70 sm:text-base",
                   pathname === item.href && "font-bold",
                   item.disabled && "cursor-not-allowed opacity-80"
                 )}

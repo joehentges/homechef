@@ -52,7 +52,7 @@ export function SaveRecipe(props: SaveRecipeProps) {
       <TooltipProvider>
         <Tooltip delayDuration={0}>
           <TooltipTrigger
-            className="hover:text-foreground transition-colors"
+            className="transition-colors hover:text-foreground"
             onClick={() => execute({ recipeId })}
           >
             {isSaved ? (
@@ -75,7 +75,7 @@ export function SaveRecipe(props: SaveRecipeProps) {
         <TooltipTrigger>
           <Link
             href={`/sign-in?from=${encodeURIComponent(fromPath)}`}
-            className="hover:text-foreground transition-colors"
+            className="transition-colors hover:text-foreground"
           >
             <BookmarkIcon className="h-5 w-5" />
           </Link>

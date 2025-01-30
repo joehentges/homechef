@@ -25,7 +25,7 @@ export function RecipeDifficulty(props: RecipeDifficultyProps) {
             <TrophyIcon className="h-4 w-4" />
             <p>None</p>
           </div>
-          <TooltipTrigger className="hover:bg-primary/20 hidden flex-row items-center gap-x-2 rounded-3xl px-4 py-2 transition-colors md:flex">
+          <TooltipTrigger className="hidden flex-row items-center gap-x-2 rounded-3xl px-4 py-2 transition-colors hover:bg-primary/20 md:flex">
             <TrophyIcon className="h-4 w-4" />
             <p>None</p>
           </TooltipTrigger>

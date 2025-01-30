@@ -64,7 +64,7 @@ export function SiteSearch(props: SiteSearchProps) {
     <>
       <Button
         variant="ghost"
-        className="px-2-start hover:text-foreground/70 w-full justify-start border text-base hover:bg-transparent md:w-auto md:border-none md:p-0"
+        className="px-2-start w-full justify-start border text-base hover:bg-transparent hover:text-foreground/70 md:w-auto md:border-none md:p-0"
         onClick={() => setOpen(true)}
         {...props}
       >
@@ -92,7 +92,7 @@ export function SiteSearch(props: SiteSearchProps) {
           )}
           {!isPending && recipesResult.length > 0 && (
             <div>
-              <p className="text-muted-foreground pt-2 pb-1 pl-4 text-xs">
+              <p className="pb-1 pl-4 pt-2 text-xs text-muted-foreground">
                 Recipes
               </p>
               {recipesResult.map((recipe) => (
@@ -110,8 +110,8 @@ export function SiteSearch(props: SiteSearchProps) {
                     />
                   ) : (
                     <div className="z-10 h-6 w-6 rounded-full bg-white dark:bg-black">
-                      <div className="bg-primary/30 group-hover:bg-primary/40 relative h-full w-full rounded-full transition-colors">
-                        <CookingPotIcon className="text-muted-foreground absolute top-1/2 left-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 transform" />
+                      <div className="relative h-full w-full rounded-full bg-primary/30 transition-colors group-hover:bg-primary/40">
+                        <CookingPotIcon className="absolute left-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 transform text-muted-foreground" />
                       </div>
                     </div>
                   )}
@@ -122,7 +122,7 @@ export function SiteSearch(props: SiteSearchProps) {
           )}
           {!isPending && usersResult.length > 0 && (
             <div>
-              <p className="text-muted-foreground pt-2 pb-1 pl-4 text-xs">
+              <p className="pb-1 pl-4 pt-2 text-xs text-muted-foreground">
                 Chefs
               </p>
               {usersResult.map((user) => (

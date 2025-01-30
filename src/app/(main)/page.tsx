@@ -40,7 +40,7 @@ export default async function HomePage() {
     <div>
       <div
         className={cn(
-          "bg-primary/20 relative -mt-20 h-[450px] overflow-hidden rounded-b-[2rem] md:h-[600px] md:rounded-b-[4rem]"
+          "relative -mt-20 h-[450px] overflow-hidden rounded-b-[2rem] bg-primary/20 md:h-[600px] md:rounded-b-[4rem]"
         )}
       >
         <div className="absolute bottom-1 left-1/2 max-w-[250px] -translate-x-1/2 -translate-y-1/2 transform justify-items-center text-center md:top-[50%] md:justify-items-start md:text-start lg:left-[45%]">
@@ -52,14 +52,14 @@ export default async function HomePage() {
             New{" "}
             <Link
               href={`/recipes/?search=${seasonalFood}`}
-              className="hover:text-foreground/80 font-bold transition-colors"
+              className="font-bold transition-colors hover:text-foreground/80"
             >
               {seasonalFood}
             </Link>{" "}
             season has started, let&apos;s cook!
           </p>
         </div>
-        <div className="absolute right-0 bottom-5 hidden md:mr-[3em] md:flex lg:mr-[6em] xl:mr-[15em] 2xl:mr-[25em]">
+        <div className="absolute bottom-5 right-0 hidden md:mr-[3em] md:flex lg:mr-[6em] xl:mr-[15em] 2xl:mr-[25em]">
           <img
             src="/images/iphone-left-dark.png"
             alt="hero"
@@ -74,7 +74,7 @@ export default async function HomePage() {
 
         <div
           className={cn(
-            "font-header container flex h-[100%] max-w-[1325px] flex-col items-center justify-center text-7xl font-bold md:items-start md:text-8xl lg:text-9xl"
+            "container flex h-[100%] max-w-[1325px] flex-col items-center justify-center font-header text-7xl font-bold md:items-start md:text-8xl lg:text-9xl"
           )}
         >
           <p>Chef</p>

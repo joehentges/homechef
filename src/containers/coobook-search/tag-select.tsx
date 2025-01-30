@@ -11,7 +11,7 @@ export function TagSelect(props: TagSelectProps) {
 
   return (
     <MultipleSelector
-      className="rounded-3xl bg-white hover:bg-white xl:min-w-[400px] dark:bg-black dark:hover:bg-black"
+      className="rounded-3xl bg-white hover:bg-white dark:bg-black dark:hover:bg-black xl:min-w-[400px]"
       options={availableTags.map((tag) => ({
         value: tag.name,
         label: tag.name,

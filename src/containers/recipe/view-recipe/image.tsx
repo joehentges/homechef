@@ -25,7 +25,7 @@ export function RecipeImage(props: RecipeImageProps) {
               backgroundImage: `url('${photo}')`,
             }}
           >
-            <div className="bg-primary/10 h-full w-full rounded-l-3xl opacity-0 transition-opacity group-hover:opacity-100" />
+            <div className="h-full w-full rounded-l-3xl bg-primary/10 opacity-0 transition-opacity group-hover:opacity-100" />
           </div>
         </DialogTrigger>
         <DialogContent className="w-auto">
@@ -43,8 +43,8 @@ export function RecipeImage(props: RecipeImageProps) {
   }
 
   return (
-    <div className="bg-primary/20 relative h-[250px] w-[350px] max-w-full rounded-2xl md:h-[125px] md:w-[185px] md:rounded-l-3xl">
-      <CookingPotIcon className="text-muted-foreground absolute top-1/2 left-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 transform" />
+    <div className="relative h-[250px] w-[350px] max-w-full rounded-2xl bg-primary/20 md:h-[125px] md:w-[185px] md:rounded-l-3xl">
+      <CookingPotIcon className="absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 transform text-muted-foreground" />
     </div>
   )
 }

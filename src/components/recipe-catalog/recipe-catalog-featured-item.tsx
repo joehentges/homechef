@@ -22,7 +22,7 @@ export function RecipeCatalogFeaturedItem(
           <p>Uknown</p>
           <User2Icon
             className={
-              "group-hover:text-foreground/80 h-4 w-4 transition-colors"
+              "h-4 w-4 transition-colors group-hover:text-foreground/80"
             }
           />
         </div>
@@ -34,7 +34,7 @@ export function RecipeCatalogFeaturedItem(
           <p>{servingsNum}</p>
           <User2Icon
             className={
-              "group-hover:text-foreground/80 h-4 w-4 transition-colors"
+              "h-4 w-4 transition-colors group-hover:text-foreground/80"
             }
           />
         </div>
@@ -46,7 +46,7 @@ export function RecipeCatalogFeaturedItem(
       .map((_, index) => (
         <User2Icon
           key={index}
-          className={"group-hover:text-foreground/80 h-4 w-4 transition-colors"}
+          className={"h-4 w-4 transition-colors group-hover:text-foreground/80"}
         />
       ))
   }
@@ -54,7 +54,7 @@ export function RecipeCatalogFeaturedItem(
   return (
     <Link
       href={`/recipes/${id}`}
-      className="group flex h-full flex-col gap-x-4 rounded-3xl bg-white md:flex-row dark:bg-black"
+      className="group flex h-full flex-col gap-x-4 rounded-3xl bg-white dark:bg-black md:flex-row"
     >
       {!!photo ? (
         <div
@@ -63,19 +63,19 @@ export function RecipeCatalogFeaturedItem(
             backgroundImage: `url('${photo}')`,
           }}
         >
-          <div className="bg-primary/10 h-full w-full rounded-l-3xl opacity-0 transition-opacity group-hover:opacity-100" />
+          <div className="h-full w-full rounded-l-3xl bg-primary/10 opacity-0 transition-opacity group-hover:opacity-100" />
         </div>
       ) : (
-        <div className="min-h-[200px] w-full rounded-t-3xl bg-white md:rounded-l-3xl md:rounded-tr-none dark:bg-black">
-          <div className="bg-primary/30 group-hover:bg-primary/40 relative h-full w-full rounded-t-3xl transition-colors md:rounded-l-3xl md:rounded-tr-none">
-            <CookingPotIcon className="text-muted-foreground absolute top-1/2 left-1/2 h-20 w-20 -translate-x-1/2 -translate-y-1/2 transform" />
+        <div className="min-h-[200px] w-full rounded-t-3xl bg-white dark:bg-black md:rounded-l-3xl md:rounded-tr-none">
+          <div className="relative h-full w-full rounded-t-3xl bg-primary/30 transition-colors group-hover:bg-primary/40 md:rounded-l-3xl md:rounded-tr-none">
+            <CookingPotIcon className="absolute left-1/2 top-1/2 h-20 w-20 -translate-x-1/2 -translate-y-1/2 transform text-muted-foreground" />
           </div>
         </div>
       )}
 
       <div className="flex w-full flex-col justify-between gap-y-6 p-6">
         <div className="flex flex-col gap-y-6">
-          <p className="group-hover:text-foreground/80 text-xl font-bold transition-colors md:text-3xl">
+          <p className="text-xl font-bold transition-colors group-hover:text-foreground/80 md:text-3xl">
             {title}
           </p>
           <p className="text-xs md:text-sm">{description}</p>
@@ -88,7 +88,7 @@ export function RecipeCatalogFeaturedItem(
           </div>
           <div className="w-full space-y-2">
             <p>Cook Time</p>
-            <p className="group-hover:text-foreground/80 font-bold transition-colors">
+            <p className="font-bold transition-colors group-hover:text-foreground/80">
               {formatTime(cookTime + prepTime)}
             </p>
           </div>

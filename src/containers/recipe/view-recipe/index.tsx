@@ -59,7 +59,7 @@ export function ViewRecipe(props: ViewRecipeProps) {
           ref={recipePrintVersionRef}
         />
       </div>
-      <div className="bg-primary/20 container max-w-[1000px] space-y-6 rounded-3xl p-4 md:p-8">
+      <div className="container max-w-[1000px] space-y-6 rounded-3xl bg-primary/20 p-4 md:p-8">
         <div className="flex flex-col items-center gap-x-6 gap-y-4 md:flex-row md:items-start">
           <RecipeImage photo={recipe.photo} />
 
@@ -72,7 +72,7 @@ export function ViewRecipe(props: ViewRecipeProps) {
                 {author && (
                   <Link
                     href={`/chefs/${author.id}`}
-                    className="text-muted-foreground hover:text-foreground transition-colors"
+                    className="text-muted-foreground transition-colors hover:text-foreground"
                   >
                     <p>From: {author.displayName}</p>
                   </Link>
@@ -84,7 +84,7 @@ export function ViewRecipe(props: ViewRecipeProps) {
                   />
                 )}
               </div>
-              <div className="text-muted-foreground flex flex-row gap-x-4 pt-2">
+              <div className="flex flex-row gap-x-4 pt-2 text-muted-foreground">
                 {author && user && user.id === author.id && (
                   <DisplayStatus isPrivate={recipe.private} />
                 )}
@@ -100,7 +100,7 @@ export function ViewRecipe(props: ViewRecipeProps) {
                 )}
                 <button
                   onClick={() => reactToPrintFn()}
-                  className="hover:text-foreground transition-colors"
+                  className="transition-colors hover:text-foreground"
                 >
                   <PrinterIcon className="h-5 w-5" />
                 </button>
@@ -111,7 +111,7 @@ export function ViewRecipe(props: ViewRecipeProps) {
                       url: window.location.href,
                     })
                   }
-                  className="hover:text-foreground transition-colors"
+                  className="transition-colors hover:text-foreground"
                 >
                   <Share2Icon className="h-5 w-5" />
                 </button>

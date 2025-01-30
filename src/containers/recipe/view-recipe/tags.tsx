@@ -23,7 +23,7 @@ export function RecipeTags(props: RecipeTagsProps) {
 
   return (
     <Dialog>
-      <DialogTrigger className="hover:bg-primary/20 flex flex-row items-center gap-x-1 rounded-3xl px-2 py-1 transition-colors md:px-4 md:py-2">
+      <DialogTrigger className="flex flex-row items-center gap-x-1 rounded-3xl px-2 py-1 transition-colors hover:bg-primary/20 md:px-4 md:py-2">
         <TagIcon className="h-[16px] w-[16px]" />
         <p className="md:text-start">{tags[0]}</p>
       </DialogTrigger>

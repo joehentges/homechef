@@ -21,7 +21,7 @@ export function EnableEditView(props: EnableEditViewProps) {
       <Tooltip delayDuration={0}>
         <TooltipTrigger
           onClick={enableEditView}
-          className="text-muted-foreground hover:text-foreground transition-colors"
+          className="text-muted-foreground transition-colors hover:text-foreground"
         >
           <PencilIcon className="h-5 w-5" />
         </TooltipTrigger>

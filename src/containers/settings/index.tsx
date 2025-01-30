@@ -11,7 +11,7 @@ export function Settings(props: SettingsProps) {
   const { user } = props
 
   return (
-    <div className="bg-primary/20 relative container max-w-[750px] space-y-8 rounded-3xl py-8">
+    <div className="container relative max-w-[750px] space-y-8 rounded-3xl bg-primary/20 py-8">
       <p className="text-3xl">Settings</p>
       <ChangeEmail
         currentEmail={user.email}

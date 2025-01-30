@@ -84,7 +84,7 @@ export function EditProfile(props: EditProfileProps) {
           <div className="flex flex-row items-center gap-x-4">
             <button
               onClick={onBackButtonClicked}
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="text-muted-foreground transition-colors hover:text-foreground"
             >
               <MoveLeftIcon />
             </button>
@@ -99,7 +99,7 @@ export function EditProfile(props: EditProfileProps) {
           </LoaderButton>
         </div>
 
-        <div className="bg-primary/20 container max-w-[1000px] space-y-6 rounded-3xl p-4 md:p-8">
+        <div className="container max-w-[1000px] space-y-6 rounded-3xl bg-primary/20 p-4 md:p-8">
           <div className="flex flex-col items-center gap-x-6 gap-y-4 md:flex-row md:items-start">
             <FormField
               control={form.control}

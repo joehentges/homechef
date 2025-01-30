@@ -65,12 +65,12 @@ export function EditImage(props: EditImageProps) {
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger>
         <div
-          className="group bg-primary h-[200px] max-h-[200px] min-h-[200px] w-[200px] max-w-[200px] min-w-[200px] rounded-2xl border-4 bg-cover bg-center bg-no-repeat"
+          className="group h-[200px] max-h-[200px] min-h-[200px] w-[200px] min-w-[200px] max-w-[200px] rounded-2xl border-4 bg-primary bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: `url('${image ? image : getAvatarImageUrl(displayName)}')`,
           }}
         >
-          <div className="bg-primary/20 h-full w-full rounded-2xl opacity-0 transition-opacity hover:opacity-100" />
+          <div className="h-full w-full rounded-2xl bg-primary/20 opacity-0 transition-opacity hover:opacity-100" />
         </div>
       </DialogTrigger>
       <DialogContent className="w-auto">
@@ -83,8 +83,8 @@ export function EditImage(props: EditImageProps) {
             }}
           />
         ) : (
-          <div className="bg-primary/20 relative h-[250px] w-[300px] rounded-2xl">
-            <CookingPotIcon className="text-muted-foreground absolute top-1/2 left-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 transform" />
+          <div className="relative h-[250px] w-[300px] rounded-2xl bg-primary/20">
+            <CookingPotIcon className="absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 transform text-muted-foreground" />
           </div>
         )}
         <div className="space-y-2">
@@ -96,7 +96,7 @@ export function EditImage(props: EditImageProps) {
             onChange={(e) => setImagePathInput(e.target.value)}
           />
           {pathPathError && (
-            <p className="text-destructive text-xs">Image url must be valid</p>
+            <p className="text-xs text-destructive">Image url must be valid</p>
           )}
           <DialogFooter className="space-x-2">
             <Button onClick={onImageSet}>Set image</Button>

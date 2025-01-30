@@ -69,11 +69,11 @@ export function EditImage(props: EditImageProps) {
               backgroundImage: `url('${photo}')`,
             }}
           >
-            <div className="bg-primary/10 h-full w-full rounded-l-3xl opacity-0 transition-opacity group-hover:opacity-100" />
+            <div className="h-full w-full rounded-l-3xl bg-primary/10 opacity-0 transition-opacity group-hover:opacity-100" />
           </div>
         ) : (
-          <div className="bg-primary/20 hover:bg-primary/10 relative h-[250px] w-[350px] max-w-full rounded-2xl transition-colors md:h-[125px] md:w-[150px] md:rounded-l-3xl">
-            <CookingPotIcon className="text-muted-foreground absolute top-1/2 left-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 transform" />
+          <div className="relative h-[250px] w-[350px] max-w-full rounded-2xl bg-primary/20 transition-colors hover:bg-primary/10 md:h-[125px] md:w-[150px] md:rounded-l-3xl">
+            <CookingPotIcon className="absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 transform text-muted-foreground" />
           </div>
         )}
       </DialogTrigger>
@@ -87,8 +87,8 @@ export function EditImage(props: EditImageProps) {
             }}
           />
         ) : (
-          <div className="bg-primary/20 relative h-[250px] w-[300px] rounded-2xl">
-            <CookingPotIcon className="text-muted-foreground absolute top-1/2 left-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 transform" />
+          <div className="relative h-[250px] w-[300px] rounded-2xl bg-primary/20">
+            <CookingPotIcon className="absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 transform text-muted-foreground" />
           </div>
         )}
         <div className="space-y-2">
@@ -100,7 +100,7 @@ export function EditImage(props: EditImageProps) {
             onChange={(e) => setPhotoPathInput(e.target.value)}
           />
           {pathPathError && (
-            <p className="text-destructive text-xs">Photo url must be valid</p>
+            <p className="text-xs text-destructive">Photo url must be valid</p>
           )}
           <DialogFooter className="space-x-2">
             <Button onClick={onPhotoSet}>Set photo</Button>

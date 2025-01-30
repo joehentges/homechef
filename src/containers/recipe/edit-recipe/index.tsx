@@ -202,7 +202,7 @@ export function EditRecipe(props: EditRecipeProps) {
             {onDisableEditView && (
               <button
                 onClick={onBackButtonClicked}
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-muted-foreground transition-colors hover:text-foreground"
               >
                 <MoveLeftIcon />
               </button>
@@ -222,14 +222,14 @@ export function EditRecipe(props: EditRecipeProps) {
                         id="switch-13"
                         checked={field.value}
                         onCheckedChange={field.onChange}
-                        className="peer data-[state=unchecked]:bg-input/50 absolute inset-0 h-[inherit] w-auto [&_span]:z-10 [&_span]:h-full [&_span]:w-1/2 [&_span]:transition-transform [&_span]:duration-300 [&_span]:[transition-timing-function:cubic-bezier(0.16,1,0.3,1)] [&_span]:data-[state=checked]:translate-x-full [&_span]:data-[state=checked]:rtl:-translate-x-full"
+                        className="peer absolute inset-0 h-[inherit] w-auto data-[state=unchecked]:bg-input/50 [&_span]:z-10 [&_span]:h-full [&_span]:w-1/2 [&_span]:transition-transform [&_span]:duration-300 [&_span]:[transition-timing-function:cubic-bezier(0.16,1,0.3,1)] [&_span]:data-[state=checked]:translate-x-full [&_span]:data-[state=checked]:rtl:-translate-x-full"
                       />
                       <span className="min-w-78flex pointer-events-none relative ms-0.5 items-center justify-center px-2 text-center transition-transform duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] peer-data-[state=checked]:invisible peer-data-[state=unchecked]:translate-x-full peer-data-[state=unchecked]:rtl:-translate-x-full">
                         <span className="text-[10px] font-medium uppercase">
                           Public
                         </span>
                       </span>
-                      <span className="min-w-78flex peer-data-[state=checked]:text-background pointer-events-none relative me-0.5 items-center justify-center px-2 text-center transition-transform duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] peer-data-[state=checked]:-translate-x-full peer-data-[state=unchecked]:invisible peer-data-[state=checked]:rtl:translate-x-full">
+                      <span className="min-w-78flex pointer-events-none relative me-0.5 items-center justify-center px-2 text-center transition-transform duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] peer-data-[state=unchecked]:invisible peer-data-[state=checked]:-translate-x-full peer-data-[state=checked]:text-background peer-data-[state=checked]:rtl:translate-x-full">
                         <span className="text-[10px] font-medium uppercase">
                           Private
                         </span>
@@ -250,7 +250,7 @@ export function EditRecipe(props: EditRecipeProps) {
           </div>
         </div>
 
-        <div className="bg-primary/20 container max-w-[1000px] space-y-6 rounded-3xl p-4 md:p-8">
+        <div className="container max-w-[1000px] space-y-6 rounded-3xl bg-primary/20 p-4 md:p-8">
           <div className="flex flex-col items-center gap-x-6 gap-y-4 md:flex-row md:items-start">
             <FormField
               control={form.control}
@@ -318,7 +318,7 @@ export function EditRecipe(props: EditRecipeProps) {
                               placeholder="Prep time"
                               type="number"
                             />
-                            <span className="text-muted-foreground pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-sm peer-disabled:opacity-50">
+                            <span className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-sm text-muted-foreground peer-disabled:opacity-50">
                               min
                             </span>
                           </div>
@@ -342,7 +342,7 @@ export function EditRecipe(props: EditRecipeProps) {
                               placeholder="Cook time"
                               type="number"
                             />
-                            <span className="text-muted-foreground pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-sm peer-disabled:opacity-50">
+                            <span className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-sm text-muted-foreground peer-disabled:opacity-50">
                               min
                             </span>
                           </div>
@@ -420,7 +420,7 @@ export function EditRecipe(props: EditRecipeProps) {
                 render={({ field }) => (
                   <FormItem>
                     {form.formState.errors.ingredients && (
-                      <p className="text-destructive text-sm">
+                      <p className="text-sm text-destructive">
                         Ingredients must be between 3 and 100 characters
                       </p>
                     )}
@@ -443,7 +443,7 @@ export function EditRecipe(props: EditRecipeProps) {
                 render={({ field }) => (
                   <FormItem>
                     {form.formState.errors.directions && (
-                      <p className="text-destructive text-sm">
+                      <p className="text-sm text-destructive">
                         Ingredients must be between 3 and 100 characters
                       </p>
                     )}

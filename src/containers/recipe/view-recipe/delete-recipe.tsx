@@ -96,7 +96,7 @@ export function DeleteRecipe(props: DeleteRecipeProps) {
           <DialogTrigger asChild>
             <TooltipTrigger
               asChild
-              className="hover:text-foreground transition-colors"
+              className="transition-colors hover:text-foreground"
             >
               <TrashIcon className="h-5 w-5" />
             </TooltipTrigger>

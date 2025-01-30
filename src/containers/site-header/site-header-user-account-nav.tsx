@@ -28,7 +28,7 @@ export function SiteHeaderUserAccountNav(props: UserAccountNavProps) {
     <DropdownMenu>
       <DropdownMenuTrigger>
         <div className="relative">
-          <ChefHatIcon className="fill-background absolute -top-[0.85em] left-[1em] z-10 h-6 w-6 rotate-[30deg] dark:text-white" />
+          <ChefHatIcon className="absolute -top-[0.85em] left-[1em] z-10 h-6 w-6 rotate-[30deg] fill-background dark:text-white" />
           <UserAvatar
             displayName={displayName}
             image={image}
@@ -40,7 +40,7 @@ export function SiteHeaderUserAccountNav(props: UserAccountNavProps) {
         <div className="flex items-center justify-start gap-2 p-2">
           <div className="flex flex-col space-y-1 leading-none">
             <p className="font-medium">{displayName}</p>
-            <p className="text-muted-foreground w-[200px] truncate text-sm">
+            <p className="w-[200px] truncate text-sm text-muted-foreground">
               {email}
             </p>
           </div>

@@ -20,8 +20,8 @@ export function SelectedFeaturedRecipe(props: SelectedFeaturedRecipeProps) {
           />
         ) : (
           <div className="h-[150px] w-[200px] rounded-2xl bg-white dark:bg-black">
-            <div className="bg-primary/30 relative h-full w-full rounded-2xl">
-              <CookingPotIcon className="text-muted-foreground absolute top-1/2 left-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 transform" />
+            <div className="relative h-full w-full rounded-2xl bg-primary/30">
+              <CookingPotIcon className="absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 transform text-muted-foreground" />
             </div>
           </div>
         )}

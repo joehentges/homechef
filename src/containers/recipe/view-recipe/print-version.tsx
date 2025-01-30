@@ -59,7 +59,7 @@ export function RecipePrintVersion(props: RecipePrintVersionProps) {
                   <li key={ingredient.orderNumber}>
                     <p>{ingredient.description}</p>
                     {index < ingredients.length - 1 && (
-                      <div className="border-t-muted-foreground my-3 border-t" />
+                      <div className="my-3 border-t border-t-muted-foreground" />
                     )}
                   </li>
                 )
@@ -79,7 +79,7 @@ export function RecipePrintVersion(props: RecipePrintVersionProps) {
                       key={`${direction.orderNumber}-direction`}
                       className="flex flex-row gap-x-2"
                     >
-                      <p className="text-muted-foreground text-xl font-bold">
+                      <p className="text-xl font-bold text-muted-foreground">
                         {direction.orderNumber + 1}
                       </p>
                       <p className="text-lg">{direction.description}</p>

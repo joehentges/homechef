@@ -13,7 +13,7 @@ interface FeaturedRecipeProps {
 export function FeaturedRecipe(props: FeaturedRecipeProps) {
   const { id, photo, title, description } = props
   return (
-    <div className="group hover:bg-primary/20 dark:hover:bg-primary/10 justify-self-center rounded-2xl transition-colors md:w-3/4">
+    <div className="group justify-self-center rounded-2xl transition-colors hover:bg-primary/20 dark:hover:bg-primary/10 md:w-3/4">
       <Link href={`/recipes/${id}`}>
         <div className="flex flex-col items-center gap-x-4 rounded-2xl p-4 md:flex-row">
           {!!photo ? (
@@ -25,8 +25,8 @@ export function FeaturedRecipe(props: FeaturedRecipeProps) {
             />
           ) : (
             <div className="h-[150px] w-[200px] rounded-2xl bg-white dark:bg-black">
-              <div className="bg-primary/30 relative h-full w-full rounded-2xl">
-                <CookingPotIcon className="text-muted-foreground absolute top-1/2 left-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 transform" />
+              <div className="relative h-full w-full rounded-2xl bg-primary/30">
+                <CookingPotIcon className="absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 transform text-muted-foreground" />
               </div>
             </div>
           )}

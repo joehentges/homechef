@@ -102,7 +102,7 @@ export function ChangeEmail(props: ChangeEmailProps) {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger className="text-primary">
-                <XIcon className="text-destructive h-5 w-5" />
+                <XIcon className="h-5 w-5 text-destructive" />
               </TooltipTrigger>
               <TooltipContent>You have not verified your email</TooltipContent>
             </Tooltip>
