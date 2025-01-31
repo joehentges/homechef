@@ -29,6 +29,13 @@
       "when": 1738115765791,
       "tag": "0003_special_zarda",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1738283243709,
+      "tag": "0004_striped_ultragirl",
+      "breakpoints": true
     }
   ]
 }

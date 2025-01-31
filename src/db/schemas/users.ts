@@ -8,7 +8,7 @@ export const users = pgTable("users", {
   dateUpdated: timestamp("date_updated", { mode: "date" })
     .defaultNow()
     .notNull(),
-  email: text("email").notNull(),
+  email: text("email").unique().notNull(),
   emailVerified: timestamp("email_verified", { mode: "date" }),
   password: text("password"),
   displayName: text("display_name").notNull(),

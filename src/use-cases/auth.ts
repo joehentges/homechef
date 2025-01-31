@@ -170,6 +170,10 @@ export async function updateEmailUseCase(
   email: User["email"]
 ) {
   await createTransaction(async (trx) => {
+    const existingUser = await getUserByEmail(email)
+    if (existingUser) {
+      throw new Error("Email already in use")
+    }
     await updateUser(userId, { email, emailVerified: null }, trx)
     const token = await createVerifyEmailToken(userId, trx)
     await sendVerifyEmail(email, token)
