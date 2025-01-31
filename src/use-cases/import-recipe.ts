@@ -3,8 +3,8 @@
 import * as cheerio from "cheerio"
 import * as he from "he"
 
-import { PrimaryKey } from "@/types"
 import { RecipeDetails, RecipeDifficulty } from "@/types/Recipe"
+import { RecipeImportDetails, User } from "@/db/schemas"
 import { addRecipeDirections } from "@/data-access/recipe-directions"
 import { addRecipeIngredients } from "@/data-access/recipe-ingredients"
 import { addRecipeTags } from "@/data-access/recipe-tags"
@@ -241,7 +241,7 @@ function getPhoto(photos: any): string | undefined {
 
 interface FormattedImportRecipeDetails {
   importDetails: {
-    importedBy?: PrimaryKey
+    importedBy?: User["id"]
     url: string
   }
   recipe: {
@@ -390,8 +390,8 @@ export async function importRecipeUseCase(url: string, importedBy?: number) {
 }
 
 export async function addUserRecipeImportUseCase(
-  recipeImportDetailsId: PrimaryKey,
-  userId: PrimaryKey
+  recipeImportDetailsId: RecipeImportDetails["id"],
+  userId: User["id"]
 ) {
   return addUserRecipeImport({
     recipeImportDetailsId,

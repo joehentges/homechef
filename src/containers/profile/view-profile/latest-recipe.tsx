@@ -1,10 +1,10 @@
 import Link from "next/link"
 import { CookingPotIcon } from "lucide-react"
 
-import { PrimaryKey } from "@/types"
+import { Recipe } from "@/db/schemas"
 
 interface LatestRecipeProps {
-  id: PrimaryKey
+  id: Recipe["id"]
   photo: string | null
   title: string
   description: string | null

@@ -1,3 +1,5 @@
+import { User } from "@/db/schemas"
+
 export type RecipesOrderBy = "newest" | "easiest" | "fastest"
 
 export type SearchRecipeQuery = {
@@ -12,5 +14,5 @@ export type SearchRecipeParams = {
   includePrivateRecipes?: boolean
   includeUserRecipes?: boolean
   userRecipesOnly?: boolean
-  userId?: PrimaryKey
+  userId?: User["id"]
 }

@@ -1,7 +1,7 @@
-import { PrimaryKey } from "./index"
+import { User } from "@/db/schemas"
 
 export type UserDetails = {
-  id: PrimaryKey
+  id: User["id"]
   displayName: string
   image: string | null
   userRecipeCount: number

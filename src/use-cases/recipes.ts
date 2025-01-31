@@ -1,13 +1,12 @@
 import { cache } from "react"
 
-import { PrimaryKey } from "@/types"
 import {
   IngredientOrDirection,
   RecipeDetails,
   RecipeWithTags,
 } from "@/types/Recipe"
 import { SearchRecipeParams, SearchRecipeQuery } from "@/types/SearchRecipes"
-import { User } from "@/db/schemas"
+import { Recipe, User } from "@/db/schemas"
 import {
   addRecipeDirections,
   deleteRecipeDirectionsByRecipeId,
@@ -48,7 +47,7 @@ import { getUser } from "@/data-access/users"
 import { createTransaction } from "@/data-access/utils"
 import { redis } from "@/client/redis"
 
-export async function getRecipeUseCase(recipeId: PrimaryKey) {
+export async function getRecipeUseCase(recipeId: Recipe["id"]) {
   return getRecipe(recipeId)
 }
 
@@ -73,7 +72,7 @@ export async function getFeaturedRecipesUseCase(limit: number = 24) {
 }
 
 export async function getRecipeDetailsUseCase(
-  recipeId: PrimaryKey
+  recipeId: Recipe["id"]
 ): Promise<RecipeDetails> {
   const recipe = await getRecipe(recipeId)
 
@@ -109,7 +108,7 @@ export async function getRecipeDetailsUseCase(
 
 export async function getRecipeImportDetailsByUrlUseCase(
   url: string,
-  userId?: PrimaryKey
+  userId?: User["id"]
 ) {
   const recipeImportDetails = await getRecipeImportDetailsByUrl(url)
   let userRecipeImport
@@ -251,27 +250,27 @@ export async function updateRecipeUseCase(
   return updatedRecipeDetails as RecipeDetails
 }
 
-export async function deleteRecipeUseCase(recipeId: PrimaryKey) {
+export async function deleteRecipeUseCase(recipeId: Recipe["id"]) {
   await deleteRecipe(recipeId)
 }
 
 export async function isRecipeSavedUseCase(
-  recipeId: PrimaryKey,
-  userId: PrimaryKey
+  recipeId: Recipe["id"],
+  userId: User["id"]
 ): Promise<boolean> {
   return !!(await getUserRecipeByRecipeIdAndUserId(recipeId, userId))
 }
 
 export async function saveRecipeUseCase(
-  recipeId: PrimaryKey,
-  userId: PrimaryKey
+  recipeId: Recipe["id"],
+  userId: User["id"]
 ) {
   return addUserRecipe(recipeId, userId)
 }
 
 export async function unsaveRecipeUseCase(
-  recipeId: PrimaryKey,
-  userId: PrimaryKey
+  recipeId: Recipe["id"],
+  userId: User["id"]
 ) {
   return deleteUserRecipeByRecipeIdAndUserId(recipeId, userId)
 }

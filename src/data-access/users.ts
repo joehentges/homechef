@@ -1,7 +1,6 @@
 import argon2 from "argon2"
 import { and, asc, desc, eq, ilike, ne, or, sql } from "drizzle-orm"
 
-import { PrimaryKey } from "@/types"
 import { SearchUsersQuery } from "@/types/SearchUsers"
 import { UserDetails } from "@/types/UserDetails"
 import { database } from "@/db"
@@ -18,7 +17,7 @@ export async function verifyPasswordHash(
   return argon2.verify(hash, password)
 }
 
-export async function getUser(userId: PrimaryKey): Promise<User | undefined> {
+export async function getUser(userId: User["id"]): Promise<User | undefined> {
   const user = await database.query.users.findFirst({
     where: eq(users.id, userId),
   })
@@ -35,7 +34,7 @@ export async function getUserByEmail(email: string): Promise<User | undefined> {
 }
 
 export async function verifyPassword(
-  userId: PrimaryKey,
+  userId: User["id"],
   plainTextPassword: string
 ): Promise<boolean> {
   const user = await getUser(userId)
@@ -54,7 +53,7 @@ export async function verifyPassword(
 }
 
 export async function updateUser(
-  userId: PrimaryKey,
+  userId: User["id"],
   updatedUser: Partial<User>,
   trx = database
 ): Promise<void> {
@@ -68,7 +67,7 @@ export async function updateUser(
 }
 
 export async function updatePassword(
-  userId: PrimaryKey,
+  userId: User["id"],
   password: string,
   trx = database
 ): Promise<void> {
@@ -81,7 +80,7 @@ export async function updatePassword(
     .where(eq(users.id, userId))
 }
 
-export async function setEmailVerified(userId: PrimaryKey): Promise<void> {
+export async function setEmailVerified(userId: User["id"]): Promise<void> {
   await database
     .update(users)
     .set({

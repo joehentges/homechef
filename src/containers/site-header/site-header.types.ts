@@ -1,4 +1,4 @@
-import { PrimaryKey } from "@/types"
+import { User } from "@/db/schemas"
 
 export type NavItem = {
   title: string
@@ -7,7 +7,7 @@ export type NavItem = {
 }
 
 export type SiteSearchUser = {
-  id: PrimaryKey
+  id: User["id"]
   displayName: string
   image: string | null
 }

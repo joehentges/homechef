@@ -1,6 +1,5 @@
 import { animals, colors, uniqueNamesGenerator } from "unique-names-generator"
 
-import { PrimaryKey } from "@/types"
 import { CustomError, LoginError } from "@/errors"
 import { User } from "@/db/schemas"
 import {
@@ -159,7 +158,7 @@ export async function changePasswordWithTokenUseCase(
 }
 
 export async function changePasswordUseCase(
-  userId: PrimaryKey,
+  userId: User["id"],
   password: string
 ) {
   await updatePassword(userId, password)

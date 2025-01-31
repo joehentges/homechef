@@ -9,9 +9,9 @@ import {
 } from "nuqs"
 import { useServerAction } from "zsa-react"
 
-import { PrimaryKey } from "@/types"
 import { UsersOrderBy } from "@/types/SearchUsers"
 import { UserDetails } from "@/types/UserDetails"
+import { User } from "@/db/schemas"
 import { CatalogPagination } from "@/components/catalog-pagination"
 import { ChefCatalog } from "@/components/chef-catalog"
 import { useDebounce } from "@/hooks/use-debounce"
@@ -22,7 +22,7 @@ import { Input } from "./input"
 import { OrderBySelect } from "./order-by-select"
 
 interface ChefSearchProps {
-  userId?: PrimaryKey
+  userId?: User["id"]
   initialChefs: UserDetails[]
   initialChefsCount: number
   chefsPerPageLimit: number

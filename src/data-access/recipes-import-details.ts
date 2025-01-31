@@ -1,8 +1,12 @@
 import { eq } from "drizzle-orm"
 
-import { PrimaryKey } from "@/types"
 import { database } from "@/db"
-import { RecipeImportDetails, recipeImportDetails } from "@/db/schemas"
+import {
+  Recipe,
+  RecipeImportDetails,
+  recipeImportDetails,
+  User,
+} from "@/db/schemas"
 
 export async function getRecipeImportDetailsByUrl(
   url: string
@@ -16,7 +20,7 @@ export async function getRecipeImportDetailsByUrl(
 }
 
 export async function getRecipeImportDetailsByRecipeId(
-  recipeId: PrimaryKey
+  recipeId: Recipe["id"]
 ): Promise<RecipeImportDetails | undefined> {
   const recipeImportDetailsData =
     await database.query.recipeImportDetails.findFirst({
@@ -28,8 +32,8 @@ export async function getRecipeImportDetailsByRecipeId(
 
 export async function addRecipeImportDetails(
   importDetails: {
-    importedBy?: PrimaryKey
-    recipeId: PrimaryKey
+    importedBy?: User["id"]
+    recipeId: Recipe["id"]
     url: string
   },
   trx = database

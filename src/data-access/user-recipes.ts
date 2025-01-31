@@ -1,12 +1,11 @@
 import { and, eq } from "drizzle-orm"
 
-import { PrimaryKey } from "@/types"
 import { database } from "@/db"
-import { UserRecipe, userRecipes } from "@/db/schemas"
+import { Recipe, User, UserRecipe, userRecipes } from "@/db/schemas"
 
 export async function getUserRecipeByRecipeIdAndUserId(
-  recipeId: PrimaryKey,
-  userId: PrimaryKey
+  recipeId: Recipe["id"],
+  userId: User["id"]
 ) {
   const userRecipe = await database.query.userRecipes.findFirst({
     where: and(
@@ -19,8 +18,8 @@ export async function getUserRecipeByRecipeIdAndUserId(
 }
 
 export async function addUserRecipe(
-  recipeId: PrimaryKey,
-  userId: PrimaryKey,
+  recipeId: Recipe["id"],
+  userId: User["id"],
   trx = database
 ): Promise<UserRecipe> {
   const [userRecipe] = await trx
@@ -35,8 +34,8 @@ export async function addUserRecipe(
 }
 
 export async function deleteUserRecipeByRecipeIdAndUserId(
-  recipeId: PrimaryKey,
-  userId: PrimaryKey,
+  recipeId: Recipe["id"],
+  userId: User["id"],
   trx = database
 ) {
   await trx

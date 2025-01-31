@@ -12,9 +12,8 @@ import {
 } from "nuqs"
 import { useServerAction } from "zsa-react"
 
-import { PrimaryKey } from "@/types"
 import { RecipesOrderBy } from "@/types/SearchRecipes"
-import { Recipe } from "@/db/schemas"
+import { Recipe, User } from "@/db/schemas"
 import { Button } from "@/components/ui/button"
 import {
   Tooltip,
@@ -38,7 +37,7 @@ interface RecipeSearchProps {
   initialRecipes: Recipe[]
   initialRecipesCount: number
   availableTags: { name: string }[]
-  userId?: PrimaryKey
+  userId?: User["id"]
 }
 
 export function RecipeSearch(props: RecipeSearchProps) {

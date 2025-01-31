@@ -1,4 +1,4 @@
-import { PrimaryKey } from "./index"
+import { User } from "@/db/schemas"
 
 export type UsersOrderBy = "alphabetically" | "importedcount" | "createdcount"
 
@@ -7,5 +7,5 @@ export type SearchUsersQuery = {
   orderBy?: UsersOrderBy
   limit?: number
   offset?: number
-  userId?: PrimaryKey // to be excluded
+  userId?: User["id"] // to be excluded
 }

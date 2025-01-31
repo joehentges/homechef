@@ -1,11 +1,10 @@
 import { eq } from "drizzle-orm"
 
-import { PrimaryKey } from "@/types"
 import { database } from "@/db"
-import { RecipeDirection, recipeDirections } from "@/db/schemas"
+import { Recipe, RecipeDirection, recipeDirections } from "@/db/schemas"
 
 export async function getRecipeDirectionsByRecipeId(
-  recipeId: PrimaryKey
+  recipeId: Recipe["id"]
 ): Promise<RecipeDirection[] | undefined> {
   const recipeDirection = await database.query.recipeDirections.findMany({
     where: eq(recipeDirections.recipeId, recipeId),
@@ -15,7 +14,7 @@ export async function getRecipeDirectionsByRecipeId(
 }
 
 export async function addRecipeDirections(
-  recipeId: PrimaryKey,
+  recipeId: Recipe["id"],
   directions: { orderNumber: number; description: string }[],
   trx = database
 ): Promise<RecipeDirection[]> {
@@ -34,7 +33,7 @@ export async function addRecipeDirections(
 }
 
 export async function deleteRecipeDirectionsByRecipeId(
-  recipeId: PrimaryKey,
+  recipeId: Recipe["id"],
   trx = database
 ) {
   await trx

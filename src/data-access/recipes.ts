@@ -10,11 +10,18 @@ import {
   sql,
 } from "drizzle-orm"
 
-import { PrimaryKey } from "@/types"
 import { RecipeDifficulty, RecipeWithTags } from "@/types/Recipe"
 import { SearchRecipeParams, SearchRecipeQuery } from "@/types/SearchRecipes"
 import { database } from "@/db"
-import { recipes, recipeTags, tags, userRecipes, users } from "@/db/schemas"
+import {
+  Recipe,
+  recipes,
+  recipeTags,
+  tags,
+  User,
+  userRecipes,
+  users,
+} from "@/db/schemas"
 
 function defaultRecipeQuery() {
   return database
@@ -50,7 +57,7 @@ function defaultRecipeQuery() {
 }
 
 export async function getRecipe(
-  recipeId: PrimaryKey
+  recipeId: Recipe["id"]
 ): Promise<RecipeWithTags | undefined> {
   const [recipe] = await defaultRecipeQuery()
     .where(eq(recipes.id, recipeId))
@@ -61,7 +68,7 @@ export async function getRecipe(
 
 export async function getRandomRecipes(
   limit: number,
-  userId?: PrimaryKey
+  userId?: User["id"]
 ): Promise<RecipeWithTags[]> {
   const recipesListDbQuery = defaultRecipeQuery()
 
@@ -198,7 +205,7 @@ export async function searchRecipes(
 
 export async function addRecipe(
   recipe: {
-    userId?: PrimaryKey
+    userId?: User["id"]
     title: string
     description?: string | null
     prepTime: number
@@ -240,7 +247,7 @@ export async function addRecipe(
 }
 
 export async function updateRecipe(
-  recipeId: PrimaryKey,
+  recipeId: Recipe["id"],
   recipe: {
     title: string
     description?: string | null
@@ -282,6 +289,6 @@ export async function updateRecipe(
   return recipeData
 }
 
-export async function deleteRecipe(recipeId: PrimaryKey) {
+export async function deleteRecipe(recipeId: Recipe["id"]) {
   await database.delete(recipes).where(eq(recipes.id, recipeId)).returning()
 }
