@@ -9,5 +9,5 @@ export type NavItem = {
 export type SiteSearchUser = {
   id: User["id"]
   displayName: User["displayName"]
-  image: string | null
+  image: User["image"]
 }

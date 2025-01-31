@@ -3,8 +3,8 @@
 import * as cheerio from "cheerio"
 import * as he from "he"
 
-import { RecipeDetails, RecipeDifficulty } from "@/types/Recipe"
-import { RecipeImportDetails, User } from "@/db/schemas"
+import { RecipeDetails } from "@/types/Recipe"
+import { Recipe, RecipeImportDetails, User } from "@/db/schemas"
 import { addRecipeDirections } from "@/data-access/recipe-directions"
 import { addRecipeIngredients } from "@/data-access/recipe-ingredients"
 import { addRecipeTags } from "@/data-access/recipe-tags"
@@ -221,7 +221,7 @@ function handleTimeDescrepency(
   }
 }
 
-function getPhoto(photos: any): string | undefined {
+function getPhoto(photos: any): string | null {
   if (Array.isArray(photos)) {
     const holdPhoto = photos.at(0)
     if (typeof holdPhoto === "string") {
@@ -237,6 +237,7 @@ function getPhoto(photos: any): string | undefined {
   if (typeof photos === "string") {
     return photos
   }
+  return null
 }
 
 interface FormattedImportRecipeDetails {
@@ -245,14 +246,14 @@ interface FormattedImportRecipeDetails {
     url: string
   }
   recipe: {
-    title: string
-    description?: string | null
-    servings: string
-    prepTime: number
-    cookTime: number
-    difficulty?: RecipeDifficulty
-    private: boolean
-    photo?: string | null
+    title: Recipe["title"]
+    description: Recipe["description"]
+    servings: Recipe["servings"]
+    prepTime: Recipe["prepTime"]
+    cookTime: Recipe["cookTime"]
+    difficulty: Recipe["difficulty"]
+    private: Recipe["private"]
+    photo: Recipe["photo"]
   }
   ingredients: { orderNumber: number; description: string }[]
   directions: { orderNumber: number; description: string }[]
@@ -279,12 +280,13 @@ function formatData(
       title: he.decode(recipeData.name),
       description: recipeData.description
         ? he.decode(recipeData.description)
-        : undefined,
+        : null,
       servings: formatServings(recipeData.recipeYield) ?? `1 serving`,
       prepTime,
       cookTime,
       private: false,
       photo: getPhoto(recipeData.image),
+      difficulty: null,
     },
     ingredients:
       recipeData.recipeIngredient.map((ing: string, index: number) => ({
@@ -323,6 +325,7 @@ export async function importRecipeUseCase(url: string, importedBy?: number) {
         servings: recipe.servings,
         description: recipe.description,
         photo: recipe.photo,
+        private: recipe.private,
       },
       trx
     )

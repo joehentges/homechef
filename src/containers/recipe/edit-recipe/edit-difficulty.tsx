@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react"
 
-import { RecipeDifficulty } from "@/types/Recipe"
+import { Recipe } from "@/db/schemas"
 import {
   Select,
   SelectContent,
@@ -10,9 +10,9 @@ import {
 } from "@/components/ui/select"
 
 interface EditDifficultyProps {
-  difficulty?: RecipeDifficulty
+  difficulty: Recipe["difficulty"]
   setDifficulty: Dispatch<
-    SetStateAction<Omit<RecipeDifficulty, "null"> | undefined>
+    SetStateAction<Omit<Recipe["difficulty"], "null"> | undefined>
   >
 }
 

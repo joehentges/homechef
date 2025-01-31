@@ -6,7 +6,8 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useServerAction } from "zsa-react"
 
-import { IngredientOrDirection, RecipeDifficulty } from "@/types/Recipe"
+import { IngredientOrDirection } from "@/types/Recipe"
+import { Recipe } from "@/db/schemas"
 import {
   Form,
   FormControl,
@@ -29,16 +30,16 @@ import { SaveRecipe } from "./save-recipe"
 
 type EditRecipeRecipeDetails = {
   recipe: {
-    id?: number
-    title: string
-    description: string | null
-    prepTime: number
-    cookTime: number
-    difficulty: RecipeDifficulty
-    servings: string
-    private: boolean
+    id?: Recipe["id"]
+    title: Recipe["title"]
+    description: Recipe["description"]
+    prepTime: Recipe["prepTime"]
+    cookTime: Recipe["cookTime"]
+    difficulty: Recipe["difficulty"]
+    servings: Recipe["servings"]
+    private: Recipe["private"]
     tags: string[]
-    photo: string | null
+    photo: Recipe["photo"]
   }
   ingredients: IngredientOrDirection[]
   directions: IngredientOrDirection[]
@@ -84,10 +85,7 @@ const recipeActionFormSchema = z.object({
     ),
     prepTime: z.coerce.number().min(0),
     cookTime: z.coerce.number().min(0),
-    difficulty: z
-      .enum(["beginner", "intermediate", "advanced"])
-      .nullable()
-      .optional(),
+    difficulty: z.enum(["beginner", "intermediate", "advanced"]).nullable(),
     private: z.boolean().default(false),
     photo: z.string().min(1).nullable(),
   }),

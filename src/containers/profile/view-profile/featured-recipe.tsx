@@ -5,9 +5,9 @@ import { Recipe } from "@/db/schemas"
 
 interface FeaturedRecipeProps {
   id: Recipe["id"]
-  photo: string | null
-  title: string
-  description: string | null
+  photo: Recipe["photo"]
+  title: Recipe["title"]
+  description: Recipe["description"]
 }
 
 export function FeaturedRecipe(props: FeaturedRecipeProps) {

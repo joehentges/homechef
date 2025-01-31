@@ -10,7 +10,7 @@ import {
   sql,
 } from "drizzle-orm"
 
-import { RecipeDifficulty, RecipeWithTags } from "@/types/Recipe"
+import { RecipeWithTags } from "@/types/Recipe"
 import { SearchRecipeParams, SearchRecipeQuery } from "@/types/SearchRecipes"
 import { database } from "@/db"
 import {
@@ -206,14 +206,14 @@ export async function searchRecipes(
 export async function addRecipe(
   recipe: {
     userId?: User["id"]
-    title: string
-    description?: string | null
-    prepTime: number
-    cookTime: number
-    difficulty?: RecipeDifficulty
-    servings: string
-    private?: boolean
-    photo?: string | null
+    title: Recipe["title"]
+    description: Recipe["description"]
+    prepTime: Recipe["prepTime"]
+    cookTime: Recipe["cookTime"]
+    difficulty: Recipe["difficulty"]
+    servings: Recipe["servings"]
+    private: Recipe["private"]
+    photo: Recipe["photo"]
   },
   trx = database
 ) {
@@ -249,14 +249,14 @@ export async function addRecipe(
 export async function updateRecipe(
   recipeId: Recipe["id"],
   recipe: {
-    title: string
-    description?: string | null
-    prepTime: number
-    cookTime: number
-    difficulty?: RecipeDifficulty
-    servings: string
-    private?: boolean
-    photo?: string | null
+    title: Recipe["title"]
+    description: Recipe["description"]
+    prepTime: Recipe["prepTime"]
+    cookTime: Recipe["cookTime"]
+    difficulty: Recipe["difficulty"]
+    servings: Recipe["servings"]
+    private: Recipe["private"]
+    photo: Recipe["photo"]
   },
   trx = database
 ) {

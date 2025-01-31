@@ -1,9 +1,11 @@
 import { CookingPotIcon } from "lucide-react"
 
+import { Recipe } from "@/db/schemas"
+
 interface FeaturedRecipeOptionProps {
-  photo: string | null
-  title: string
-  description: string | null
+  photo: Recipe["photo"]
+  title: Recipe["title"]
+  description: Recipe["description"]
 }
 
 export function FeaturedRecipeOption(props: FeaturedRecipeOptionProps) {

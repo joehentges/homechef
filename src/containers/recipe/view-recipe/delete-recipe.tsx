@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useServerAction } from "zsa-react"
 
+import { Recipe } from "@/db/schemas"
 import {
   Dialog,
   DialogContent,
@@ -35,8 +36,8 @@ import { useToast } from "@/hooks/use-toast"
 import { deleteRecipeAction } from "../actions"
 
 interface DeleteRecipeProps {
-  recipeId: number
-  title: string
+  recipeId: Recipe["id"]
+  title: Recipe["title"]
 }
 
 const deleteRecipeForm = z

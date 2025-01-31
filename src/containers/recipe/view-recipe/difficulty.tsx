@@ -2,7 +2,7 @@
 
 import { TrophyIcon } from "lucide-react"
 
-import { RecipeDifficulty as RecipeDifficultyType } from "@/types/Recipe"
+import { Recipe } from "@/db/schemas"
 import {
   Tooltip,
   TooltipContent,
@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/tooltip"
 
 interface RecipeDifficultyProps {
-  difficulty?: RecipeDifficultyType
+  difficulty: Recipe["difficulty"]
 }
 
 export function RecipeDifficulty(props: RecipeDifficultyProps) {
