@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useState } from "react"
 import { CookingPotIcon } from "lucide-react"
 
+import { User } from "@/db/schemas"
 import { getAvatarImageUrl } from "@/lib/get-avatar-image-url"
 import { Button } from "@/components/ui/button"
 import {
@@ -13,8 +14,8 @@ import {
 import { Input } from "@/components/ui/input"
 
 interface EditImageProps {
-  displayName: string
-  image?: string | null
+  displayName: User["displayName"]
+  image?: User["image"]
   setImage: Dispatch<SetStateAction<string | undefined | null>>
 }
 

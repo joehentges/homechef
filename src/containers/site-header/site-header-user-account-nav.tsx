@@ -4,6 +4,7 @@ import Link from "next/link"
 import { ChefHatIcon } from "lucide-react"
 
 import { navigation } from "@/config/navigation"
+import { User } from "@/db/schemas"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,9 +17,9 @@ import { UserAvatar } from "@/components/user-avatar"
 import { signOutAction } from "./actions"
 
 interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
-  displayName: string
-  email: string
-  image: string | null
+  displayName: User["displayName"]
+  email: User["email"]
+  image: User["image"]
 }
 
 export function SiteHeaderUserAccountNav(props: UserAccountNavProps) {

@@ -3,9 +3,10 @@ import { ResetPasswordEmail } from "@/emails/reset-password"
 import { VerifyEmail } from "@/emails/verify-email"
 
 import { siteConfig } from "@/config/site"
+import { User } from "@/db/schemas"
 import { sendEmail } from "@/lib/send-email"
 
-export async function sendVerifyEmail(email: string, token: string) {
+export async function sendVerifyEmail(email: User["email"], token: string) {
   await sendEmail(
     email,
     `Verify your email for ${siteConfig.name}`,
@@ -13,7 +14,10 @@ export async function sendVerifyEmail(email: string, token: string) {
   )
 }
 
-export async function sendResetPasswordEmail(email: string, token: string) {
+export async function sendResetPasswordEmail(
+  email: User["email"],
+  token: string
+) {
   await sendEmail(
     email,
     `Your password reset link for ${siteConfig.name}`,
@@ -22,7 +26,7 @@ export async function sendResetPasswordEmail(email: string, token: string) {
 }
 
 export async function sendMagicLinkEmail(
-  email: string,
+  email: User["email"],
   token: string,
   from?: string
 ) {

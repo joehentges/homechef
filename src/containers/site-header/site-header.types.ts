@@ -8,6 +8,6 @@ export type NavItem = {
 
 export type SiteSearchUser = {
   id: User["id"]
-  displayName: string
+  displayName: User["displayName"]
   image: string | null
 }

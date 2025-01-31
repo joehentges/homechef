@@ -2,11 +2,12 @@ import * as React from "react"
 import { Resend } from "resend"
 
 import { env } from "@/env"
+import { User } from "@/db/schemas"
 
 const resend = new Resend(env.RESEND_API_KEY)
 
 export async function sendEmail(
-  email: string,
+  email: User["email"],
   subject: string,
   body: React.ReactNode
 ) {

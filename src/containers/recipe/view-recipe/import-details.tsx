@@ -1,5 +1,6 @@
 import Link from "next/link"
 
+import { User } from "@/db/schemas"
 import { getDomain } from "@/lib/get-domain"
 import {
   Tooltip,
@@ -10,8 +11,8 @@ import {
 
 interface ImportDetailsProps {
   importedBy?: {
-    id: number
-    displayName: string
+    id: User["id"]
+    displayName: User["displayName"]
   } | null
   url: string
 }

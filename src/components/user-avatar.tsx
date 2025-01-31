@@ -1,13 +1,14 @@
 import { AvatarProps } from "@radix-ui/react-avatar"
 import { UserIcon } from "lucide-react"
 
+import { User } from "@/db/schemas"
 import { getAvatarImageUrl } from "@/lib/get-avatar-image-url"
 import { cn } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 interface UserAvatarProps extends AvatarProps {
-  displayName: string
-  image: string | null
+  displayName: User["displayName"]
+  image: User["image"]
   className?: string
 }
 

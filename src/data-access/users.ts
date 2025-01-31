@@ -25,7 +25,9 @@ export async function getUser(userId: User["id"]): Promise<User | undefined> {
   return user
 }
 
-export async function getUserByEmail(email: string): Promise<User | undefined> {
+export async function getUserByEmail(
+  email: User["email"]
+): Promise<User | undefined> {
   const user = await database.query.users.findFirst({
     where: eq(users.email, email),
   })
@@ -90,9 +92,9 @@ export async function setEmailVerified(userId: User["id"]): Promise<void> {
 }
 
 export async function createUser(
-  email: string,
+  email: User["email"],
   password: string,
-  displayName: string
+  displayName: User["displayName"]
 ): Promise<User> {
   const hash = await hashPassword(password)
   const [user] = await database
@@ -108,8 +110,8 @@ export async function createUser(
 }
 
 export async function createMagicUser(
-  email: string,
-  displayName: string
+  email: User["email"],
+  displayName: User["displayName"]
 ): Promise<User> {
   const [user] = await database
     .insert(users)
