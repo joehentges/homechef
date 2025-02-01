@@ -298,7 +298,10 @@ function formatData(
   }
 }
 
-export async function importRecipeUseCase(url: string, importedBy?: number) {
+export async function importRecipeUseCase(
+  url: string,
+  importedBy?: User["id"]
+) {
   const importRecipeData = await importRecipe(url)
 
   if (!importRecipeData) {

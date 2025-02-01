@@ -23,13 +23,6 @@ import { tagsSeed } from "./seed/tags"
 import { usersSeed } from "./seed/users"
 
 async function main() {
-  console.log("seeding users...")
-  const seededUsers = await database
-    .insert(users)
-    .values(usersSeed as any)
-    .onConflictDoNothing()
-    .returning()
-
   console.log("seeding tags...")
   const seededTags = await database
     .insert(tags)
@@ -41,7 +34,15 @@ async function main() {
     )
     .onConflictDoNothing()
     .returning()
-
+  /*
+  console.log("seeding users...")
+  const seededUsers = await database
+    .insert(users)
+    .values(usersSeed as any)
+    .onConflictDoNothing()
+    .returning()
+*/
+  /*
   console.log("seeding recipes...")
   let count = 0
   for (const recipe of recipesSeed) {
@@ -54,7 +55,7 @@ async function main() {
     )
     count += 1
   }
-
+*/
   await database.execute(
     sql`SELECT setval(pg_get_serial_sequence('users', 'id'), (SELECT COALESCE(MAX(id), 0) + 1 FROM users));`
   )
