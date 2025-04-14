@@ -117,8 +117,8 @@ importers:
         specifier: ^2.16.0
         version: 2.16.0(react@18.3.1)
       react-to-print:
-        specifier: ^3.0.4
-        version: 3.0.4(react@18.3.1)
+        specifier: ^3.0.6
+        version: 3.0.6(react@18.3.1)
       resend:
         specifier: ^4.0.1
         version: 4.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -701,6 +701,7 @@ packages:
   '@faker-js/faker@9.4.0':
     resolution: {integrity: sha512-85+k0AxaZSTowL0gXp8zYWDIrWclTbRPg/pm/V0dSFZ6W6D4lhcG3uuZl4zLsEKfEvs69xDbLN2cHQudwp95JA==}
     engines: {node: '>=18.0.0', npm: '>=9.0.0'}
+    deprecated: Please update to a newer version
 
   '@floating-ui/core@1.6.9':
     resolution: {integrity: sha512-uMXCuQ3BItDUbAMhIXw7UPXRfAlOAvZzdK9BWpE60MCn+Svt3aLn9jsPTi/WNGlRUu2uI0v5S7JiIUsbsvh3fw==}
@@ -3316,8 +3317,8 @@ packages:
       '@types/react':
         optional: true
 
-  react-to-print@3.0.4:
-    resolution: {integrity: sha512-33opQsuskUs0UyK1OLAAN2Ziy1GPneeTLvypRYjT6E9bl2NDxZtEr0KYMOxszcBY0bs+XlWOkGNlyla55GQjuA==}
+  react-to-print@3.0.6:
+    resolution: {integrity: sha512-K/jFxkUifbfVnu1XyinM6AB6zAq0VMw0lH/6WJpkdlChoqqvEOE/BGOxYN2xOmu8f72isTTU5DNatK/j0Lfc+Q==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ~19
 
@@ -6693,7 +6694,7 @@ snapshots:
     optionalDependencies:
       '@types/react': 18.3.18
 
-  react-to-print@3.0.4(react@18.3.1):
+  react-to-print@3.0.6(react@18.3.1):
     dependencies:
       react: 18.3.1
 
